@@ -22,4 +22,7 @@ def master_detail(request, master_id):
     except IndexError:
         return HttpResponse("Мастера не найдено")
     return HttpResponse(f"<h1>{master['name']}</h1>")
-    
+
+
+def thanks(request):
+    return render(request, 'thanks.html')

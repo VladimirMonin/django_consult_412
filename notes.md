@@ -198,3 +198,24 @@ def master_detail(request, master_id):
         return HttpResponse("Мастера не найдено")
     return HttpResponse(f"<h1>{master['name']}</h1>")
 ```
+
+### Папка Templates в корне проекта
+
+Стандартные пути, по которым Django ищет шаблоны это все папки `templates` внутри КАЖДОГО приложения. Но мы можем добавить папку `templates` в корень проекта и Django будет искать шаблоны в ней.
+
+
+```python
+# barbershop/settings.py
+TEMPLATES = [
+    {
+        'BACKEND': 'django.template.backends.django.DjangoTemplates',
+        'DIRS': [BASE_DIR / 'templates'],
+...
+```
+
+Теперь можно сделать папку `templates` в корне проекта и создать в ней файл `thanks.html`.
+
+```html
+<h1>Спасибо!</h1>
+<p>Ваша заявка принята.</p>
+```
