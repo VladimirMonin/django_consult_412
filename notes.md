@@ -219,3 +219,47 @@ TEMPLATES = [
 <h1>Спасибо!</h1>
 <p>Ваша заявка принята.</p>
 ```
+
+### Первая переменная шаблонизатора и контекст
+
+Мы можем передать переменные в шаблон, чтобы использовать их в HTML-коде. Для этого в функции View возвращаем объект `render`, который принимает объект запроса, имя шаблона и словарь с переменными.
+
+Контекст всегда должен быть словарем, даже если в нём всего одна переменная.
+
+Переменная в шаблоне оформляется в двойные фигурные скобки `{{ переменная }}`.
+
+А на уровне контекста это ключ словаря.
+
+В нашем случае это `masters_count`.
+
+```python
+# core/views.py
+def thanks(request):
+    masters_count = len(masters)
+
+    context = {
+        'masters_count': masters_count
+    }
+
+    return render(request, 'thanks.html', context)
+```
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    {% comment %} Коммент шаблонизатора {% endcomment %}
+    <!-- Это тоже комментарий -->
+    <h1>Спасибо!</h1>
+    <p>
+      Ваша заявка принята. Один из {{ masters_count }} мастеров будет рад вас
+      принять в ближайшее время!
+    </p>
+  </body>
+</html>
+```

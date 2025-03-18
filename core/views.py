@@ -1,6 +1,7 @@
 from django.shortcuts import render
 from django.http import HttpResponse
 
+
 masters = [
     {"id": 1, "name": "Эльдар 'Бритва' Рязанов"},
     {"id": 2, "name": "Зоя 'Ножницы' Космодемьянская"},
@@ -25,4 +26,10 @@ def master_detail(request, master_id):
 
 
 def thanks(request):
-    return render(request, 'thanks.html')
+    masters_count = len(masters)
+
+    context = {
+        'masters_count': masters_count
+    }
+
+    return render(request, 'thanks.html', context)

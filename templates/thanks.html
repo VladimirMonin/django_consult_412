@@ -1,2 +1,17 @@
-<h1>Спасибо!</h1>
-<p>Ваша заявка принята.</p>
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    {% comment %} Коммент шаблонизатора {% endcomment %}
+    <!-- Это тоже комментарий -->
+    <h1>Спасибо!</h1>
+    <p>
+      Ваша заявка принята. Один из {{ masters_count }} мастеров будет рад вас
+      принять в ближайшее время!
+    </p>
+  </body>
+</html>
