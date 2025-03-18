@@ -1,15 +1,6 @@
 from django.shortcuts import render
 from django.http import HttpResponse
-
-
-masters = [
-    {"id": 1, "name": "Эльдар 'Бритва' Рязанов"},
-    {"id": 2, "name": "Зоя 'Ножницы' Космодемьянская"},
-    {"id": 3, "name": "Борис 'Фен' Пастернак"},
-    {"id": 4, "name": "Иннокентий 'Лак' Смоктуновский"},
-    {"id": 5, "name": "Раиса 'Бигуди' Горбачёва"},
-]
-
+from .data import *
 
 def main(request):
     return HttpResponse("""
