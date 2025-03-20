@@ -1,11 +1,11 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Document</title>
-</head>
-<body>
+  </head>
+  <body>
     <h1>Эксперименты с данными в шаблонизаторе Django</h1>
     <p>Строка: {{string}}</p>
     <p>Число: {{number}}</p>
@@ -15,7 +15,8 @@
     <p>Словарь обращение к ключу: {{dict.best_master}}</p>
     <p>Экземпляр класса: {{class}}</p>
     <p>Экземпляр класса обращение к атрибуту: {{class.name}}</p>
-    <p>Экземпляр класса обращение к методу: {{class.say_my_name}}</p>"
+    <p>Экземпляр класса обращение к методу: {{class.say_my_name}}</p>
+    "
 
     <h2>Условные конструкции</h2>
     <p>Сотрудник</p>
@@ -23,12 +24,29 @@
     <p>Статус: {{employee.is_active}}</p>
     <h3>Вариант 1</h3>
     {% if employee.is_active %}
-        <p>Статус: Активен</p>
+    <p>Статус: Активен</p>
 
     {% else %}
-        <p>Статус: Не активен</p>
+    <p>Статус: Не активен</p>
     {% endif %}
 
-
-</body>
+    <h3>Вариант 2</h3>
+    <div class="employee">
+      <p>Имя: {{employee.name}}</p>
+      <p>Статус: {{employee.is_active}}</p>
+      {% comment %} Вветвление с проверкой на равенство строк {% endcomment %}
+      {% if employee.position == "manager" %}
+      <p class="yellow-position">Менеджер барбершопа</p>
+      {% elif employee.position == "master" %}
+      <p class="blue-position">Мастер барбершопа</p>
+      {% else %}
+      <p>Неизвестная должность</p>
+      {% endif %} {% comment %} Вветвление с проверкой на больше меньше{%endcomment %} 
+      {% if employee.salary > 90000 %}
+      <p>Зарплата зарплата руководящей должности: {{employee.position}}</p>
+      {% elif employee.salary > 50000 %}
+      <p>Зарплата зарплата мастера: {{employee.position}}</p>
+      {% endif %}
+    </div>
+  </body>
 </html>

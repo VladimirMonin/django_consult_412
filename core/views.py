@@ -25,28 +25,31 @@ def thanks(request):
 
     return render(request, 'thanks.html', context)
 
+class Employee:
+    def __init__(self, name: str, is_active: bool, is_married: bool, age: int, salary: float, position: str, hobbies: list):
+        self.name = name
+        self.is_active = is_active
+        self.is_married = is_married
+        self.age = age
+        self.salary = salary
+        self.position = position
+        self.hobbies = hobbies
+
+    def __str__(self):
+        return f'Имя: {self.name}.\nВозраст: {self.age}.\nЗарплата: {self.salary}.\nДолжность: {self.position}.'
 
 def test(request):
     
-    class Employee:
-        def __init__(self, name: str, is_active: bool):
-            self.name = name
-            self.is_active = is_active
-        
-        def __str__(self):
-            return f'Экземпляр класса {self.__class__.__name__} с именем {self.name}'
-        
-        def say_my_name(self):
-            return f'Меня зовут {self.name}'
-    
-    employee = Employee('Алевтина', True)
+    employee = Employee('Алевтина', True, True, 42, 100000, 'manager', ['Журналы про усы', 'Компьютерные игры', 'Пиво'])
+    employee2 = Employee('Бородач', True, False, 25, 50000, 'master', ['Садоводство', 'Пиво', 'Компьютерные игры'])
     
     context = {
         "string": "Мастер по усам",
         "number": 42,
         "list": ["Стрижка бороды", "Усы-таракан", "Укладка бровей"],
         "dict": {"best_master": "Алевтина Арбузова"},
-        "employee": employee
+        "employee": employee,
+        "employee2": employee2
 
     }
     return render(request, 'test.html', context)

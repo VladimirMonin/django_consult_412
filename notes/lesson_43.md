@@ -86,3 +86,58 @@ def test(request):
         <p>Сотрудник уволен</p>
     {% endif %}
 ```
+
+#### Ветвление с `elif`
+
+```python
+# core/views.py
+class Employee:
+    def __init__(self, name: str, is_active: bool, is_married: bool, age: int, salary: float, position: str, hobbies: list):
+        self.name = name
+        self.is_active = is_active
+        self.is_married = is_married
+        self.age = age
+        self.salary = salary
+        self.position = position
+        self.hobbies = hobbies
+
+    def __str__(self):
+        return f'Имя: {self.name}.\nВозраст: {self.age}.\nЗарплата: {self.salary}.\nДолжность: {self.position}.'
+
+
+def test(request):
+    
+    employee = Employee('Алевтина', True, True, 42, 100000, 'manager', ['Журналы про усы', 'Компьютерные игры', 'Пиво'])
+    employee2 = Employee('Бородач', True, False, 25, 50000, 'master', ['Садоводство', 'Пиво', 'Компьютерные игры'])
+    
+    context = {
+        "string": "Мастер по усам",
+        "number": 42,
+        "list": ["Стрижка бороды", "Усы-таракан", "Укладка бровей"],
+        "dict": {"best_master": "Алевтина Арбузова"},
+        "employee": employee,
+        "employee2": employee2
+
+    }
+    return render(request, 'test.html', context)
+```
+
+```html
+  <h3>Вариант 2</h3>
+    <div class="employee">
+      <p>Имя: {{employee.name}}</p>
+      <p>Статус: {{employee.is_active}}</p>
+      {% comment %} Вветвление с проверкой на равенство строк {% endcomment %}
+      {% if employee.position == "manager" %}
+      <p class="yellow-position">Менеджер барбершопа</p>
+      {% elif employee.position == "master" %}
+      <p class="blue-position">Мастер барбершопа</p>
+      {% else %}
+      <p>Неизвестная должность</p>
+      {% endif %} {% comment %} Вветвление с проверкой на больше меньше{%endcomment %} 
+      {% if employee.salary > 90000 %}
+      <p>Зарплата зарплата руководящей должности: {{employee.position}}</p>
+      {% elif employee.salary > 50000 %}
+      <p>Зарплата зарплата мастера: {{employee.position}}</p>
+      {% endif %}
+```html
