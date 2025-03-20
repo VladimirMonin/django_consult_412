@@ -55,3 +55,34 @@ def test(request):
 
 Мы попробовали как будут отрабатывать разные типы данных при передаче их в шаблон.
 Работает все, кроме вызова методов экземпляра с аргументами! Без аргументов будет работать отлично!
+
+### Знакомство с условными операторами
+
+```python
+    class Employee:
+        def __init__(self, name: str, is_active: bool):
+            self.name = name
+            self.is_active = is_active
+        
+        def __str__(self):
+            return f'Экземпляр класса {self.__class__.__name__} с именем {self.name}'
+        
+        def say_my_name(self):
+            return f'Меня зовут {self.name}'
+    
+    employee = Employee('Алевтина', True)
+
+        context = {
+        "employee": employee
+    }
+```
+
+```html
+    <p>Сотрудник: {{employee.name}}</p>
+    <p>Статус: {{employee.is_active}}</p>
+    {% if employee.is_active %}
+        <p>Сотрудник работает</p>
+    {% else %}
+        <p>Сотрудник уволен</p>
+    {% endif %}
+```

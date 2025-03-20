@@ -28,9 +28,10 @@ def thanks(request):
 
 def test(request):
     
-    class TestClass:
-        def __init__(self, name):
+    class Employee:
+        def __init__(self, name: str, is_active: bool):
             self.name = name
+            self.is_active = is_active
         
         def __str__(self):
             return f'Экземпляр класса {self.__class__.__name__} с именем {self.name}'
@@ -38,13 +39,14 @@ def test(request):
         def say_my_name(self):
             return f'Меня зовут {self.name}'
     
-    test_instance = TestClass('Тестовый экземпляр')
+    employee = Employee('Алевтина', True)
     
     context = {
         "string": "Мастер по усам",
         "number": 42,
         "list": ["Стрижка бороды", "Усы-таракан", "Укладка бровей"],
         "dict": {"best_master": "Алевтина Арбузова"},
-        "class": test_instance
+        "employee": employee
+
     }
     return render(request, 'test.html', context)
