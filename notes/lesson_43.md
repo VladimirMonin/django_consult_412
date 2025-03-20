@@ -141,3 +141,39 @@ def test(request):
       <p>Зарплата зарплата мастера: {{employee.position}}</p>
       {% endif %}
 ```html
+
+### Подключение статики
+
+Для подключения статики в Django, нужно создать папку `static` в корне проекта и в ней создать папку `css` и файл `style.css`
+
+В файле `settings.py` нужно добавить путь к папке со статикой и URL для статики:
+
+```python
+# Указали путь к статическим файлам в проекте. Это адрес на сервере, по которому будут доступны статические файлы
+STATIC_URL = 'static/'
+
+# Указали путь к папке, где будут храниться статические файлы
+STATICFILES_DIRS = [
+    BASE_DIR / "static",
+]
+```
+
+В шаблоне мы можем получить доступ к этим файлам.
+Пути пишем относительно папки `static`
+
+```html
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <link rel="stylesheet" href="{% static 'css/test.css' %}">
+    <script src="{% static 'js/test.js' %}"></script>
+  </head>
+  <body>
+    <h1>Эксперименты с данными в шаблонизаторе Django</h1>
+    <p>Строка: {{string}}</p>
+........
+```
