@@ -24,3 +24,27 @@ def thanks(request):
     }
 
     return render(request, 'thanks.html', context)
+
+
+def test(request):
+    
+    class TestClass:
+        def __init__(self, name):
+            self.name = name
+        
+        def __str__(self):
+            return f'Экземпляр класса {self.__class__.__name__} с именем {self.name}'
+        
+        def say_my_name(self):
+            return f'Меня зовут {self.name}'
+    
+    test_instance = TestClass('Тестовый экземпляр')
+    
+    context = {
+        "string": "Мастер по усам",
+        "number": 42,
+        "list": ["Стрижка бороды", "Усы-таракан", "Укладка бровей"],
+        "dict": {"best_master": "Алевтина Арбузова"},
+        "class": test_instance
+    }
+    return render(request, 'test.html', context)
