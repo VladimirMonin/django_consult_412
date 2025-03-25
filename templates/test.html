@@ -71,7 +71,11 @@
 
     <h2>Циклы</h2>
     {% for employee  in employees %}
+    {% if forloop.first %}
+    <hr>
+    {% endif %}
     <div class="employee">
+        <p>Номер сотрудника: {{forloop.counter}}</p>
         <p>Имя: {{employee.name}}</p>
         <p>Статус: {{employee.is_active}}</p>
         {% comment %} Вветвление с проверкой на равенство строк {% endcomment %}
@@ -88,7 +92,11 @@
         <p>Зарплата зарплата мастера: {{employee.position}}</p>
         {% endif %}
       </div>
+    {% if forloop.last %}
+    <hr>
+    {% endif %}
     {% endfor %}
-      
+    
+    
   </body>
 </html>
