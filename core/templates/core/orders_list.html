@@ -11,20 +11,37 @@
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
         <script src="{% static 'js/test.js' %}"></script>
       </head>
-
-<body>
-    <h1>{{title}}</h1>
-    {% for order in orders %}
-    <div class="employee">
-        <p>{{order.client_name}}</p>
-        <ul>
-        {% for service in order.services %}
-          <li>{{service}}</li>
-         {% endfor %}
-     </ul>
-        <p>{{order.date}}</p>
-        <p>{{order.status}}</p>
-     </div>
-    {% endfor %}
+<div class="container">
+    <div class="row">
+        <h1>{{title}}</h1>
+    </div>
+    
+    <div class="row">
+        {% for order in orders %}
+        <!-- Для 2 карточек в ряд используем col-md-6 -->
+        <!-- Для 3 карточек в ряд заменить на col-md-4 -->
+        <div class="col-12 col-md-6 col-lg-4 mb-4">
+            <div class="card h-100">
+                <h5 class="card-title text-center p-2">Заявка №{{order.id}}</h5>
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item">{{order.client_name}}</li>
+                    <li class="list-group-item">{{order.date}}</li>
+                    <li class="list-group-item">{{order.status}}</li>
+                    <li class="list-group-item">
+                        <ul>
+                            {% for service in order.services %}
+                            <li>{{service}}</li>
+                            {% endfor %}
+                        </ul>
+                    </li>
+                </ul>
+                <div class="card-footer mt-auto">
+                    <a href="/barbershop/orders/{{order.id}}/" class="btn btn-dark">Подробнее</a>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
 </body>
 </html>
