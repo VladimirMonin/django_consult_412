@@ -97,6 +97,35 @@
     {% endif %}
     {% endfor %}
     
-    
+    {% comment %} Вариант цикла в цикле {% endcomment %}
+    <div class="schedule">
+        {% for master in masters %}
+            <div class="master-row {% if forloop.first %}first-master{% endif %} {% if forloop.last %}last-master{% endif %}">
+                <h3>{{ forloop.counter }}. {{ master.name }}</h3>
+                
+                <div class="time-slots">
+                    {% for slot in master.time_slots %}
+                        <div class="slot 
+                            {% if forloop.parentloop.first and forloop.first %}very-first-slot{% endif %} 
+                            {% if forloop.parentloop.last and forloop.last %}very-last-slot{% endif %}">
+                            
+                            <!-- Сквозная нумерация всех слотов -->
+                            <span class="slot-number">
+                                {{ forloop.parentloop.counter0|multiply:10|add:forloop.counter }}
+                            </span>
+                            
+                            <p>Время: {{ slot.time }}</p>
+                            <p>Статус: {{ slot.status }}</p>
+                            
+                            <!-- Показываем статус слота с учетом того, какой это мастер -->
+                            {% if forloop.parentloop.counter <= 2 and slot.status == 'свободно' %}
+                                <span class="vip-slot">Премиум-мастер свободен!</span>
+                            {% endif %}
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+        {% endfor %}
+    </div>
   </body>
 </html>
