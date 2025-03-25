@@ -42,6 +42,11 @@ def test(request):
     
     employee = Employee('Алевтина', True, True, 42, 100000, 'manager', ['Журналы про усы', 'Компьютерные игры', 'Пиво'])
     employee2 = Employee('Бородач', True, False, 25, 50000, 'master', ['Садоводство', 'Пиво', 'Компьютерные игры'])
+    employee3 = Employee("Барбарис", True, False, 30, 60000, 'master', ['Газонокосилки', 'Пиво', 'Стрельба из арбалета'])
+    employee4 = Employee("Сифон", True, True, 35, 70000, 'master', ['Брендовый шмот', 'Походы в ГУМ', 'Аниме'])
+
+    # Список сотрудников
+    employees = [employee, employee2, employee3, employee4]
     
     context = {
         "string": "Мастер по усам",
@@ -49,7 +54,8 @@ def test(request):
         "list": ["Стрижка бороды", "Усы-таракан", "Укладка бровей"],
         "dict": {"best_master": "Алевтина Арбузова"},
         "employee": employee,
-        "employee2": employee2
+        "employee2": employee2,
+        "employees": employees
 
     }
     return render(request, 'test.html', context)

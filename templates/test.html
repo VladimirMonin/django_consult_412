@@ -51,5 +51,44 @@
       <p>Зарплата зарплата мастера: {{employee.position}}</p>
       {% endif %}
     </div>
+    <div class="employee">
+        <p>Имя: {{employee.name}}</p>
+        <p>Статус: {{employee.is_active}}</p>
+        {% comment %} Вветвление с проверкой на равенство строк {% endcomment %}
+        {% if employee.position == "manager" %}
+        <p class="yellow-position">Менеджер барбершопа</p>
+        {% elif employee.position == "master" %}
+        <p class="blue-position">Мастер барбершопа</p>
+        {% else %}
+        <p>Неизвестная должность</p>
+        {% endif %} {% comment %} Вветвление с проверкой на больше меньше{%endcomment %} 
+        {% if employee.salary > 90000 %}
+        <p>Зарплата зарплата руководящей должности: {{employee.position}}</p>
+        {% elif employee.salary > 50000 %}
+        <p>Зарплата зарплата мастера: {{employee.position}}</p>
+        {% endif %}
+      </div>
+
+    <h2>Циклы</h2>
+    {% for employee  in employees %}
+    <div class="employee">
+        <p>Имя: {{employee.name}}</p>
+        <p>Статус: {{employee.is_active}}</p>
+        {% comment %} Вветвление с проверкой на равенство строк {% endcomment %}
+        {% if employee.position == "manager" %}
+        <p class="yellow-position">Менеджер барбершопа</p>
+        {% elif employee.position == "master" %}
+        <p class="blue-position">Мастер барбершопа</p>
+        {% else %}
+        <p>Неизвестная должность</p>
+        {% endif %} {% comment %} Вветвление с проверкой на больше меньше{%endcomment %} 
+        {% if employee.salary > 90000 %}
+        <p>Зарплата зарплата руководящей должности: {{employee.position}}</p>
+        {% elif employee.salary < 90000 and employee.salary > 10000 %}
+        <p>Зарплата зарплата мастера: {{employee.position}}</p>
+        {% endif %}
+      </div>
+    {% endfor %}
+      
   </body>
 </html>
