@@ -177,3 +177,53 @@ STATICFILES_DIRS = [
     <p>Строка: {{string}}</p>
 ........
 ```
+
+### Знакомство с циклом шаблонизатора
+
+```python
+# core/views.py
+def test(request):
+    
+    employee = Employee('Алевтина', True, True, 42, 100000, 'manager', ['Журналы про усы', 'Компьютерные игры', 'Пиво'])
+    employee2 = Employee('Бородач', True, False, 25, 50000, 'master', ['Садоводство', 'Пиво', 'Компьютерные игры'])
+    employee3 = Employee("Барбарис", True, False, 30, 60000, 'master', ['Газонокосилки', 'Пиво', 'Стрельба из арбалета'])
+    employee4 = Employee("Сифон", True, True, 35, 70000, 'master', ['Брендовый шмот', 'Походы в ГУМ', 'Аниме'])
+
+    # Список сотрудников
+    employees = [employee, employee2, employee3, employee4]
+    
+    context = {
+        "string": "Мастер по усам",
+        "number": 42,
+        "list": ["Стрижка бороды", "Усы-таракан", "Укладка бровей"],
+        "dict": {"best_master": "Алевтина Арбузова"},
+        "employee": employee,
+        "employee2": employee2,
+        "employees": employees
+
+    }
+    return render(request, 'test.html', context)
+```
+
+```html
+    <h2>Циклы</h2>
+    {% for employee  in employees %}
+    <div class="employee">
+        <p>Имя: {{employee.name}}</p>
+        <p>Статус: {{employee.is_active}}</p>
+        {% comment %} Вветвление с проверкой на равенство строк {% endcomment %}
+        {% if employee.position == "manager" %}
+        <p class="yellow-position">Менеджер барбершопа</p>
+        {% elif employee.position == "master" %}
+        <p class="blue-position">Мастер барбершопа</p>
+        {% else %}
+        <p>Неизвестная должность</p>
+        {% endif %} {% comment %} Вветвление с проверкой на больше меньше{%endcomment %} 
+        {% if employee.salary > 90000 %}
+        <p>Зарплата зарплата руководящей должности: {{employee.position}}</p>
+        {% elif employee.salary < 90000 and employee.salary > 10000 %}
+        <p>Зарплата зарплата мастера: {{employee.position}}</p>
+        {% endif %}
+      </div>
+    {% endfor %}
+```
