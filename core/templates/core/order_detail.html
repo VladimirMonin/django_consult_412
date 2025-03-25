@@ -36,7 +36,8 @@
           </li>
         </ul>
         <div class="card-body">
-            <a href="/barbershop/orders/" class="btn btn-dark">В каталог</a>
+            {% comment %} Кнопка с псевдонимом orders_list {% endcomment %}
+            <a href="{% url 'orders_list' %}" class="btn btn-dark">В каталог</a>
         </div>
       </div>
     </div>

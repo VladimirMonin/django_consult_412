@@ -36,7 +36,8 @@
                     </li>
                 </ul>
                 <div class="card-footer mt-auto">
-                    <a href="/barbershop/orders/{{order.id}}/" class="btn btn-dark">Подробнее</a>
+                    {% comment %} Кнопка с псевдонимом 'orders/<int:order_id>/', order_detail,  {% endcomment %}
+                    <a href="{% url 'order_detail' order.id %}" class="btn btn-dark">Подробнее</a>
                 </div>
             </div>
         </div>
