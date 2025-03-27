@@ -22,6 +22,7 @@
 </div>
 {% endblock content %}
 {% block scripts %}
-
+{% comment %} super - запустит блок родителя {% endcomment %}
 <script src="{% static 'js/order_detail.js' %}"></script>
+{{ block.super }}
 {% endblock scripts %}

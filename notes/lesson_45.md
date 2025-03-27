@@ -123,3 +123,32 @@
 
 Главное не забыть загрузить статику, раз уж мы явно используем обращение к ней.
 В этом варианте, у нас будет использованы скрипты из базового шаблона и дочернего.
+
+### Super в шаблонизаторе Django
+
+Мы можем вписать скрипты базового шаблона прямо в блок.
+В таком случае, при использовании этого блока в наследнике, мы переопределим содержимое блока.
+
+Однако, у нас есть опция через super вызвать блок родителя, и использовать и его, и наши скрипты.
+
+```html
+    {% block scripts %}
+    <script
+    src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+    crossorigin="anonymous"
+  ></script>
+  <script src="{% static 'js/test.js' %}"></script>
+    {% endblock scripts %}
+  </body>
+</html>
+```
+
+А в наследнике
+```html
+{% block scripts %}
+{% comment %} super - запустит блок родителя {% endcomment %}
+<script src="{% static 'js/order_detail.js' %}"></script>
+{{ block.super }}
+{% endblock scripts %}
+```
