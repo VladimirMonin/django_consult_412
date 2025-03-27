@@ -12,8 +12,14 @@
         <script src="{% static 'js/test.js' %}"></script>
       </head>
 <div class="container">
-    <div class="row">
-        <h1>{{title}}</h1>
+    {% comment %} Заголовок и количество заявок {% endcomment %}
+    <div class="row align-items-center mb-3">
+        <div class="col">
+            <h1 class="mb-0">{{title}}</h1>
+        </div>
+        <div class="col-auto">
+            <span class='badge bg-secondary'>Всего заявок: {{orders|length}}</span>
+        </div>
     </div>
     
     <div class="row">
