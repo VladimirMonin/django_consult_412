@@ -1,17 +1,12 @@
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Document</title>
-  </head>
-  <body>
-    {% comment %} Коммент шаблонизатора {% endcomment %}
-    <!-- Это тоже комментарий -->
-    <h1>Спасибо!</h1>
+{% extends "base.html" %}
+
+
+{% block content %}
+<div class="row">
+<h1 class='text-bg-success text-warning text-center'>Спасибо!</h1>
     <p>
       Ваша заявка принята. Один из {{ masters_count }} мастеров будет рад вас
       принять в ближайшее время!
     </p>
-  </body>
-</html>
+</div>
+{% endblock %}

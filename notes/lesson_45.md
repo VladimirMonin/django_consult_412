@@ -39,3 +39,59 @@
 ```html
 {{ post.content|truncatewords:100|default:"Пост пустой" }}
 ```
+
+## Наследование шаблонов
+
+Мы создаем "базовый" шаблон. Вы можете представить его как "шаблон для шаблона". Он содержит общие элементы, которые будут использоваться на всех страницах сайта.
+
+- Подключение статики
+- Подключение основных скриптов
+- Подключение Bootstrap 5 
+
+А дальше, мы сможем использовать систему наследования шаблонов Django. Это похоже на наследование классов в Python. Мы создаем базовый шаблон, а затем создаем дочерние шаблоны, которые наследуют от него.
+
+Наш базовый шаблон будет выглядеть так:
+```html
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <link rel="stylesheet" href="{% static 'css/test.css' %}" />
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH"
+      crossorigin="anonymous"
+    />
+  </head>
+  <body>
+    <div class="container">
+        {% comment %} Тут будет контекнт! {% endcomment %}
+        {% block content %}
+        {% endblock %}
+        
+    </div>
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+      crossorigin="anonymous"
+    ></script>
+    <script src="{% static 'js/test.js' %}"></script>
+  </body>
+</html>
+```
+### Создание дочернего шаблона
+
+Теперь мы можем создать дочерний шаблон, который будет наследовать от базового. Например, создадим шаблон для страницы "О нас".
+
+```html
+{% extends 'base.html' %}
+
+{% block content %}
+<h1>О нас</h1>
+<p>Мы - команда разработчиков, которые любят создавать крутые проекты!</p>
+{% endblock %}
+```
