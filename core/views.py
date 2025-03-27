@@ -23,7 +23,8 @@ def master_detail(request, master_id):
 def thanks(request):
     masters_count = len(masters)
 
-    context = {"masters_count": masters_count}
+    context = {"masters_count": masters_count,
+               'menu_items': MENU_ITEMS}
 
     return render(request, "core/thanks.html", context)
 

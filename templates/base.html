@@ -15,6 +15,9 @@
   </head>
   <body>
     <div class="container">
+        <header>
+            {% include "nav_menu_include.html" %}
+        </header>
         {% comment %} Тут будет контекнт! {% endcomment %}
         {% block content %}
         {% comment %} Данные будут вставлятся сюда! {% endcomment %}

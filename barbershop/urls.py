@@ -6,7 +6,7 @@ from django.urls import include
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', main),
+    path('', main, name='main'),
     # Подключаем маршруты из приложения core
     path('barbershop/', include('core.urls')),
     
