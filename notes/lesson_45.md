@@ -95,3 +95,31 @@
 <p>Мы - команда разработчиков, которые любят создавать крутые проекты!</p>
 {% endblock %}
 ```
+
+### Добавление блока для скриптов
+
+Мы можем в базовом шаблоне сделать вот так:
+
+```html
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+      crossorigin="anonymous"
+    ></script>
+    <script src="{% static 'js/test.js' %}"></script>
+    {% block scripts %}
+    {% endblock scripts %}
+  </body>
+</html>
+```
+
+А в дочернем шаблоне сделать вот так:
+```html
+{% block scripts %}
+
+<script src="{% static 'js/order_detail.js' %}"></script>
+{% endblock scripts %}
+```
+
+Главное не забыть загрузить статику, раз уж мы явно используем обращение к ней.
+В этом варианте, у нас будет использованы скрипты из базового шаблона и дочернего.
