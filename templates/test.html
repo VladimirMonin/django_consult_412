@@ -19,12 +19,20 @@
     {% endif %}
     <div class="employee">
         <p>Номер сотрудника: {{forloop.counter}}</p>
+        {% comment %} Протестируем наш тег format_name {% endcomment %}
         <p>Имя: {{employee.name}}</p>
+        <p>Форматированное имя: {% format_name employee.name %}</p>
         <p>Статус: {{employee.is_active}}</p>
         <p>Зарплата {{employee.salary | format_price}}</p>
         <p>Зарплата в долларах {{employee.salary | format_price:"$"}}</p>
+
+        {% comment %} тег на position format_position принимает позицию и 2 аргумента {% endcomment %}
+
+        <p>Должность через тег: {% format_position employee.position "параметр1" "параметр2" %}</p>
         
         {% comment %} Вветвление с проверкой на равенство строк {% endcomment %}
+
+
         {% if employee.position == "manager" %}
         <p class="yellow-position">Менеджер барбершопа</p>
         {% elif employee.position == "master" %}
