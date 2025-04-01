@@ -2,13 +2,13 @@
     "version": "0.2.0",
     "configurations": [
       {
-        "name": "Django: Запуск через Poetry",
+        "name": "Django: Отладка на MacOS",
         "type": "debugpy",
         "request": "launch",
         "program": "${workspaceFolder}/manage.py",
-        "args": ["runserver"],
+        "args": ["runserver", "--noreload"],
         "django": true,
-        "justMyCode": true,
+        "justMyCode": false,
         "console": "integratedTerminal",
         "env": {
           "PYTHONPATH": "${workspaceFolder}"
