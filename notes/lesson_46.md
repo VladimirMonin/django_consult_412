@@ -66,38 +66,133 @@ def format_position(position, param1, param2):
 <p>Должность через тег: {% format_position employee.position "параметр1" "параметр2" %}</p>
 ```
 
-### Собственные фильтры шаблона (рекомендации)
+## Собственный инклюзивный тег
 
-Учитывая ваши данные о барбершопе, вот какие фильтры будут действительно полезны и наглядны:
+Инклюзивные теги позволяют включать другие шаблоны и передавать им контекст. Это полезно для создания повторяющихся элементов интерфейса.
+Пример инклюзивного тега, который включает шаблон карточки мастера:
 
-1. **Фильтр форматирования цены услуг** - превращает число 1500 в "1 500 ₽". Очень наглядно для страницы с прайс-листом и на деталях заказа.
+```python
+@register.inclusion_tag('core/employee_card.html')
+def employee_card(employee, card_type='standard'):
+    """
+    Инклюзивный тег для отображения карточки сотрудника.
+    Принимает объект сотрудника и тип карточки.
+    
+    Пример использования:
+    {% employee_card employee "vip" %}
+    
+    :param employee: Объект сотрудника с атрибутами (name, position, salary и т.д.)
+    :param card_type: Тип карточки (standard, vip, compact)
+    :return: Контекст для шаблона employee_card.html
+    """
+    # Определяем CSS-класс в зависимости от типа карточки
+    css_class = 'card-standard'
+    if card_type == 'vip':
+        css_class = 'card-vip'
+    elif card_type == 'compact':
+        css_class = 'card-compact'
+    
+    # Определяем статус занятости для отображения
+    status_text = 'Работает' if employee.is_active else 'Не работает'
+    status_class = 'text-success' if employee.is_active else 'text-danger'
+    
+    # Создаем контекст для шаблона
+    return {
+        'employee': employee,
+        'css_class': css_class,
+        'status_text': status_text,
+        'status_class': status_class,
+        'card_type': card_type
+    }
+```
 
-2. **Фильтр статуса заказа** - преобразует текстовые значения статуса заказа в понятные пользователю фразы с соответствующим классом стиля. Например, "pending" становится "Ожидает подтверждения" с классом "badge bg-warning".
+Пример шаблона сделанного под инклюзивный тег `employee_card.html`:
 
-3. **Фильтр для работы с хобби** - учитывая, что у ваших сотрудников есть список хобби (как видно из класса Employee), можно создать фильтр, который превращает список хобби в строку через запятую или более красивое форматирование.
+```html
+{% load price_extras %}
+<div class="employee-card {{ css_class }}">
+    <div class="card mb-3">
+        <div class="card-header d-flex justify-content-between">
+            <h5 class="card-title">{% format_name employee.name %}</h5>
+            <span class="badge {{ status_class }}">{{ status_text }}</span>
+        </div>
+        <div class="card-body">
+            {% if card_type == 'vip' %}
+                <div class="vip-badge">⭐ ВИП-мастер ⭐</div>
+            {% endif %}
+            
+            <p class="card-text">
+                {% if employee.position == "manager" %}
+                <span class="yellow-position">Менеджер барбершопа</span>
+                {% elif employee.position == "master" %}
+                <span class="blue-position">Мастер барбершопа</span>
+                {% else %}
+                <span>{{ employee.position }}</span>
+                {% endif %}
+            </p>
+            
+            <p class="card-text">Зарплата: {{ employee.salary|format_price }}</p>
+            
+            {% if employee.hobbies %}
+            <p class="card-text">
+                <small class="text-muted">Увлечения: 
+                    {% for hobby in employee.hobbies %}
+                        {% if not forloop.first %}, {% endif %}
+                        {{ hobby }}
+                    {% endfor %}
+                </small>
+            </p>
+            {% endif %}
+            
+            {% if extra_content %}
+            <div class="extra-content mt-3 border-top pt-3">
+                {{ extra_content|safe }}
+            </div>
+            {% endif %}
+        </div>
+        
+        {% if card_type != 'compact' %}
+        <div class="card-footer text-end">
+            <button class="btn btn-sm btn-dark">Записаться к мастеру</button>
+        </div>
+        {% endif %}
+    </div>
+</div>
+```
 
-### Собственные теги шаблона (рекомендации)
+А так же стили для карточки мастера:
 
-Для контекста барбершопа отлично подойдут:
+```css
 
-1. **Простой тег `masters_count`** - возвращает количество активных мастеров. В шаблоне просто пишем `{% masters_count %}` и получаем число. Это намного наглядней для понимания, чем сложные фильтры.
+/* Можно добавить в static/css/test.css */
+.employee-card .card {
+    transition: transform 0.3s ease;
+}
 
-2. **Тег с параметрами `available_slots_for_date`** - принимает дату и выводит количество свободных слотов для записи в этот день. Например: `{% available_slots_for_date "2025-04-15" %}`.
+.employee-card .card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+}
 
-3. **Инклюзивный тег `show_master_card`** - сложный тег с включением, который генерирует красивую карточку мастера с фото, именем и рейтингом. Использование: `{% show_master_card master_id %}...Дополнительная информация...{% endshow_master_card %}`.
+.card-vip {
+    border: 2px solid gold;
+}
 
-### Контекстный процессор (рекомендации)
+.card-vip .card-header {
+    background-color: #ffd700;
+    color: #333;
+}
 
-Учитывая ваш проект, я бы рекомендовал создать контекстный процессор, который добавляет такую информацию:
+.vip-badge {
+    text-align: center;
+    font-weight: bold;
+    color: #d4af37;
+    margin-bottom: 10px;
+}
 
-1. **Информация о барбершопе** - название, адрес, часы работы, контакты. Это позволит отображать эту информацию в футере или хедере без дублирования кода в каждом представлении.
+.card-compact .card-body {
+    padding: 0.5rem;
+}
+```
 
-2. **Текущие акции** - список активных акций, которые должны быть видны на каждой странице сайта (например, в боковой панели).
-
-3. **Навигационное меню** - как вы и предлагали, это отличный случай для контекстного процессора. Меню может включать основные разделы сайта и подсвечивать текущий активный раздел.
-
-4. **Количество непрочитанных сообщений/уведомлений** - если вы планируете добавить личный кабинет, это будет полезная информация для отображения в хедере.
-
-Такой подход поможет студентам понять практическую ценность контекстных процессоров - они позволяют избежать дублирования кода при передаче одних и тех же данных во многих представлениях.
-
-Особое внимание обратите на то, как объяснять процесс создания директорий `templatetags` и пакетной инициализации - это часто вызывает затруднения у начинающих.
+Смысл инклюзивного тега в том, что он позволяет использовать один и тот же шаблон для разных типов карточек, передавая ему разные параметры. Это упрощает поддержку кода и делает его более читаемым.

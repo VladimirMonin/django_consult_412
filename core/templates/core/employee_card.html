@@ -1,0 +1,49 @@
+{% load price_extras %}
+<div class="employee-card {{ css_class }}">
+    <div class="card mb-3">
+        <div class="card-header d-flex justify-content-between">
+            <h5 class="card-title">{% format_name employee.name %}</h5>
+            <span class="badge {{ status_class }}">{{ status_text }}</span>
+        </div>
+        <div class="card-body">
+            {% if card_type == 'vip' %}
+                <div class="vip-badge">⭐ ВИП-мастер ⭐</div>
+            {% endif %}
+            
+            <p class="card-text">
+                {% if employee.position == "manager" %}
+                <span class="yellow-position">Менеджер барбершопа</span>
+                {% elif employee.position == "master" %}
+                <span class="blue-position">Мастер барбершопа</span>
+                {% else %}
+                <span>{{ employee.position }}</span>
+                {% endif %}
+            </p>
+            
+            <p class="card-text">Зарплата: {{ employee.salary|format_price }}</p>
+            
+            {% if employee.hobbies %}
+            <p class="card-text">
+                <small class="text-muted">Увлечения: 
+                    {% for hobby in employee.hobbies %}
+                        {% if not forloop.first %}, {% endif %}
+                        {{ hobby }}
+                    {% endfor %}
+                </small>
+            </p>
+            {% endif %}
+            
+            {% if extra_content %}
+            <div class="extra-content mt-3 border-top pt-3">
+                {{ extra_content|safe }}
+            </div>
+            {% endif %}
+        </div>
+        
+        {% if card_type != 'compact' %}
+        <div class="card-footer text-end">
+            <button class="btn btn-sm btn-dark">Записаться к мастеру</button>
+        </div>
+        {% endif %}
+    </div>
+</div>

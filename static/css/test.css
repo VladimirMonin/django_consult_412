@@ -14,3 +14,32 @@
     margin-bottom: 15px;
     border-radius: 5px;
 }
+
+.employee-card .card {
+    transition: transform 0.3s ease;
+}
+
+.employee-card .card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+}
+
+.card-vip {
+    border: 2px solid gold;
+}
+
+.card-vip .card-header {
+    background-color: #ffd700;
+    color: #333;
+}
+
+.vip-badge {
+    text-align: center;
+    font-weight: bold;
+    color: #d4af37;
+    margin-bottom: 10px;
+}
+
+.card-compact .card-body {
+    padding: 0.5rem;
+}

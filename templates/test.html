@@ -53,5 +53,17 @@
     <hr>
     {% endif %}
 {% endfor %}
+{% comment %} Тест инклюзивного тега employee_card {% endcomment %}
+<!-- Стандартная карточка -->
+{% employee_card employee %}
+
+<!-- VIP карточка с дополнительной информацией -->
+{% employee_card employee2 "vip" %}
+    <p>Этот мастер получил награду "Золотые ножницы 2025"!</p>
+    <p>Записаться к нему можно только за неделю вперёд.</p>
+
+
+<!-- Компактная карточка -->
+{% employee_card employees.2 "compact" %}
   </body>
 </html>
