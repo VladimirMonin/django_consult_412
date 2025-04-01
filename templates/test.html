@@ -1,4 +1,5 @@
 {% load static %}
+{% load price_extras %}
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -12,67 +13,7 @@
   </head>
   <body>
     <h1>Эксперименты с данными в шаблонизаторе Django</h1>
-    <p>Строка: {{string}}</p>
-    <p>Число: {{number}}</p>
-    <p>Список: {{list}}</p>
-    <p>Список обращение к индексу 0: {{list.0}}</p>
-    <p>Словарь: {{dict}}</p>
-    <p>Словарь обращение к ключу: {{dict.best_master}}</p>
-    <p>Экземпляр класса: {{class}}</p>
-    <p>Экземпляр класса обращение к атрибуту: {{class.name}}</p>
-    <p>Экземпляр класса обращение к методу: {{class.say_my_name}}</p>
-    "
-
-    <h2>Условные конструкции</h2>
-    <p>Сотрудник</p>
-    <p>Имя: {{employee.name}}</p>
-    <p>Статус: {{employee.is_active}}</p>
-    <h3>Вариант 1</h3>
-    {% if employee.is_active %}
-    <p>Статус: Активен</p>
-
-    {% else %}
-    <p>Статус: Не активен</p>
-    {% endif %}
-
-    <h3>Вариант 2</h3>
-    <div class="employee">
-      <p>Имя: {{employee.name}}</p>
-      <p>Статус: {{employee.is_active}}</p>
-      {% comment %} Вветвление с проверкой на равенство строк {% endcomment %}
-      {% if employee.position == "manager" %}
-      <p class="yellow-position">Менеджер барбершопа</p>
-      {% elif employee.position == "master" %}
-      <p class="blue-position">Мастер барбершопа</p>
-      {% else %}
-      <p>Неизвестная должность</p>
-      {% endif %} {% comment %} Вветвление с проверкой на больше меньше{%endcomment %} 
-      {% if employee.salary > 90000 %}
-      <p>Зарплата зарплата руководящей должности: {{employee.position}}</p>
-      {% elif employee.salary > 50000 %}
-      <p>Зарплата зарплата мастера: {{employee.position}}</p>
-      {% endif %}
-    </div>
-    <div class="employee">
-        <p>Имя: {{employee.name}}</p>
-        <p>Статус: {{employee.is_active}}</p>
-        {% comment %} Вветвление с проверкой на равенство строк {% endcomment %}
-        {% if employee.position == "manager" %}
-        <p class="yellow-position">Менеджер барбершопа</p>
-        {% elif employee.position == "master" %}
-        <p class="blue-position">Мастер барбершопа</p>
-        {% else %}
-        <p>Неизвестная должность</p>
-        {% endif %} {% comment %} Вветвление с проверкой на больше меньше{%endcomment %} 
-        {% if employee.salary > 90000 %}
-        <p>Зарплата зарплата руководящей должности: {{employee.position}}</p>
-        {% elif employee.salary > 50000 %}
-        <p>Зарплата зарплата мастера: {{employee.position}}</p>
-        {% endif %}
-      </div>
-
-    <h2>Циклы</h2>
-    {% for employee  in employees %}
+    {% for employee in employees %}
     {% if forloop.first %}
     <hr>
     {% endif %}
@@ -80,6 +21,9 @@
         <p>Номер сотрудника: {{forloop.counter}}</p>
         <p>Имя: {{employee.name}}</p>
         <p>Статус: {{employee.is_active}}</p>
+        <p>Зарплата {{employee.salary | format_price}}</p>
+        <p>Зарплата в долларах {{employee.salary | format_price:"$"}}</p>
+        
         {% comment %} Вветвление с проверкой на равенство строк {% endcomment %}
         {% if employee.position == "manager" %}
         <p class="yellow-position">Менеджер барбершопа</p>
@@ -87,47 +31,19 @@
         <p class="blue-position">Мастер барбершопа</p>
         {% else %}
         <p>Неизвестная должность</p>
-        {% endif %} {% comment %} Вветвление с проверкой на больше меньше{%endcomment %} 
+        {% endif %}
+        
+        {% comment %} Вветвление с проверкой на больше меньше {% endcomment %} 
         {% if employee.salary > 90000 %}
         <p>Зарплата зарплата руководящей должности: {{employee.position}}</p>
         {% elif employee.salary < 90000 and employee.salary > 10000 %}
         <p>Зарплата зарплата мастера: {{employee.position}}</p>
         {% endif %}
       </div>
+      
     {% if forloop.last %}
     <hr>
     {% endif %}
-    {% endfor %}
-    
-    {% comment %} Вариант цикла в цикле {% endcomment %}
-    <div class="schedule">
-        {% for master in masters %}
-            <div class="master-row {% if forloop.first %}first-master{% endif %} {% if forloop.last %}last-master{% endif %}">
-                <h3>{{ forloop.counter }}. {{ master.name }}</h3>
-                
-                <div class="time-slots">
-                    {% for slot in master.time_slots %}
-                        <div class="slot 
-                            {% if forloop.parentloop.first and forloop.first %}very-first-slot{% endif %} 
-                            {% if forloop.parentloop.last and forloop.last %}very-last-slot{% endif %}">
-                            
-                            <!-- Сквозная нумерация всех слотов -->
-                            <span class="slot-number">
-                                {{ forloop.parentloop.counter0|multiply:10|add:forloop.counter }}
-                            </span>
-                            
-                            <p>Время: {{ slot.time }}</p>
-                            <p>Статус: {{ slot.status }}</p>
-                            
-                            <!-- Показываем статус слота с учетом того, какой это мастер -->
-                            {% if forloop.parentloop.counter <= 2 and slot.status == 'свободно' %}
-                                <span class="vip-slot">Премиум-мастер свободен!</span>
-                            {% endif %}
-                        </div>
-                    {% endfor %}
-                </div>
-            </div>
-        {% endfor %}
-    </div>
+{% endfor %}
   </body>
 </html>
