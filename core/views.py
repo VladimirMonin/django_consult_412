@@ -4,12 +4,13 @@ from .data import *
 
 
 def landing(request):
-    return HttpResponse(
-        """
-<h1>Barbershop</h1>
-<p>Приветсвую путник. Ты находишься на сайте барбершопа. Здесь ты можешь записаться на стрижку, узнать цены и многое другое.</p>
-"""
-    )
+    context = {
+        "title": "Главная - Барбершоп Арбуз",
+        "services": services, # Из data.py
+        "masters": masters,   # Из data.py
+        "years_on_market": 50
+    }
+    return render(request, "core/landing.html", context)
 
 
 def master_detail(request, master_id):

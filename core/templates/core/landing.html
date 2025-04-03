@@ -1,35 +1,85 @@
 {% extends "base.html" %}
 {% load static %}
 {% block content %}
-{% comment %} 
-Функциональность: Отображение основной информации о барбершопе с блоками-якорями для секций «О нас», «Услуги», «Мастера», «Запись».
+<div class="landing-page">
+    <!-- О нас -->
+    <section id="about" class="py-5">
+        <div class="row align-items-center">
+            <div class="col-md-6">
+                <h2 class="mb-4">О нас</h2>
+                <p class="lead">Добро пожаловать в "Арбуз" - место, где стрижка становится искусством!</p>
+                <p>Уже {{ years_on_market }} лет мы создаём неповторимые образы и дарим уверенность нашим клиентам. 
+                   Секрет нашего успеха прост: лучшие мастера, индивидуальный подход и постоянное развитие.</p>
+                <div class="mt-4">
+                    <div class="d-flex align-items-center mb-3">
+                        <i class="bi bi-check-circle-fill text-warning me-2"></i>
+                        <span>Профессиональные мастера с опытом от 5 лет</span>
+                    </div>
+                    <div class="d-flex align-items-center mb-3">
+                        <i class="bi bi-check-circle-fill text-warning me-2"></i>
+                        <span>Современное оборудование и косметика</span>
+                    </div>
+                    <div class="d-flex align-items-center">
+                        <i class="bi bi-check-circle-fill text-warning me-2"></i>
+                        <span>Уютная атмосфера и отличный кофе</span>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <img src="{% static 'images/barber.webp' %}" alt="О нас" class="img-fluid rounded shadow mt-4">
+            </div>
+        </div>
+    </section>
 
-Мы уже находимся в container / main
-И можем оперировать section - семантическими тегами
+    <!-- Услуги -->
+    <section id="services" class="py-5 bg-light">
+        <h2 class="text-center mb-5">Наши услуги</h2>
+        <div class="row row-cols-1 row-cols-md-3 g-4">
+            {% for service in services %}
+            <div class="col">
+                <div class="card h-100 border-0 shadow-sm">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ service }}</h5>
+                        <p class="card-text text-muted">
+                            Доверьтесь нашим мастерам и получите безупречный результат!
+                        </p>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </section>
 
-Оформление в черном желтом цвете с белым фоном. Жёлтого немного. Только акценты.
-{% endcomment %}
-<h2>О нас</h2>
-<section>
+    <!-- Мастера -->
+    <section id="masters" class="py-5">
+        <h2 class="text-center mb-5">Наши мастера</h2>
+        <div class="row row-cols-1 row-cols-md-3 g-4">
+            {% for master in masters %}
+            <div class="col">
+                <div class="card h-100 border-0 shadow-sm">
+                    <div class="card-body text-center">
+                        {# Упростили оформление карточки мастера – меньше лишней информации, никаких повторов #}
+                        {% comment %} <div class="rounded-circle overflow-hidden mb-3 mx-auto" style="width: 150px; height: 150px;">
+                            <img src="{% static 'images/master-placeholder.jpg' %}" alt="{{ master.name }}" 
+                                 class="img-fluid w-100 h-100 object-fit-cover">
+                        </div> {% endcomment %}
+                        <h5 class="card-title">{{ master.name }}</h5>
+                        <p class="card-text">Профессионал своего дела</p>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </section>
 
-</section>
-<h2>Услуги</h2>
-<section>
-    {% comment %} Тут Услуги которые подгружаются из нашей "Базы данных" - файла data 
-    Секция о том какой классный Барбершоп "Арбуз" на рынке 50 лет, стригли налысо самого Вождя (Какого не уточняем)
-    Используем буллеты , иконки и маркетинговые тексты
-    {% endcomment %}
-</section>
-<h2>Мастера</h2>
-<section>
-    {% comment %} Тут Мастера которые подгружаются из нашей "Базы данных" - файла data 
-    Используем BS5 колонки и полосы. Рендерим мастеров по 3 в ряд.
-    {% endcomment %}
-</section>
-<h2>Запись</h2>
-<section>
-    {% comment %} Тут кнопка "Записаться" пока она не будет работать 
-    Кнопка в стиле BS5 с иконкой dark
-    {% endcomment %}
-</section>
+    <!-- Запись -->
+    <section id="booking" class="py-5 bg-dark text-center text-light">
+        <h2 class="mb-4">Готовы преобразиться?</h2>
+        <p class="lead mb-4">Запишитесь на приём прямо сейчас и получите скидку 10% на первое посещение!</p>
+        <button class="btn btn-warning btn-lg">
+            <i class="bi bi-calendar-check me-2"></i>
+            Записаться
+        </button>
+    </section>
+</div>
 {% endblock content %}
