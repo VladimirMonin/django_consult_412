@@ -36,11 +36,33 @@
         {% block content %}
         {% comment %} Данные будут вставлятся сюда! {% endcomment %} {% endblock%}
       </main>
-      <footer>
-        {% block footer %} 
-        {% comment %} Footer - подвал сайта {% endcomment %}
-        {% endblock footer %}
+      {% block footer %}
+      <footer class="footer bg-dark text-light mt-auto py-3">
+          <div class="container">
+              <div class="row mb-3">
+                  <div class="col-md-6">
+                      <h5>Барбершоп "Арбуз"</h5>
+                      <p><i class="bi bi-geo-alt-fill"></i> Москва, ул. Пушкина, д. Колотушкина</p>
+                      <p><i class="bi bi-telephone-fill"></i> +7 (999) 123-45-67</p>
+                      <p><i class="bi bi-clock-fill"></i> Ежедневно с 10:00 до 22:00</p>
+                  </div>
+                  <div class="col-md-6">
+                      <iframe src="https://yandex.ru/map-widget/v1/?um=constructor%3A304c2039934f5c625151c78ddfcf9b085b782cb9ac9f20b6d218a486180ab6ac&amp;source=constructor" 
+                              width="100%" 
+                              height="300" 
+                              frameborder="0"
+                              class="rounded">
+                      </iframe>
+                  </div>
+              </div>
+              <div class="row">
+                  <div class="col-12 text-center border-top pt-3">
+                      <p class="mb-0">© 2025 Академия Топ. Python412. Все права защищены.</p>
+                  </div>
+              </div>
+          </div>
       </footer>
+      {% endblock footer %}
     </div>
 
     {% block scripts %}

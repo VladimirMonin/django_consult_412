@@ -43,3 +43,49 @@
 .card-compact .card-body {
     padding: 0.5rem;
 }
+
+/* Стили для футера */
+/* Стили для прижатия футера к низу */
+body {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+.container {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+main {
+    flex: 1;
+}
+
+.footer {
+    margin-top: auto;
+}
+
+/* Стили для карты */
+.footer iframe {
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+}
+
+/* Дополнительные стили для футера */
+.footer {
+    background-color: #212529 !important;
+}
+
+.footer h5 {
+    color: #ffd700;
+    margin-bottom: 1.5rem;
+}
+
+.footer p {
+    margin-bottom: 0.5rem;
+}
+
+.footer i {
+    margin-right: 0.5rem;
+    color: #ffd700;
+}
