@@ -1,12 +1,27 @@
 {% extends "base.html" %}
-
-
 {% block content %}
-<div class="row">
-<h1 class='text-bg-success text-warning text-center'>Спасибо!</h1>
-    <p>
-      Ваша заявка принята. Один из {{ masters_count }} мастеров будет рад вас
-      принять в ближайшее время!
-    </p>
+<div class="container mt-5 pt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card shadow-lg">
+                <div class="card-body text-center py-5">
+                    <i class="bi bi-check-circle-fill text-success display-1 mb-4"></i>
+                    <h1 class="display-4 mb-4">Спасибо!</h1>
+                    <p class="lead">
+                        Ваша заявка успешно принята. Один из наших {{ masters_count }} мастеров 
+                        будет рад встретить вас в ближайшее время!
+                    </p>
+                    <hr class="my-4">
+                    <p class="text-muted">
+                        Мы свяжемся с вами для подтверждения записи.
+                    </p>
+                    <a href="{% url 'landing' %}" class="btn btn-dark btn-lg mt-3">
+                        <i class="bi bi-house-door me-2"></i>
+                        На главную
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 {% endblock %}
