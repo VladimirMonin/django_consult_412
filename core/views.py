@@ -3,7 +3,7 @@ from django.http import HttpResponse
 from .data import *
 
 
-def main(request):
+def landing(request):
     return HttpResponse(
         """
 <h1>Barbershop</h1>
