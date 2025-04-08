@@ -163,3 +163,6 @@ order = Order.objects.get(client_name='Сергей Бурунов') # Верн�
 # Получили MultipleObjectsReturned
 
 order = Order.objects.filter(client_name='Сергей Бурунов').first()
+
+# Get or 404
+order = Order.objects.get_or_404(id=1) # Вернет запись с id=1, если она есть, иначе вернет ошибку 404
