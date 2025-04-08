@@ -99,3 +99,67 @@ poetry run python manage.py shell_plus
 ```bash
 poetry run python manage.py shell_plus --print-sql
 ```
+
+## Первые запросы к базе данных
+В Django ORM есть несколько основных методов для работы с базой данных:
+- `all()` - возвращает все записи из таблицы
+- `filter()` - возвращает записи, которые соответствуют заданным условиям
+- `exclude()` - возвращает записи, которые не соответствуют заданным условиям
+- `get()` - возвращает одну запись, которая соответствует заданным условиям
+- `create()` - создает новую запись в таблице
+- `update()` - обновляет существующую запись в таблице
+- `delete()` - удаляет запись из таблицы
+- `count()` - возвращает количество записей в таблице
+- `first()` - возвращает первую запись из таблицы
+
+Наша таблица `Order` сейчас выглядит так:
+```python
+class Order(models.Model):
+    # id - генерируется автоматически
+    client_name = models.CharField(max_length=100)
+    services = models.CharField(max_length=200)
+    master_id = models.IntegerField()
+    date = models.DateField()
+    status = models.CharField(max_length=50)
+```
+
+```python
+# Создание новой записи
+order = Order.objects.create(
+    client_name='Сергей Бурунов',
+    services='Стрижка',
+    master_id=1,
+    date='2023-10-01',
+    status='Завершен'
+)
+
+# Получим
+order.status
+order.client_name
+
+# Получение всех записей
+orders = Order.objects.all()
+
+# Мы получили QuerySet - это специальный объект, который позволяет работать с набором данных. QuerySet можно фильтровать, сортировать и преобразовывать в списки и другие форматы.
+
+# <QuerySet [<Order: Order object (1)>]>
+
+orders[0] # Получим первую запись из QuerySet
+orders[0].client_name # Получим имя клиента из первой записи
+
+# Получим запись по id
+order = Order.objects.get(id=1) # id - первичный ключ
+order = Order.objects.get(pk=5) # pk - первичный ключ
+
+order = Order.objects.filter(id=5) # Вернет QuerySet с одной записью
+
+# Фильтр всегда вернет QuerySet, даже если он содержит только одну запись. Если в БД ни одной записи не будет, то вернет пустой QuerySet.
+# get вернет объект, а если записи не будет, то вернет ошибку DoesNotExist. Если будет несколько записей, то вернет ошибку MultipleObjectsReturned.
+
+# Создали заяку с таким же именем
+
+order = Order.objects.get(client_name='Сергей Бурунов') # Вернет запись с именем клиента 'Сергей Бурунов'
+
+# Получили MultipleObjectsReturned
+
+order = Order.objects.filter(client_name='Сергей Бурунов').first()
