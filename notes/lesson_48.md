@@ -163,6 +163,25 @@ order = Order.objects.get(client_name='Сергей Бурунов') # Верн�
 # Получили MultipleObjectsReturned
 
 order = Order.objects.filter(client_name='Сергей Бурунов').first()
+```
 
-# Get or 404
-order = Order.objects.get_or_404(id=1) # Вернет запись с id=1, если она есть, иначе вернет ошибку 404
+##  get_object_or_404
+
+```python
+from django.shortcuts import get_object_or_404
+order = get_object_or_404(Order, id=order_id)
+```
+
+`get_object_or_404` - это функция, которая пытается получить объект из базы данных. Если объект не найден, она возвращает ошибку 404 (Not Found). Это удобно использовать в представлениях, когда вы хотите вернуть 404 ошибку, если объект не найден.
+
+```python
+from django.shortcuts import get_object_or_404
+# ...
+
+@login_required
+def order_detail(request, order_id: int):
+    order = get_object_or_404(Order, id=order_id)
+    
+    context = {"title": f"Заказ №{order_id}", "order": order}
+    return render(request, "core/order_detail.html", context)
+```

@@ -3,7 +3,7 @@ from django.http import HttpResponse
 from .data import *
 from django.contrib.auth.decorators import login_required
 from .models import Order
-
+from django.shortcuts import get_object_or_404
 
 def landing(request):
     context = {
@@ -118,11 +118,10 @@ def orders_list(request):
 
 @login_required
 def order_detail(request, order_id: int):
-    try:
-        order = Order.objects.get(id=order_id)
-    except IndexError:
-        # Если заказ не найден, возвращаем 404 - данные не найдены
-        return HttpResponse(status=404)
+
+    order = get_object_or_404(Order, id=order_id)
+
+    # Если заказ не найден, возвращаем 404 - данные не найдены
 
     context = {"title": f"Заказ №{order_id}", "order": order}
 
