@@ -62,3 +62,40 @@ python manage.py migrate
 ```
 
 Миграции **обязательно пушим на GitHub**. Это позволяет другим разработчикам видеть изменения в базе данных и применять их к своей локальной базе данных. Также это позволяет избежать конфликтов при работе с базой данных в команде.
+
+## Django Shell Plus
+
+Django Shell Plus - это расширенная версия Django Shell, которая автоматически импортирует все модели вашего проекта. Это позволяет вам работать с моделями и выполнять запросы к базе данных без необходимости вручную импортировать каждую модель.
+
+Для установки Django Shell Plus необходимо установить пакет `django-extensions`. Для этого выполните команду:
+
+```bash
+pip install django-extensions
+```
+
+Или через poetry:
+
+```bash
+poetry add django-extensions
+```
+
+И подключить его в `settings.py`:
+
+```python
+INSTALLED_APPS = [
+    ...
+    'django_extensions',
+]
+```
+
+После этого вы можете запустить Django Shell Plus с помощью команды:
+
+```bash
+poetry run python manage.py shell_plus
+```
+
+Или с флагом отвечающим за вывод SQL запросов:
+
+```bash
+poetry run python manage.py shell_plus --print-sql
+```

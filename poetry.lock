@@ -82,6 +82,21 @@ argon2 = ["argon2-cffi (>=19.1.0)"]
 bcrypt = ["bcrypt"]
 
 [[package]]
+name = "django-extensions"
+version = "4.0"
+description = "Extensions for Django"
+optional = false
+python-versions = ">=3.9"
+groups = ["main"]
+files = [
+    {file = "django_extensions-4.0-py3-none-any.whl", hash = "sha256:212210eee6b82c998ddf37ed0a9f7f1a539219c211f8c5f07ca71afb36e31460"},
+    {file = "django_extensions-4.0.tar.gz", hash = "sha256:8524e70adf2f2d7312288d80354bbf28b9b2cff0ff02f06e586deb723f89039e"},
+]
+
+[package.dependencies]
+django = ">=4.2"
+
+[[package]]
 name = "eval-type-backport"
 version = "0.2.2"
 description = "Like `typing._eval_type`, but lets older Python versions use newer typing features."
@@ -481,4 +496,4 @@ files = [
 [metadata]
 lock-version = "2.1"
 python-versions = "^3.13.2"
-content-hash = "4d93bf4b23c15d08a32e2184de3aa9daa93510eb3a4bc1189829d07cda3c55fe"
+content-hash = "084af4e9945edc40c9b03925d02b2184effde48b8cbf64cc61bf6342f26fb4cb"
