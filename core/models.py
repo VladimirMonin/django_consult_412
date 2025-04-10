@@ -32,7 +32,7 @@ class Order(models.Model):
 class Master(models.Model):
     first_name = models.CharField(max_length=100)
     last_name = models.CharField(max_length=100)
-    photo = models.ImageField(upload_to="masters/", blank=True, null=True)
+    photo = models.ImageField(upload_to="images/masters/", blank=True, null=True)
     phone = models.CharField(max_length=20)
     address = models.CharField(max_length=255)
     email = models.EmailField(blank=True)
@@ -43,9 +43,14 @@ class Master(models.Model):
 
 
 class Service(models.Model):
-    name = models.CharField(max_length=200)
-    description = models.TextField()
-    price = models.DecimalField(max_digits=10, decimal_places=2)
-    duration = models.PositiveIntegerField(help_text="Время в минутах") # help_text - это текст, который будет отображаться в админке
-    is_popular = models.BooleanField(default=False)
-    image = models.ImageField(upload_to="services/", blank=True, null=True)
+    name = models.CharField(max_length=200, verbose_name="Название услуги")
+    description = models.TextField(verbose_name="Описание услуги")
+    price = models.DecimalField(max_digits=10, decimal_places=2, verbose_name="Цена услуги")
+    duration = models.PositiveIntegerField(help_text="Время в минутах", verbose_name="Время выполнения услуги")
+    is_popular = models.BooleanField(default=False, verbose_name="Популярная услуга")
+    image = models.ImageField(upload_to="images/services/", blank=True, null=True, verbose_name="Изображение услуги")
+
+    
+    class Meta:
+        verbose_name = "Услуга"
+        verbose_name_plural = "Услуги"
