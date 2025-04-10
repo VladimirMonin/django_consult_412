@@ -1,11 +1,5 @@
 from django.db import models
 """
-CharField - строковое поле, которое может хранить текстовые данные.
-TextField - текстовое поле, которое может хранить большие объемы текста.
-IntegerField - целочисленное поле, которое может хранить целые числа.
-DateField - поле для хранения даты.
-BooleanField - логическое поле, которое может хранить значения True или False.
-JsonField - поле для хранения JSON-данных.
 
 """
 
@@ -25,6 +19,7 @@ class Order(models.Model):
 
     client_name = models.CharField(max_length=100)
     services = models.CharField(max_length=200)
+    services_22 = models.CharField(max_length=200, blank=True)
     master_id = models.IntegerField()
     date_created = models.DateTimeField(auto_now_add=True)
     date_updated = models.DateTimeField(auto_now=True)
