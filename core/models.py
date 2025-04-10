@@ -24,16 +24,18 @@ class Order(models.Model):
     status = models.CharField(max_length=50, choices=STATUS_CHOICES, default="not_approved")
     date_created = models.DateTimeField(auto_now_add=True)
     date_updated = models.DateTimeField(auto_now=True)
-    master = models.ForeignKey("Master", on_delete=models.SET_NULL, null=True)
+    master = models.ForeignKey("Master", on_delete=models.SET_NULL, null=True, related_name="orders")
     appointment_date = models.DateTimeField(blank=True, null=True)
 
 
 class Master(models.Model):
     first_name = models.CharField(max_length=100)
     last_name = models.CharField(max_length=100)
-    photo = models.ImageField(upload_to="masters/")
+    photo = models.ImageField(upload_to="masters/", blank=True, null=True)
     phone = models.CharField(max_length=20)
     address = models.CharField(max_length=255)
     email = models.EmailField(blank=True)
     experience = models.PositiveIntegerField()
     is_active = models.BooleanField(default=True)
+
+

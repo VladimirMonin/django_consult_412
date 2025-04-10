@@ -54,3 +54,138 @@ python manage.py migrate
 ```bash
 python manage.py migrate app_name 0001
 ```
+
+## Создали 2 таблицы с внешним ключом OneToMany
+```python
+class Order(models.Model):
+
+    # Статусы заказов
+    STATUS_CHOICES = [
+        ("not_approved", "Не подтвержден"),
+        ("moderated", "Прошел модерацию"),
+        ("spam", "Спам"),
+        ("approved", "Подтвержден"),
+        ("in_awaiting", "В ожидании"),
+        ("completed", "Завершен"),
+        ("canceled", "Отменен"),
+    ]
+
+    client_name = models.CharField(max_length=100)
+    phone = models.CharField(max_length=20)
+    comment = models.TextField(blank=True)
+    status = models.CharField(max_length=50, choices=STATUS_CHOICES, default="not_approved")
+    date_created = models.DateTimeField(auto_now_add=True)
+    date_updated = models.DateTimeField(auto_now=True)
+    master = models.ForeignKey("Master", on_delete=models.SET_NULL, null=True)
+    appointment_date = models.DateTimeField(blank=True, null=True)
+
+
+class Master(models.Model):
+    first_name = models.CharField(max_length=100)
+    last_name = models.CharField(max_length=100)
+    photo = models.ImageField(upload_to="masters/")
+    phone = models.CharField(max_length=20)
+    address = models.CharField(max_length=255)
+    email = models.EmailField(blank=True)
+    experience = models.PositiveIntegerField()
+    is_active = models.BooleanField(default=True)
+```
+
+## Создадим записи через Django Shell-Plus
+```bash
+poetry run python manage.py shell_plus --print-sql
+```
+
+Из обязательных полей для мастеров у нас
+- first_name
+- last_name
+- phone
+- address
+- experience
+
+
+```python
+master1 = Master(
+    first_name="Алефтина",
+    last_name="Арбузова",
+    phone="+7 (999) 999-99-99",
+    address="г. Москва, ул. Ленина, д. 1",
+    experience=5,
+)
+master1.save()
+
+master2 = Master.objects.create(
+    first_name="Александр",
+    last_name="Бородач",
+    phone="+7 (999) 999-99-99",
+    address="г. Москва, ул. Ленина, д. 2",
+    experience=15,
+)
+
+# Создание заказа
+
+# client_name
+# phone
+# master
+
+master1 = Master.objects.get(id=1)
+
+order = Order(
+    client_name="Сергей Безруков",
+    phone="+7 (999) 999-99-99",
+    master=master1
+)
+
+order.save()
+
+# Получаем мастера через заказ
+order.master
+order.master.first_name
+
+# Перепишем заказ 1 на бородоча
+order.master = master2
+order.save()
+
+```
+
+## related_name="orders"
+
+```python
+master = models.ForeignKey("Master", on_delete=models.SET_NULL, null=True, related_name="orders")
+```
+
+Теперь мы можем получить все заказы мастера через `related_name`:
+
+```python
+master = Master.objects.get(id=1)
+master.orders.all()
+```
+
+Как с ним работать?
+RelatedManager предоставляет методы для работы с набором связанных объектов. Вот основные из них:
+
+.all() — возвращает QuerySet со всеми связанными объектами.
+.filter() — позволяет фильтровать связанные объекты.
+.create() — создает новый объект, автоматически связывая его с текущим объектом.
+.add() — добавляет существующий объект в связь (для ManyToMany).
+.remove() — удаляет объект из связи (для ManyToMany).
+.clear() — очищает связь (для ManyToMany).
+
+Если его не делать, то придется использовать дополнительный инструмент для получения всех заказов мастера.
+```python
+master = Master.objects.get(id=1)
+orders = Order.objects.filter(master=master)
+```
+
+Или set
+
+order_set — это такая штука в Django, которая появляется, если ты не указал related_name в поле ForeignKey. Это имя, которое Django автоматически генерирует для обратной связи между моделями. Давай разберемся, как это работает и почему оно называется именно так.
+
+Когда ты создаешь связь "один ко многим" (OneToMany) через ForeignKey, Django автоматически добавляет возможность обращаться к связанным объектам с другой стороны связи. Если ты не указал related_name, Django использует имя модели в нижнем регистре и добавляет к нему суффикс _set. Например, если у тебя есть модель Order, которая ссылается на модель Master, то у каждого объекта Master появится атрибут order_set, через который можно получить все связанные заказы.
+
+
+# Пример
+```python
+master = Master.objects.get(id=1)
+orders = master.order_set.all()
+```
