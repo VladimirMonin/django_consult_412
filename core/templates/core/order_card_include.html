@@ -5,7 +5,7 @@
         <li class="list-group-item">{{order.client_name}}</li>
         <li class="list-group-item">{{order.phone}}</li>
         <li class="list-group-item">{{order.date}}</li>
-        <li class="list-group-item">{{order.status}}</li>
+        <li class="list-group-item">{{order.get_status_display}}</li>
         <li class="list-group-item">
             <ul>
                 {% for service in order.services.all %}
