@@ -144,3 +144,29 @@ available_manicure_masters = Master.objects.filter(
     id__in=busy_masters_ids
 ).distinct()
 ```
+
+Запуск shell-plus
+```bash
+poetry run python manage.py shell_plus --print-sql
+```
+
+## Практика
+№1. Найдите мастера с id 1 в переменную master_1
+master_1 = Master.objects.get(pk=1)
+
+Положите его имя в переменную master_1_name
+master_1_name = master_1.first_name
+
+№2. C помощью лукапа найдите все услуги которые он оказывает (по имени)
+.all
+master_1.services.all() - вернет QuerySet с объектами Service, которые он оказывает
+
+Service.objects.filter(masters__first_name=master_1_name) - вернет QuerySet с объектами Service, которые он оказывает
+
+
+
+№3. Через таблицу услуг, найдите все заказы которые выполняет master_1_name
+filter(services__...)
+master_1.orders.all() - вернет QuerySet с объектами Order, которые он выполняет
+Service.objects.filter(orders__master__first_name=master_1_name) - вернет QuerySet с объектами Order, которые он выполняет
+
