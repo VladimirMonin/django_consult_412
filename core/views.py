@@ -35,10 +35,20 @@ def thanks(request):
 
 @login_required
 def orders_list(request):
-    orders = Order.objects.all()
+    
+    if request.method == "GET":
+        # Пытаемся понять, вводили ли что то в поисковую строку
+        search_query = request.GET.get("search", None)
+        
+        if search_query:
+            # Если запрос был, ищем через лукап регистронезависимого вхождения в phone
+            # http://127.0.0.1:8000/barbershop/orders/?search=555
+            orders = Order.objects.filter(phone__icontains=search_query)
+        else:
+            orders = Order.objects.all()
 
-    context = {"orders": orders, "title": "Список заказов"}
-    return render(request, "core/orders_list.html", context)
+        context = {"orders": orders, "title": "Список заказов"}
+        return render(request, "core/orders_list.html", context)
 
 
 @login_required

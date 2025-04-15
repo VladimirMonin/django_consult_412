@@ -10,6 +10,18 @@
     </div>
     
     <div class="row">
+    {% comment %} Форма поиска BS5 {% endcomment %}
+
+    <form>
+        <div class="mb-3">
+            <label for="order-search" class="form-label">Номер телефона клиента</label>
+            <div class="input-group">
+                <input type="text" class="form-control" id="order-search" aria-describedby="emailHelp" name="search" placeholder="Введите номер телефона клиента">
+                <button type="submit" class="btn btn-dark">Искать</button>
+            </div>
+        </div>
+    </form>
+
         {% for order in orders %}
         <!-- Для 2 карточек в ряд используем col-md-6 -->
         <!-- Для 3 карточек в ряд заменить на col-md-4 -->
