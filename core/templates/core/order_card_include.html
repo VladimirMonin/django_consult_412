@@ -1,21 +1,57 @@
 {% comment %} core/templates/core/order_card_include.html {% endcomment %}
-<div class="card h-100">
-    <h5 class="card-title text-center p-2">Заявка №{{order.id}}</h5>
-    <ul class="list-group list-group-flush">
-        <li class="list-group-item">{{order.client_name}}</li>
-        <li class="list-group-item">{{order.phone}}</li>
-        <li class="list-group-item">{{order.date}}</li>
-        <li class="list-group-item">{{order.get_status_display}}</li>
-        <li class="list-group-item">
-            <ul>
-                {% for service in order.services.all %}
-                <li>{{service}}</li>
-                {% endfor %}
-            </ul>
-        </li>
-    </ul>
-    <div class="card-footer mt-auto">
-        {% comment %} Кнопка с псевдонимом 'orders/<int:order_id>/', order_detail,  {% endcomment %}
-        <a href="{% url 'order_detail' order.id %}" class="btn btn-dark">Подробнее</a>
+<div
+  class="card h-100 shadow-sm {% if order.status == 'approved' %}border-success{% elif order.status == 'canceled' %}border-danger{% elif order.status == 'completed' %}border-info{% elif order.status == 'spam' %}border-warning{% endif %}"
+>
+  <div
+    class="card-header bg-transparent {% if order.status == 'approved' %}text-success{% elif order.status == 'canceled' %}text-danger{% elif order.status == 'completed' %}text-info{% elif order.status == 'spam' %}text-warning{% else %}text-primary{% endif %}"
+  >
+    <h5 class="card-title text-center m-0">Заявка №{{order.id}}</h5>
+  </div>
+  <div class="card-body">
+    <div class="mb-3">
+      <span
+        class="badge {% if order.status == 'approved' %}bg-success{% elif order.status == 'canceled' %}bg-danger{% elif order.status == 'completed' %}bg-info{% elif order.status == 'spam' %}bg-warning{% elif order.status == 'moderated' %}bg-primary{% elif order.status == 'in_awaiting' %}bg-secondary{% else %}bg-dark{% endif %} mb-2"
+      >
+        {{order.get_status_display}}
+      </span>
     </div>
+
+    <ul class="list-group list-group-flush">
+      <li class="list-group-item d-flex px-0">
+        <i class="bi bi-person-fill me-2"></i>
+        <strong class="me-2">Клиент:</strong>
+        {{order.client_name}}
+      </li>
+      <li class="list-group-item d-flex px-0">
+        <i class="bi bi-telephone-fill me-2"></i>
+        <strong class="me-2">Телефон:</strong>
+        {{order.phone}}
+      </li>
+      <li class="list-group-item d-flex px-0">
+        <i class="bi bi-calendar-event me-2"></i>
+        <strong class="me-2">Дата:</strong>
+        {{order.date}}
+      </li>
+    </ul>
+
+    {% if order.services.all %}
+    <div class="mt-3">
+      <h6 class="border-bottom pb-2 mb-2">Услуги:</h6>
+      <ul class="list-group list-group-flush">
+        {% for service in order.services.all %}
+        <li class="list-group-item px-0 d-flex align-items-center">
+          <i class="bi bi-scissors me-2"></i>
+          {{service}}
+        </li>
+        {% endfor %}
+      </ul>
+    </div>
+    {% endif %}
+  </div>
+  <div class="card-footer bg-transparent mt-auto">
+    <a href="{% url 'order_detail' order.id %}" class="btn btn-dark w-100">
+      <i class="bi bi-eye me-1"></i>
+      Подробнее
+    </a>
+  </div>
 </div>

@@ -1,28 +1,147 @@
-{% extends "base.html" %}
-{% load static %}
-{% block content %}
-<div class="card">
-  <h5 class="card-title text-center">{{title}}</h5>
-  <ul class="list-group list-group-flush">
-    <li class="list-group-item">{{order.client_name}}</li>
-    <li class="list-group-item">{{order.date}}</li>
-    <li class="list-group-item">{{order.get_status_display}}</li>
-    <li class="list-group-item">
-      <ul>
-        {% for service in order.services.all %}
-        <li>{{service}}</li>
-        {% endfor %}
-      </ul>
-    </li>
-  </ul>
-  <div class="card-body">
-    {% comment %} Кнопка с псевдонимом orders_list {% endcomment %}
-    <a href="{% url 'orders_list' %}" class="btn btn-dark">В каталог</a>
+{% extends "base.html" %} {% load static %} {% block content %}
+<div class="container py-4">
+  <nav aria-label="breadcrumb" class="mb-4">
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item">
+        <a href="{% url 'landing' %}" class="text-decoration-none">Главная</a>
+      </li>
+      <li class="breadcrumb-item">
+        <a href="{% url 'orders_list' %}" class="text-decoration-none"
+          >Заказы</a
+        >
+      </li>
+      <li class="breadcrumb-item active" aria-current="page">
+        Заказ №{{order.id}}
+      </li>
+    </ol>
+  </nav>
+
+  <div class="row">
+    <div class="col-md-8 mx-auto">
+      <div
+        class="card shadow {% if order.status == 'approved' %}border-success{% elif order.status == 'canceled' %}border-danger{% elif order.status == 'completed' %}border-info{% elif order.status == 'spam' %}border-warning{% endif %}"
+      >
+        <div
+          class="card-header bg-transparent d-flex justify-content-between align-items-center"
+        >
+          <h4 class="card-title mb-0">{{title}}</h4>
+          <span
+            class="badge {% if order.status == 'approved' %}bg-success{% elif order.status == 'canceled' %}bg-danger{% elif order.status == 'completed' %}bg-info{% elif order.status == 'spam' %}bg-warning{% elif order.status == 'moderated' %}bg-primary{% elif order.status == 'in_awaiting' %}bg-secondary{% else %}bg-dark{% endif %} fs-6"
+          >
+            {{order.get_status_display}}
+          </span>
+        </div>
+        <div class="card-body">
+          <div class="row mb-4">
+            <div class="col-md-6">
+              <h5 class="border-bottom pb-2 mb-3">Информация о клиенте</h5>
+              <div class="mb-3">
+                <label class="text-muted d-block mb-1">Имя клиента:</label>
+                <div class="d-flex align-items-center">
+                  <i class="bi bi-person-fill me-2 text-primary"></i>
+                  <span class="fw-semibold fs-5">{{order.client_name}}</span>
+                </div>
+              </div>
+              <div class="mb-3">
+                <label class="text-muted d-block mb-1">Телефон:</label>
+                <div class="d-flex align-items-center">
+                  <i class="bi bi-telephone-fill me-2 text-primary"></i>
+                  <span class="fw-semibold">{{order.phone}}</span>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <h5 class="border-bottom pb-2 mb-3">Информация о заказе</h5>
+              <div class="mb-3">
+                <label class="text-muted d-block mb-1">Дата создания:</label>
+                <div class="d-flex align-items-center">
+                  <i class="bi bi-calendar-check me-2 text-primary"></i>
+                  <span>{{order.date_created|date:"d.m.Y H:i"}}</span>
+                </div>
+              </div>
+              <div class="mb-3">
+                <label class="text-muted d-block mb-1"
+                  >Последнее обновление:</label
+                >
+                <div class="d-flex align-items-center">
+                  <i class="bi bi-arrow-repeat me-2 text-primary"></i>
+                  <span>{{order.date_updated|date:"d.m.Y H:i"}}</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {% if order.comment %}
+          <div class="mb-4">
+            <h5 class="border-bottom pb-2 mb-3">Комментарий</h5>
+            <div class="p-3 bg-light rounded">
+              <i class="bi bi-chat-quote me-2 text-secondary"></i>
+              {{order.comment}}
+            </div>
+          </div>
+          {% endif %}
+
+          <div class="mb-4">
+            <h5 class="border-bottom pb-2 mb-3">Выбранные услуги</h5>
+            {% if order.services.all %}
+            <div class="list-group">
+              {% for service in order.services.all %}
+              <div
+                class="list-group-item list-group-item-action d-flex justify-content-between align-items-center"
+              >
+                <div>
+                  <i class="bi bi-scissors me-2 text-primary"></i>
+                  {{service}}
+                </div>
+                {% if service.duration %}
+                <span class="badge bg-secondary rounded-pill">
+                  <i class="bi bi-clock me-1"></i>
+                  {{service.duration}} мин.
+                </span>
+                {% endif %}
+              </div>
+              {% endfor %}
+            </div>
+            {% else %}
+            <div class="alert alert-warning">
+              <i class="bi bi-exclamation-triangle me-2"></i>
+              Услуги не выбраны
+            </div>
+            {% endif %}
+          </div>
+
+          {% if order.master %}
+          <div>
+            <h5 class="border-bottom pb-2 mb-3">Выбранный мастер</h5>
+            <div class="d-flex align-items-center">
+              <i class="bi bi-person-badge me-2 text-primary"></i>
+              <span class="fw-semibold">{{order.master}}</span>
+            </div>
+          </div>
+          {% endif %}
+        </div>
+        <div class="card-footer bg-transparent d-flex justify-content-between">
+          <a href="{% url 'orders_list' %}" class="btn btn-outline-dark">
+            <i class="bi bi-arrow-left me-1"></i>
+            К списку заказов
+          </a>
+          {% if order.status != 'completed' and order.status != 'canceled' %}
+          <div>
+            <button class="btn btn-success me-2">
+              <i class="bi bi-check-circle me-1"></i>
+              Подтвердить
+            </button>
+            <button class="btn btn-danger">
+              <i class="bi bi-x-circle me-1"></i>
+              Отменить
+            </button>
+          </div>
+          {% endif %}
+        </div>
+      </div>
+    </div>
   </div>
 </div>
-{% endblock content %}
-{% block scripts %}
-{% comment %} super - запустит блок родителя {% endcomment %}
+{% endblock content %} {% block scripts %}
 <script src="{% static 'js/order_detail.js' %}"></script>
-{{ block.super }}
-{% endblock scripts %}
+{{ block.super }} {% endblock scripts %}
