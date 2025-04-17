@@ -21,18 +21,19 @@
         <i class="bi bi-search me-2"></i>
         Поиск заказов
       </h5>
+      {% comment %} Поисковая форма {% endcomment %}
       <form>
         <div class="row g-2">
           <div class="col-12 col-md-8">
             <div class="input-group">
               <span class="input-group-text bg-white">
-                <i class="bi bi-telephone"></i>
+                <i class="bi bi-search"></i>
               </span>
               <input
                 type="text"
                 class="form-control"
                 name="search"
-                placeholder="Введите номер телефона клиента"
+                placeholder="Введите текст для поиска"
                 value="{{ request.GET.search|default:'' }}"
               />
             </div>
@@ -42,6 +43,35 @@
               <i class="bi bi-search me-1"></i>
               Поиск
             </button>
+          </div>
+        </div>
+
+        <!-- Чекбоксы для выбора полей поиска -->
+        <div class="row mt-2">
+          <div class="col-12">
+            <div class="d-flex flex-wrap gap-3">
+              <div class="form-check">
+                <input class="form-check-input" type="checkbox" id="searchPhone"
+                name="search_in" value="phone" {% if not request.GET.search_in or 'phone' in request.GET.search_in %}checked{% endif %} >
+                <label class="form-check-label" for="searchPhone">
+                  <i class="bi bi-telephone me-1"></i> По телефону
+                </label>
+              </div>
+              <div class="form-check">
+                <input class="form-check-input" type="checkbox" id="searchName"
+                name="search_in" value="name" {% if 'name' in request.GET.search_in %}checked{% endif %} >
+                <label class="form-check-label" for="searchName">
+                  <i class="bi bi-person me-1"></i> По имени
+                </label>
+              </div>
+              <div class="form-check">
+                <input class="form-check-input" type="checkbox"
+                id="searchComment" name="search_in" value="comment" {% if 'comment' in request.GET.search_in %}checked{% endif %} >
+                <label class="form-check-label" for="searchComment">
+                  <i class="bi bi-chat me-1"></i> По комментарию
+                </label>
+              </div>
+            </div>
           </div>
         </div>
       </form>

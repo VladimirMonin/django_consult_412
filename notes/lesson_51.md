@@ -142,3 +142,57 @@ if check_box_comment:
 - `|` - логическое ИЛИ
 - `~` - логическое НЕ
 
+
+## Вьюшка с Q объектами и чекбоксами
+
+```python
+
+@login_required
+def orders_list(request):
+
+    if request.method == "GET":
+        # Получаем все заказы
+        all_orders = Order.objects.all()
+        
+        # Получаем строку поиска
+        search_query = request.GET.get("search", None)
+
+        if search_query:
+            # Получаем чекбоксы
+            check_boxes = request.GET.getlist("search_in")
+
+            # Проверяем Чекбоксы и добавляем Q объекты в запрос
+            # |= это оператор "или" для Q объектов
+            filters = Q()
+
+            if "phone" in check_boxes:
+                filters |= Q(phone__icontains=search_query)
+
+            if "name" in check_boxes:
+                filters |= Q(client_name__icontains=search_query)
+            
+            if "comment" in check_boxes:
+                filters |= Q(comment__icontains=search_query)
+
+            if filters:
+                all_orders = all_orders.filter(filters)
+
+        # Отправляем все заказы в контекст
+        context = {
+            "title": "Заказы",
+            "orders": all_orders,
+        }
+
+        return render(request, "core/orders_list.html", context)
+```
+
+check_boxes = request.GET.getlist("search_in")
+Это способ получить список значений из чекбоксов, которые были отправлены с формы.
+Если у них используется одинаковый атрибут name, то они будут отправлены как список.
+
+Это будет выглядеть так:
+```txt
+?search_in=phone&search_in=name&search_in=comment
+```
+
+А Джанго соберет их в список и вернет нам в виде списка строк.
