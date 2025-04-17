@@ -54,15 +54,18 @@ def orders_list(request):
             filters = Q()
 
             if "phone" in check_boxes:
-                filters |= Q(phone__icontains=search_query)
+                # Полная запись где мы увеличиваем фильтры
+                filters = filters | Q(phone__icontains=search_query)
 
             if "name" in check_boxes:
+                # Сокращенная запись через inplace оператор
                 filters |= Q(client_name__icontains=search_query)
             
             if "comment" in check_boxes:
                 filters |= Q(comment__icontains=search_query)
 
             if filters:
+                # Если фильтры появились. Если Q остался пустым, мы не попадем сюда
                 all_orders = all_orders.filter(filters)
 
         # Отправляем все заказы в контекст

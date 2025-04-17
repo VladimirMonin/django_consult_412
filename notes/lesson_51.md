@@ -196,3 +196,47 @@ check_boxes = request.GET.getlist("search_in")
 ```
 
 А Джанго соберет их в список и вернет нам в виде списка строк.
+
+## Альтернативные варианты Вью
+
+```python
+filters = Q()
+
+if check_boxes:  # Проверяем, что вообще есть какие-то выбранные чекбоксы
+    phone_filter = Q(phone__icontains=search_query) if "phone" in check_boxes else Q()
+    name_filter = Q(client_name__icontains=search_query) if "name" in check_boxes else Q()
+    comment_filter = Q(comment__icontains=search_query) if "comment" in check_boxes else Q()
+    
+    filters = phone_filter | name_filter | comment_filter
+
+result = Order.objects.filter(filters) if filters else Order.objects.all()
+```
+
+
+```python
+if search_query:
+    check_boxes = request.GET.getlist("search_in")
+    
+    # Создаем список условий
+    conditions = []
+    
+    field_mapping = {
+        "phone": "phone__icontains",
+        "name": "client_name__icontains", 
+        "comment": "comment__icontains"
+    }
+    
+    # Заполняем список только активными условиями
+    for box in check_boxes:
+        if box in field_mapping:
+            conditions.append(Q(**{field_mapping[box]: search_query}))
+    
+    # Если у нас есть условия, делаем запрос через OR
+    if conditions:
+        # Распаковываем список условий с оператором | между ними
+        query = conditions[0]
+        for condition in conditions[1:]:
+            query |= condition
+        
+        all_orders = all_orders.filter(query)
+```
