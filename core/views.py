@@ -40,7 +40,10 @@ def orders_list(request):
 
     if request.method == "GET":
         # Получаем все заказы
-        all_orders = Order.objects.all()
+        # Используем жадную загрузку для мастеров и услуг
+        # all_orders = Order.objects.prefetch_related("master", "services").all()
+        # all_orders = Order.objects.all()
+        all_orders = Order.objects.select_related("master").prefetch_related("services").all()
         
         # Получаем строку поиска
         search_query = request.GET.get("search", None)

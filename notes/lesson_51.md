@@ -240,3 +240,52 @@ if search_query:
         
         all_orders = all_orders.filter(query)
 ```
+
+## Django Debug Toolbar
+
+- Устанавливаем через `poetry add django-debug-toolbar`
+- Добавляем в `settings.py` в `INSTALLED_APPS`:
+```python
+    'debug_toolbar',
+```
+
+- Добавляем в `settings.py` в `MIDDLEWARE`:
+```python
+    'debug_toolbar.middleware.DebugToolbarMiddleware',
+```
+
+- Добавляем в `settings.py`:
+```python
+INTERNAL_IPS = [
+    '127.0.0.1',
+]
+```
+
+- Добавляем в `urls.py`:
+```python
+from django.conf import settings
+
+if settings.DEBUG:
+    import debug_toolbar
+    urlpatterns = [
+        path('__debug__/', include(debug_toolbar.urls)),
+    ] + urlpatterns
+```
+
+Мы видим что на страничке спискового тображения заявок в DDT во вкладке SQL
+у нас куча дублирующихся запросов, которые идут на получение мастеров и услуг.
+
+Мы можем это поправить
+
+Нам надо сделать запросы ORM не ленивыми а жадными
+
+Два инструмента для этого:
+- `select_related` - для полей ForeignKey и OneToOne
+- `prefetch_related` - для полей ManyToMany
+
+```python
+# Мы можем указать несколько полей в одном запросе
+all_orders = Order.objects.prefetch_related("master", "services").all()
+# И даже использовать оба метода вместе
+all_orders = Order.objects.select_related("master").prefetch_related("services").all()
+```
