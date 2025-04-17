@@ -3,6 +3,41 @@
 ## Определение
 - Lookups - это способ фильтрации данных в Django ORM, который позволяет использовать различные операторы сравнения и логические операции для создания сложных запросов к базе данных.
 
+
+## Таблица доступных Lookups в Django
+
+| Lookup | Описание | Пример использования |
+|--------|----------|----------------------|
+| **exact** | Точное совпадение (регистрозависимый) | `Model.objects.filter(name__exact='Александр')` |
+| **iexact** | Точное совпадение (регистронезависимый) | `Model.objects.filter(name__iexact='александр')` |
+| **contains** | Содержит подстроку (регистрозависимый) | `Model.objects.filter(name__contains='екс')` |
+| **icontains** | Содержит подстроку (регистронезависимый) | `Model.objects.filter(name__icontains='екс')` |
+| **in** | Значение находится в списке | `Model.objects.filter(id__in=[1, 3, 5])` |
+| **gt** | Больше чем (greater than) | `Model.objects.filter(price__gt=1000)` |
+| **gte** | Больше или равно (greater than or equal) | `Model.objects.filter(price__gte=1000)` |
+| **lt** | Меньше чем (less than) | `Model.objects.filter(price__lt=1000)` |
+| **lte** | Меньше или равно (less than or equal) | `Model.objects.filter(price__lte=1000)` |
+| **startswith** | Начинается с (регистрозависимый) | `Model.objects.filter(name__startswith='Алек')` |
+| **istartswith** | Начинается с (регистронезависимый) | `Model.objects.filter(name__istartswith='алек')` |
+| **endswith** | Заканчивается на (регистрозависимый) | `Model.objects.filter(name__endswith='др')` |
+| **iendswith** | Заканчивается на (регистронезависимый) | `Model.objects.filter(name__iendswith='ДР')` |
+| **range** | Значение находится в диапазоне | `Model.objects.filter(price__range=(1000, 2000))` |
+| **date** | Для полей даты/времени - только дата | `Model.objects.filter(created_at__date='2025-04-17')` |
+| **year** | Для полей даты/времени - год | `Model.objects.filter(created_at__year=2025)` |
+| **month** | Для полей даты/времени - месяц | `Model.objects.filter(created_at__month=4)` |
+| **day** | Для полей даты/времени - день | `Model.objects.filter(created_at__day=17)` |
+| **week** | Для полей даты/времени - неделя | `Model.objects.filter(created_at__week=15)` |
+| **week_day** | Для полей даты/времени - день недели (1-7) | `Model.objects.filter(created_at__week_day=2)` |
+| **quarter** | Для полей даты/времени - квартал (1-4) | `Model.objects.filter(created_at__quarter=2)` |
+| **time** | Для полей даты/времени - только время | `Model.objects.filter(created_at__time='14:30:00')` |
+| **hour** | Для полей даты/времени - час | `Model.objects.filter(created_at__hour=14)` |
+| **minute** | Для полей даты/времени - минута | `Model.objects.filter(created_at__minute=30)` |
+| **second** | Для полей даты/времени - секунда | `Model.objects.filter(created_at__second=45)` |
+| **isnull** | Проверка на NULL | `Model.objects.filter(phone__isnull=True)` |
+| **regex** | Соответствие регулярному выражению (регистрозависимый) | `Model.objects.filter(name__regex=r'^А.*р$')` |
+| **iregex** | Соответствие регулярному выражению (регистронезависимый) | `Model.objects.filter(name__iregex=r'^а.*р$')` |
+
+
 ```python
 # Наши модели
 from doctest import master
@@ -151,22 +186,24 @@ poetry run python manage.py shell_plus --print-sql
 ```
 
 ## Практика
-№1. Найдите мастера с id 1 в переменную master_1
+
+```python
+# №1. Найдите мастера с id 1 в переменную master_1
 master_1 = Master.objects.get(pk=1)
 
-Положите его имя в переменную master_1_name
+# Положите его имя в переменную master_1_name
 master_1_name = master_1.first_name
 
-№2. C помощью лукапа найдите все услуги которые он оказывает (по имени)
+# №2. C помощью лукапа найдите все услуги которые он оказывает (по имени)
 .all
 master_1.services.all() - вернет QuerySet с объектами Service, которые он оказывает
 
 Service.objects.filter(masters__first_name=master_1_name) - вернет QuerySet с объектами Service, которые он оказывает
 
+Service.objects.filter(masters__first_name__icontains=master_1_name) - вернет QuerySet с объектами Service, которые он оказывает (регистронезависимый)
 
-
-№3. Через таблицу услуг, найдите все заказы которые выполняет master_1_name
+# №3. Через таблицу услуг, найдите все заказы которые выполняет master_1_name
 filter(services__...)
 master_1.orders.all() - вернет QuerySet с объектами Order, которые он выполняет
 Service.objects.filter(orders__master__first_name=master_1_name) - вернет QuerySet с объектами Order, которые он выполняет
-
+```
