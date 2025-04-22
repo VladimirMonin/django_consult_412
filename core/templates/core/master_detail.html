@@ -1,0 +1,187 @@
+{% extends "base.html" %} 
+{% load static %} 
+
+{% block content %}
+<div class="container py-5">
+    <!-- Верхняя часть: фото и основная информация -->
+    <div class="row mb-5">
+        <div class="col-md-5">
+            <div class="card border-0 shadow">
+                {% if master.photo %}
+                <img src="{{ master.photo.url }}" alt="{{ master.first_name }} {{ master.last_name }}" 
+                     class="card-img-top img-fluid rounded-top">
+                {% else %}
+                <div class="bg-secondary text-white p-5 text-center rounded-top">
+                    <i class="bi bi-person-circle" style="font-size: 8rem;"></i>
+                </div>
+                {% endif %}
+                
+                <!-- Счетчик просмотров -->
+                <div class="d-flex justify-content-end p-2 text-secondary">
+                    <small><i class="bi bi-eye-fill me-1"></i> {{ master.view_count }} просмотров</small>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-md-7">
+            <h1 class="display-4 mb-3">{{ master.first_name }} {{ master.last_name }}</h1>
+            
+            <div class="mb-4">
+                <!-- Опыт работы с красивыми ножницами в качестве индикатора -->
+                <p class="mb-2">
+                    <i class="bi bi-award-fill text-primary me-2"></i>
+                    <strong>Опыт работы:</strong> {{ master.experience }} 
+                    {{ master.experience|yesno:"год,года,лет" }}
+                    <span class="ms-2">
+                        {% for i in "x"|ljust:master.experience %}
+                        <i class="bi bi-scissors text-danger"></i> 
+                        {% endfor %}
+                    </span>
+                </p>
+                
+                <p class="mb-2">
+                    <i class="bi bi-telephone-fill text-primary me-2"></i>
+                    <strong>Телефон:</strong> {{ master.phone }}
+                </p>
+                
+                <p class="mb-2">
+                    <i class="bi bi-geo-alt-fill text-primary me-2"></i>
+                    <strong>Адрес:</strong> {{ master.address }}
+                </p>
+                
+                {% if master.email %}
+                <p class="mb-2">
+                    <i class="bi bi-envelope-fill text-primary me-2"></i>
+                    <strong>Email:</strong> {{ master.email }}
+                </p>
+                {% endif %}
+                
+                <!-- Статус активности с красивым бейджем -->
+                <div class="mt-3">
+                    {% if master.is_active %}
+                    <span class="badge bg-success p-2"><i class="bi bi-check-circle me-1"></i> Принимает клиентов</span>
+                    {% else %}
+                    <span class="badge bg-danger p-2"><i class="bi bi-x-circle me-1"></i> Временно не работает</span>
+                    {% endif %}
+                </div>
+            </div>
+            
+            <!-- Кнопка для записи к мастеру -->
+            <a href="#" class="btn btn-primary btn-lg mt-3">
+                <i class="bi bi-calendar-check me-2"></i> Записаться к мастеру
+            </a>
+        </div>
+    </div>
+    
+    <!-- Услуги мастера -->
+    <div class="row mt-5">
+        <div class="col-12">
+            <h2 class="mb-4 border-bottom pb-2">
+                <i class="bi bi-stars text-warning me-2"></i>Услуги мастера
+            </h2>
+            
+            {% if services %}
+            <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+                {% for service in services %}
+                <div class="col">
+                    <div class="card h-100 shadow-sm {% if service.is_popular %}border-warning{% endif %}">
+                        {% if service.is_popular %}
+                        <div class="position-absolute top-0 end-0 p-2">
+                            <span class="badge bg-warning text-dark">
+                                <i class="bi bi-star-fill me-1"></i> Популярная
+                            </span>
+                        </div>
+                        {% endif %}
+                        
+                        {% if service.image %}
+                        <img src="{{ service.image.url }}" alt="{{ service.name }}" class="card-img-top" style="height: 150px; object-fit: cover;">
+                        {% endif %}
+                        
+                        <div class="card-body">
+                            <h5 class="card-title">{{ service.name }}</h5>
+                            <p class="card-text text-muted small">{{ service.description|truncatewords:15 }}</p>
+                        </div>
+                        
+                        <div class="card-footer bg-transparent d-flex justify-content-between align-items-center">
+                            <span class="badge bg-primary p-2">
+                                {{ service.price }} ₽
+                            </span>
+                            <span class="text-muted">
+                                <i class="bi bi-clock"></i> {{ service.duration }} мин.
+                            </span>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+            {% else %}
+            <div class="alert alert-info">
+                <i class="bi bi-info-circle me-2"></i> У этого мастера пока не указаны услуги.
+            </div>
+            {% endif %}
+        </div>
+    </div>
+    
+    <!-- Форма отзыва -->
+    <div class="row mt-5">
+        <div class="col-12">
+            <div class="card shadow-sm">
+                <div class="card-header bg-light">
+                    <h3 class="h5 m-0">
+                        <i class="bi bi-chat-quote me-2 text-primary"></i>
+                        Оставить отзыв о мастере
+                    </h3>
+                </div>
+                <div class="card-body">
+                    <form>
+                        <div class="mb-3">
+                            <label for="name" class="form-label">Ваше имя</label>
+                            <input type="text" class="form-control" id="name" placeholder="Как к вам обращаться?">
+                        </div>
+                        <div class="mb-3">
+                            <label for="rating" class="form-label">Оценка</label>
+                            <div class="rating-stars fs-4">
+                                <i class="bi bi-star text-warning" role="button"></i>
+                                <i class="bi bi-star text-warning" role="button"></i>
+                                <i class="bi bi-star text-warning" role="button"></i>
+                                <i class="bi bi-star text-warning" role="button"></i>
+                                <i class="bi bi-star text-warning" role="button"></i>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label for="review" class="form-label">Ваш отзыв</label>
+                            <textarea class="form-control" id="review" rows="3" placeholder="Расскажите о своем опыте посещения мастера"></textarea>
+                        </div>
+                        <button type="submit" class="btn btn-success">
+                            <i class="bi bi-send me-2"></i> Отправить отзыв
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Простенький JS для работы рейтинга (можно добавить в блок scripts) -->
+{% block extra_scripts %}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const stars = document.querySelectorAll('.rating-stars i');
+    
+    stars.forEach((star, index) => {
+        star.addEventListener('click', () => {
+            stars.forEach((s, i) => {
+                if (i <= index) {
+                    s.classList.remove('bi-star');
+                    s.classList.add('bi-star-fill');
+                } else {
+                    s.classList.remove('bi-star-fill');
+                    s.classList.add('bi-star');
+                }
+            });
+        });
+    });
+});
+</script>
+{% endblock %}
+{% endblock content %}
