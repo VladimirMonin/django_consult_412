@@ -1,9 +1,6 @@
 from doctest import master
+from django import db
 from django.db import models
-"""
-
-"""
-
 
 class Order(models.Model):
 
@@ -18,12 +15,12 @@ class Order(models.Model):
         ("canceled", "Отменен"),
     ]
 
-    client_name = models.CharField(max_length=100)
-    phone = models.CharField(max_length=20)
-    comment = models.TextField(blank=True)
+    client_name = models.CharField(max_length=100, db_index=True)
+    phone = models.CharField(max_length=20, db_index=True)
+    comment = models.TextField(blank=True, db_index=True)
     # Для поля choices будет добавлен метод get_<field>_display() - в данном случае get_status_display() - возвращает человеческое название статуса
     status = models.CharField(max_length=50, choices=STATUS_CHOICES, default="not_approved")
-    date_created = models.DateTimeField(auto_now_add=True)
+    date_created = models.DateTimeField(auto_now_add=True, db_index=True)
     date_updated = models.DateTimeField(auto_now=True)
     # Один ко многим
     master = models.ForeignKey("Master", on_delete=models.SET_NULL, null=True, related_name="orders")
@@ -48,29 +45,30 @@ class Order(models.Model):
             # но явное указание не повредит и поможет при фильтрации)
             models.Index(fields=['date_created'], name='created_at_idx'),
             # Пример составного индекса, если бы мы часто искали заказы мастера за период
-            # models.Index(fields=['client_name', 'phone'], name='master_created_idx'),
+            models.Index(fields=["client_name", "phone", "comment"], name="client_phone_comment_idx"),
         ]
             
 
 
 class Master(models.Model):
-    first_name = models.CharField(max_length=100)
+    first_name = models.CharField(max_length=100, db_index=True)
     last_name = models.CharField(max_length=100)
     photo = models.ImageField(upload_to="images/masters/", blank=True, null=True)
-    phone = models.CharField(max_length=20)
+    phone = models.CharField(max_length=20, db_index=True)
     address = models.CharField(max_length=255)
     email = models.EmailField(blank=True)
     experience = models.PositiveIntegerField()
     # Многие ко многим
     services = models.ManyToManyField("Service", related_name="masters")
     is_active = models.BooleanField(default=True)
+    view_count = models.PositiveIntegerField(default=0, verbose_name="Количество просмотров")
 
     def __str__(self):
         return f"{self.first_name} {self.last_name}"
 
 
 class Service(models.Model):
-    name = models.CharField(max_length=200, verbose_name="Название услуги")
+    name = models.CharField(max_length=200, verbose_name="Название услуги", db_index=True)
     description = models.TextField(verbose_name="Описание услуги")
     price = models.DecimalField(max_digits=10, decimal_places=2, verbose_name="Цена услуги")
     duration = models.PositiveIntegerField(help_text="Время в минутах", verbose_name="Время выполнения услуги")
