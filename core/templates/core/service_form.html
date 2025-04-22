@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+{% load static %}
+    
+    {% block title %}Создание услуги{% endblock %}
+    
+    {% block content %}
+    <h1>Создание услуги</h1>
+    <form method="post">
+       {% csrf_token %} 
+        <input class="form-control" type="text" name="name" placeholder="Название услуги" required>
+        <textarea class="form-control" name="description" placeholder="Описание услуги" required></textarea>
+        <input class="form-control" type="number" name="price" placeholder="Цена услуги" step="0.01" required>
+        <button class="btn btn-dark" type="submit">Создать</button>
+    </form>
+    {% endblock %}
+
+
+    {% comment %} name = models.CharField(max_length=200, verbose_name="Название услуги", db_index=True)
+description = models.TextField(verbose_name="Описание услуги")
+price = models.DecimalField(max_digits=10, decimal_places=2, verbose_name="Цена услуги") {% endcomment %}
