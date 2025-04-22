@@ -147,3 +147,10 @@ LOGIN_URL = '/admin/'
 INTERNAL_IPS = [
     '127.0.0.1',
 ]
+
+# Файл settings.py
+# Куки будет жить даже после закрытия браузера
+SESSION_EXPIRE_AT_BROWSER_CLOSE = False
+
+# Время жизни куки в секундах (2 недели)
+SESSION_COOKIE_AGE = 1209600  # 60 * 60 * 24 * 14 (секунд в двух неделях)
