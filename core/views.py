@@ -1,3 +1,5 @@
+from math import e
+import re
 from django.shortcuts import redirect, render
 from django.http import HttpResponse
 from .data import *
@@ -158,6 +160,12 @@ def service_create(request):
 
             # Перенаправляем на страницу со всеми услугами
             return redirect("orders_list")
+        
+        else:
+            # Если форма не валидна, возвращаем ошибку
+            messages.error(request, "Ошибка: все поля должны быть заполнены!")
+            return render(request, "core/service_form_create.html", {"form": form})
+
 
 
 def service_update(request, service_id):

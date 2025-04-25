@@ -8,6 +8,19 @@
     <form method="post">
        {% csrf_token %} 
         {{ form.as_div }} <!-- Отображение формы с помощью метода as_p -->
+        {% comment %} 
+        Циклом выводим ошибки связанные с полем
+        {% endcomment %}
+        {% for field in form %}
+            {% for error in field.errors %}
+                <div class="alert alert-danger">{{ error }}</div>
+            {% endfor %}
+        {% endfor %}
+
+        {% comment %} Ошибки не связанные с полями {% endcomment %}
+        {% for error in form.non_field_errors %}
+            <div class="alert alert-danger">{{ error }}</div>
+        {% endfor %}
         <button class="btn btn-dark" type="submit">Создать</button>
     </form>
     {% endblock %}
