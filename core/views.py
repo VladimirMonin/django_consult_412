@@ -7,6 +7,7 @@ from django.shortcuts import get_object_or_404
 from django.db.models import Q, F
 # messages - это встроенный модуль Django для отображения сообщений пользователю
 from django.contrib import messages
+from .forms import ServiceForm
 
 
 
@@ -122,34 +123,41 @@ def order_detail(request, order_id: int):
 
 
 def service_create(request):
+    
+    # Создаем пустую форму
+    form = ServiceForm()
+
+    # Если метод GET - возвращаем форму
     if request.method == "GET":
-        # Отправляем все услуги в контекст
         context = {
             "title": "Создание услуги",
+            "form": form,
         }
         return render(request, "core/service_form_create.html", context)
     
     elif request.method == "POST":
-        # Получаем данные из формы
-        name = request.POST.get("name")
-        description = request.POST.get("description")
-        price = request.POST.get("price")
-
+        # Создаем форму и передаем в нее POST данные
+        form = ServiceForm(request.POST)
         
-        if name and price and description:
+        # Если форма валидна:
+        if form.is_valid():
+            # Получаем данные из формы
+            name = form.cleaned_data.get("name")
+            description = form.cleaned_data.get("description")
+            price = form.cleaned_data.get("price")
+       
             # Создаем новую услугу
             new_service = Service.objects.create(
                 name=name,
-                price=price,
                 description=description,
+                price=price,
             )
 
-            # Перенаправляем на страницу с услугами
-            return HttpResponse(f"Услуга {new_service.name} успешно создана!")
-        
-        else:
-            # Если данные не валидны, возвращаем ошибку
-            return HttpResponse("Ошибка: все поля должны быть заполнены!")
+            # Даем пользователю уведомление об успешном создании
+            messages.success(request, f"Услуга {new_service.name} успешно создана!")
+
+            # Перенаправляем на страницу со всеми услугами
+            return redirect("orders_list")
 
 
 def service_update(request, service_id):

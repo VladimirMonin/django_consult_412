@@ -7,9 +7,7 @@
     <h1>Создание услуги</h1>
     <form method="post">
        {% csrf_token %} 
-        <input class="form-control" type="text" name="name" placeholder="Название услуги" required>
-        <textarea class="form-control" name="description" placeholder="Описание услуги" required></textarea>
-        <input class="form-control" type="number" name="price" placeholder="Цена услуги" step="0.01" required>
+        {{ form.as_div }} <!-- Отображение формы с помощью метода as_p -->
         <button class="btn btn-dark" type="submit">Создать</button>
     </form>
     {% endblock %}
