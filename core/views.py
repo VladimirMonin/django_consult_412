@@ -1,10 +1,23 @@
-from django.shortcuts import render
+from django.shortcuts import redirect, render
 from django.http import HttpResponse
 from .data import *
 from django.contrib.auth.decorators import login_required
 from .models import Order, Master, Service
 from django.shortcuts import get_object_or_404
 from django.db.models import Q, F
+# messages - это встроенный модуль Django для отображения сообщений пользователю
+from django.contrib import messages
+
+
+""""messages.debug — это для тех случаев, когда ты хочешь оставить себе записку: "Эй, я тут что-то тестирую, не обращай внимания". Это сообщение для отладки, и пользователи его обычно не видят.
+
+messages.info — это как дружеский шёпот: "Эй, всё идёт по плану". Используется для информативных сообщений, которые не требуют действий от пользователя.
+
+messages.success — это фанфары и аплодисменты: "Молодец, ты всё сделал правильно!". Например, когда пользователь успешно обновил профиль или завершил заказ.
+
+messages.warning — это как поднятый палец: "Осторожно, тут что-то может пойти не так!". Например, если срок действия аккаунта скоро истечёт.
+
+messages.error — это уже сирена: "Ай-ай-ай, что-то пошло не так!". Используется для сообщений об ошибках, которые требуют внимания пользователя.""""
 
 
 def landing(request):
@@ -124,13 +137,13 @@ def service_create(request):
         context = {
             "title": "Создание услуги",
         }
-        return render(request, "core/service_form.html", context)
+        return render(request, "core/service_form_create.html", context)
     
     elif request.method == "POST":
         # Получаем данные из формы
         name = request.POST.get("name")
-        price = request.POST.get("price")
         description = request.POST.get("description")
+        price = request.POST.get("price")
 
         
         if name and price and description:
@@ -147,3 +160,38 @@ def service_create(request):
         else:
             # Если данные не валидны, возвращаем ошибку
             return HttpResponse("Ошибка: все поля должны быть заполнены!")
+
+
+def service_update(request, service_id):
+    # Вне зависимости от метода - получаем услугу
+    service = get_object_or_404(Service, id=service_id)
+    
+    # Если метод GET - возвращаем форму
+    if request.method == "GET":
+        context = {
+            "title": f"Редактирование услуги {service.name}",
+            "service": service,
+        }
+        return render(request, "core/service_form_update.html", context)
+    
+    elif request.method == "POST":
+        # Получаем данные из формы
+        name = request.POST.get("name")
+        description = request.POST.get("description")
+        price = request.POST.get("price")
+
+        # Проверяем, что все поля заполнены
+        if name and price and description:
+            # Обновляем услугу
+            service.name = name
+            service.description = description
+            service.price = price
+            service.save()
+            # Даем пользователю уведомление об успешном обновлении
+            messages.success(request, f"Услуга {service.name} успешно обновлена!")
+            return redirect("orders_list")
+        
+        else:
+            # Если данные не валидны, возвращаем ошибку
+            messages.error(request, "Ошибка: все поля должны быть заполнены!")
+            return render(request, "core/service_form_update.html", {"service": service})

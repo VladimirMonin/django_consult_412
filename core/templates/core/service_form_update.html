@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+{% load static %}
+    
+    {% block title %}
+    {{ title}}
+    {% endblock %}
+    
+    {% block content %}
+    <h1>{{title}}</h1>
+    <form method="post">
+       {% csrf_token %} 
+        <input class="form-control" type="text" name="name" placeholder="Название услуги" required, value="{{ service.name }}">
+        <textarea class="form-control" name="description" placeholder="Описание услуги" required>{{ service.description }}</textarea>
+        <input class="form-control" type="number" name="price" placeholder="Цена услуги" step="0.01" required, value="{{ service.price }}">
+        <button class="btn btn-dark" type="submit">Создать</button>
+    </form>
+    {% endblock %}
