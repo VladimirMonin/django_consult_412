@@ -40,10 +40,21 @@
       {% block footer %}
       <hr>
       {% comment %} Впишем максимально простой вариант тостика из messages {% endcomment %}
+      {% comment %} В зависимости от тега сообщения, мы используем BS5 класс
+      messages.error - danger
+      messages.success - success
+      messages.info - info
+      
+      {% endcomment %}
         {% if messages %}
             <div class="container mt-3">
                 {% for message in messages %}
-                <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+                <div class="alert 
+                {% if message.tags == 'error' %}alert-danger{% endif %}
+                {% if message.tags == 'success' %}alert-success{% endif %}
+                {% if message.tags == 'info' %}alert-info{% endif %}
+
+                alert-dismissible fade show" role="alert">
                     {{ message }}
                     <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                 </div>
