@@ -52,21 +52,5 @@ class ServiceForm(forms.Form):
         # Проверяем, что в нем нет слова "плохое"
         if "плохое" in description.lower():
             raise ValidationError("В описании не должно быть слова 'плохое'")
-
-    # Общая валидация формы
-    def clean(self):
-        # clean - главный метод валидации, который запускает все валидаторы, и поэтому его важно РАСШИРИТЬ а не переопределить
-        # Вызов метода родителя
-        super().clean()
-
-        # Получаем данные из формы
-        name = self.cleaned_data.get("name")
-        description = self.cleaned_data.get("description")
-        price = self.cleaned_data.get("price")
-
-        # Проверяем, что все поля заполнены
-        if not name or not description or not price:
-            raise ValidationError("Все поля должны быть заполнены")
-
-        # Возвращаем очищенные данные
-        return self.cleaned_data
+        # Важно возвращать значение поля!
+        return description

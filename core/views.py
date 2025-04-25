@@ -7,10 +7,10 @@ from django.contrib.auth.decorators import login_required
 from .models import Order, Master, Service
 from django.shortcuts import get_object_or_404
 from django.db.models import Q, F
+
 # messages - это встроенный модуль Django для отображения сообщений пользователю
 from django.contrib import messages
 from .forms import ServiceForm
-
 
 
 def landing(request):
@@ -28,7 +28,7 @@ def master_detail(request, master_id):
     master = get_object_or_404(Master, id=master_id)
 
     # Проверяем, просматривал ли пользователь этого мастера ранее
-    viewed_masters = request.session.get('viewed_masters', [])
+    viewed_masters = request.session.get("viewed_masters", [])
 
     # Если этот мастер ещё не был просмотрен этим пользователем в текущей сессии
     if master_id not in viewed_masters:
@@ -40,7 +40,7 @@ def master_detail(request, master_id):
 
         # Добавляем мастера в список просмотренных
         viewed_masters.append(master_id)
-        request.session['viewed_masters'] = viewed_masters
+        request.session["viewed_masters"] = viewed_masters
 
         # Обновляем объект после изменения в БД
         master.refresh_from_db()
@@ -75,8 +75,10 @@ def orders_list(request):
         # Используем жадную загрузку для мастеров и услуг
         # all_orders = Order.objects.prefetch_related("master", "services").all()
         # all_orders = Order.objects.all()
-        all_orders = Order.objects.select_related("master").prefetch_related("services").all()
-        
+        all_orders = (
+            Order.objects.select_related("master").prefetch_related("services").all()
+        )
+
         # Получаем строку поиска
         search_query = request.GET.get("search", None)
 
@@ -95,7 +97,7 @@ def orders_list(request):
             if "name" in check_boxes:
                 # Сокращенная запись через inplace оператор
                 filters |= Q(client_name__icontains=search_query)
-            
+
             if "comment" in check_boxes:
                 filters |= Q(comment__icontains=search_query)
 
@@ -125,29 +127,27 @@ def order_detail(request, order_id: int):
 
 
 def service_create(request):
-    
-    # Создаем пустую форму
-    form = ServiceForm()
 
-    # Если метод GET - возвращаем форму
+    # Если метод GET - возвращаем пустую форму
     if request.method == "GET":
+        form = ServiceForm()
         context = {
             "title": "Создание услуги",
             "form": form,
         }
         return render(request, "core/service_form_create.html", context)
-    
+
     elif request.method == "POST":
         # Создаем форму и передаем в нее POST данные
         form = ServiceForm(request.POST)
-        
+
         # Если форма валидна:
         if form.is_valid():
             # Получаем данные из формы
             name = form.cleaned_data.get("name")
             description = form.cleaned_data.get("description")
             price = form.cleaned_data.get("price")
-       
+
             # Создаем новую услугу
             new_service = Service.objects.create(
                 name=name,
@@ -160,18 +160,20 @@ def service_create(request):
 
             # Перенаправляем на страницу со всеми услугами
             return redirect("orders_list")
-        
-        else:
-            # Если форма не валидна, возвращаем ошибку
-            messages.error(request, "Ошибка: все поля должны быть заполнены!")
-            return render(request, "core/service_form_create.html", {"form": form})
 
+        # В случае ошибок валидации Django автоматически заполнит form.errors
+        # и отобразит их в шаблоне, поэтому просто возвращаем форму
+        context = {
+            "title": "Создание услуги",
+            "form": form,
+        }
+        return render(request, "core/service_form_create.html", context)
 
 
 def service_update(request, service_id):
     # Вне зависимости от метода - получаем услугу
     service = get_object_or_404(Service, id=service_id)
-    
+
     # Если метод GET - возвращаем форму
     if request.method == "GET":
         context = {
@@ -179,7 +181,7 @@ def service_update(request, service_id):
             "service": service,
         }
         return render(request, "core/service_form_update.html", context)
-    
+
     elif request.method == "POST":
         # Получаем данные из формы
         name = request.POST.get("name")
@@ -196,8 +198,10 @@ def service_update(request, service_id):
             # Даем пользователю уведомление об успешном обновлении
             messages.success(request, f"Услуга {service.name} успешно обновлена!")
             return redirect("orders_list")
-        
+
         else:
             # Если данные не валидны, возвращаем ошибку
             messages.error(request, "Ошибка: все поля должны быть заполнены!")
-            return render(request, "core/service_form_update.html", {"service": service})
+            return render(
+                request, "core/service_form_update.html", {"service": service}
+            )
