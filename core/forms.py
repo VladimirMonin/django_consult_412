@@ -45,12 +45,3 @@ class ServiceForm(forms.Form):
         },
     )
 
-    # Серия методов валидации которая начинается с clean_ и заканчивается на имя поля
-    def clean_description(self):
-        # Получаем значение поля description
-        description = self.cleaned_data.get("description")
-        # Проверяем, что в нем нет слова "плохое"
-        if "плохое" in description.lower():
-            raise ValidationError("В описании не должно быть слова 'плохое'")
-        # Важно возвращать значение поля!
-        return description

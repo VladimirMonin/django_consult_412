@@ -23,6 +23,23 @@ def landing(request):
     return render(request, "core/landing.html", context)
 
 
+@login_required
+def services_list(request):
+    """
+    Представление для отображения списка всех услуг
+    с возможностью их редактирования или удаления
+    """
+    # Получаем все услуги из базы данных
+    services = Service.objects.all()
+
+    context = {
+        "title": "Управление услугами",
+        "services": services,
+    }
+
+    return render(request, "core/services_list.html", context)
+
+
 def master_detail(request, master_id):
     # Получаем мастера по id
     master = get_object_or_404(Master, id=master_id)
@@ -134,8 +151,9 @@ def service_create(request):
         context = {
             "title": "Создание услуги",
             "form": form,
+            "button_txt": "Создать",
         }
-        return render(request, "core/service_form_create.html", context)
+        return render(request, "core/service_form.html", context)
 
     elif request.method == "POST":
         # Создаем форму и передаем в нее POST данные
@@ -166,8 +184,9 @@ def service_create(request):
         context = {
             "title": "Создание услуги",
             "form": form,
+            "button_txt": "Создать",
         }
-        return render(request, "core/service_form_create.html", context)
+        return render(request, "core/service_form.html", context)
 
 
 def service_update(request, service_id):
@@ -176,32 +195,53 @@ def service_update(request, service_id):
 
     # Если метод GET - возвращаем форму
     if request.method == "GET":
+        form = ServiceForm(
+            initial={
+                "name": service.name,
+                "description": service.description,
+                "price": service.price,
+            }
+        )
+
         context = {
             "title": f"Редактирование услуги {service.name}",
-            "service": service,
+            "form": form,
+            "button_txt": "Обновить",
         }
-        return render(request, "core/service_form_update.html", context)
+        return render(request, "core/service_form.html", context)
 
     elif request.method == "POST":
-        # Получаем данные из формы
-        name = request.POST.get("name")
-        description = request.POST.get("description")
-        price = request.POST.get("price")
+        # Создаем форму и передаем в нее POST данные
+        form = ServiceForm(request.POST)
 
-        # Проверяем, что все поля заполнены
-        if name and price and description:
-            # Обновляем услугу
-            service.name = name
-            service.description = description
-            service.price = price
-            service.save()
-            # Даем пользователю уведомление об успешном обновлении
-            messages.success(request, f"Услуга {service.name} успешно обновлена!")
-            return redirect("orders_list")
+        # Если форма валидна:
+        if form.is_valid():
+            # Получаем данные из формы
+            name = form.cleaned_data.get("name")
+            description = form.cleaned_data.get("description")
+            price = form.cleaned_data.get("price")
 
+            # Проверяем, что все поля заполнены
+            if name and description and price:
+                # Обновляем услугу
+                service.name = name
+                service.description = description
+                service.price = price
+                service.save()
+
+                # Даем пользователю уведомление об успешном обновлении
+                messages.success(request, f"Услуга {service.name} успешно обновлена!")
+
+                # Перенаправляем на страницу со всеми услугами
+                return redirect("orders_list")
         else:
             # Если данные не валидны, возвращаем ошибку
             messages.error(request, "Ошибка: все поля должны быть заполнены!")
-            return render(
-                request, "core/service_form_update.html", {"service": service}
-            )
+
+            context = {
+                "title": f"Редактирование услуги {service.name}",
+                "form": form,
+                "button_txt": "Обновить",
+            }
+
+            return render(request, "core/service_form.html", context)
