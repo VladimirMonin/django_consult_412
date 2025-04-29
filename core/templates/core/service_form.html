@@ -7,17 +7,50 @@
     
     {% block content %}
     <h1>{{title}}</h1>
-    <form method="post">
+    <form method="post" enctype="multipart/form-data">
        {% csrf_token %} 
-        {{ form.as_div }}
-        {% for field in form %}
-            {% for error in field.errors %}
-                <div class="alert alert-danger">{{ error }}</div>
-            {% endfor %}
-        {% endfor %}
-        {% for error in form.non_field_errors %}
-            <div class="alert alert-danger">{{ error }}</div>
-        {% endfor %}
+        {% comment %} 
+        Опишем все поля собственноручно для того чтобы:
+        1. Чекбокс не растягивался на всю ширину формы
+        2. Поле где загружается изображение, показывать старое
+
+        ["name", "description", "price", "duration", "is_popular", "image"]
+        {% endcomment %}
+        {% comment %} Name {% endcomment %}
+        <div class="mb-3">
+            <label for="name" class="form-label">{{form.name.label}}</label>
+            <input type="text" class="form-control" id="name" name="name" value="{{form.name.value}}" required>
+        </div>
+        {% comment %} Description {% endcomment %}
+        <div class="mb-3">
+            <label for="description" class="form-label">Описание</label>
+            <textarea class="form-control" id="description" name="description" rows="3">{{form.description.value}}</textarea>
+        </div>
+        {% comment %} Price {% endcomment %}
+        <div class="mb-3">
+            <label for="price" class="form-label">Цена</label>
+            <input type="number" class="form-control" id="price" name="price" value="{{form.price.value}}" required>
+        </div>
+        {% comment %} Duration {% endcomment %}
+        <div class="mb-3">
+            <label for="duration" class="form-label">Длительность</label>
+            <input type="number" class="form-control" id="duration" name="duration" value="{{form.duration.value}}" required>
+        </div>
+        {% comment %} Is popular {% endcomment %}
+        <div class="mb-3 form-check">
+            <input type="checkbox" class="form-check-input" id="is_popular" name="is_popular" {% if form.is_popular.value %}checked{% endif %}>
+            <label class="form-check
+-label" for="is_popular">Популярный</label>
+        </div>
+        {% comment %} Image {% endcomment %}
+        <div class="mb-3">
+            <label for="image" class="form-label">Изображение</label>
+            {% if form.instance.image %}
+                <img src="{{form.instance.image.url}}" alt="Изображение" style="max-width: 200px; max-height: 200px; margin-bottom: 10px;">
+            {% endif %}
+            <input type="file" class="form-control" id="image" name="image">
+        </div>
+        {% comment %} Submit button {% endcomment %}
         <button class="btn btn-dark" type="submit">{{button_txt}}</button>
     </form>
     {% endblock %}
