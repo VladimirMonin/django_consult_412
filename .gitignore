@@ -6,3 +6,5 @@ db.sqlite3
 notes/images/*
 media/images/services/*
 
+db.sqlite3-wal
+db.sqlite3-shm

@@ -215,7 +215,7 @@ def service_update(request, service_id):
             return redirect("orders_list")
         else:
             # Если данные не валидны, возвращаем ошибку
-            messages.error(request, "Ошибка: все поля должны быть заполнены!")
+            messages.error(request, "Ошибка: вы что-то сделали не так.")
 
             context = {
                 "title": f"Редактирование услуги {service.name}",
