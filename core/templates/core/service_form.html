@@ -1,56 +1,92 @@
 {% extends "base.html" %}
 {% load static %}
     
-    {% block title %}
+{% block title %}
     {{title}}
-    {% endblock %}
+{% endblock %}
     
-    {% block content %}
-    <h1>{{title}}</h1>
-    <form method="post" enctype="multipart/form-data">
-       {% csrf_token %} 
-        {% comment %} 
-        Опишем все поля собственноручно для того чтобы:
-        1. Чекбокс не растягивался на всю ширину формы
-        2. Поле где загружается изображение, показывать старое
-
-        ["name", "description", "price", "duration", "is_popular", "image"]
-        {% endcomment %}
-        {% comment %} Name {% endcomment %}
-        <div class="mb-3">
-            <label for="name" class="form-label">{{form.name.label}}</label>
-            <input type="text" class="form-control" id="name" name="name" value="{{form.name.value}}" required>
+{% block content %}
+<div class="row justify-content-center mb-5">
+    <div class="col-12 col-md-8 col-lg-6">
+        <div class="card shadow">
+            <div class="card-header bg-dark text-white">
+                <h3 class="card-title mb-0">{{title}}</h3>
+            </div>
+            <div class="card-body">
+                <form method="post" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    
+                    {% comment %} Имя услуги {% endcomment %}
+                    <div class="mb-3">
+                        <label for="{{ form.name.id_for_label }}" class="form-label">{{ form.name.label }}</label>
+                        {{ form.name }}
+                        {% if form.name.errors %}
+                            <div class="text-danger">{{ form.name.errors }}</div>
+                        {% endif %}
+                    </div>
+                    
+                    {% comment %} Описание {% endcomment %}
+                    <div class="mb-3">
+                        <label for="{{ form.description.id_for_label }}" class="form-label">{{ form.description.label }}</label>
+                        {{ form.description }}
+                        {% if form.description.errors %}
+                            <div class="text-danger">{{ form.description.errors }}</div>
+                        {% endif %}
+                    </div>
+                    
+                    {% comment %} Цена и длительность (в одной строке для desktops) {% endcomment %}
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="{{ form.price.id_for_label }}" class="form-label">{{ form.price.label }}</label>
+                            {{ form.price }}
+                            {% if form.price.errors %}
+                                <div class="text-danger">{{ form.price.errors }}</div>
+                            {% endif %}
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="{{ form.duration.id_for_label }}" class="form-label">{{ form.duration.label }}</label>
+                            {{ form.duration }}
+                            <small class="form-text text-muted">{{ form.duration.help_text }}</small>
+                            {% if form.duration.errors %}
+                                <div class="text-danger">{{ form.duration.errors }}</div>
+                            {% endif %}
+                        </div>
+                    </div>
+                    
+                    {% comment %} Популярная услуга (чекбокс) {% endcomment %}
+                    <div class="mb-3 form-check form-switch">
+                        {{ form.is_popular }}
+                        <label class="form-check-label ms-2" for="{{ form.is_popular.id_for_label }}">{{ form.is_popular.label }}</label>
+                        {% if form.is_popular.errors %}
+                            <div class="text-danger">{{ form.is_popular.errors }}</div>
+                        {% endif %}
+                    </div>
+                    
+                    {% comment %} Изображение {% endcomment %}
+                    <div class="mb-4">
+                        <label for="{{ form.image.id_for_label }}" class="form-label">{{ form.image.label }}</label>
+                        <div class="row align-items-center">
+                            {% if form.instance.image %}
+                            <div class="col-auto">
+                                <img src="{{ form.instance.image.url }}" alt="Превью изображения" class="img-thumbnail" style="max-width: 100px; max-height: 100px;">
+                            </div>
+                            {% endif %}
+                            <div class="col">
+                                {{ form.image }}
+                            </div>
+                        </div>
+                        {% if form.image.errors %}
+                            <div class="text-danger">{{ form.image.errors }}</div>
+                        {% endif %}
+                    </div>
+                    
+                    <div class="d-grid gap-2">
+                        <button class="btn btn-dark" type="submit">{{ button_txt }}</button>
+                        <a href="{% url 'services_list' %}" class="btn btn-outline-secondary">Отмена</a>
+                    </div>
+                </form>
+            </div>
         </div>
-        {% comment %} Description {% endcomment %}
-        <div class="mb-3">
-            <label for="description" class="form-label">Описание</label>
-            <textarea class="form-control" id="description" name="description" rows="3">{{form.description.value}}</textarea>
-        </div>
-        {% comment %} Price {% endcomment %}
-        <div class="mb-3">
-            <label for="price" class="form-label">Цена</label>
-            <input type="number" class="form-control" id="price" name="price" value="{{form.price.value}}" required>
-        </div>
-        {% comment %} Duration {% endcomment %}
-        <div class="mb-3">
-            <label for="duration" class="form-label">Длительность</label>
-            <input type="number" class="form-control" id="duration" name="duration" value="{{form.duration.value}}" required>
-        </div>
-        {% comment %} Is popular {% endcomment %}
-        <div class="mb-3 form-check">
-            <input type="checkbox" class="form-check-input" id="is_popular" name="is_popular" {% if form.is_popular.value %}checked{% endif %}>
-            <label class="form-check
--label" for="is_popular">Популярный</label>
-        </div>
-        {% comment %} Image {% endcomment %}
-        <div class="mb-3">
-            <label for="image" class="form-label">Изображение</label>
-            {% if form.instance.image %}
-                <img src="{{form.instance.image.url}}" alt="Изображение" style="max-width: 200px; max-height: 200px; margin-bottom: 10px;">
-            {% endif %}
-            <input type="file" class="form-control" id="image" name="image">
-        </div>
-        {% comment %} Submit button {% endcomment %}
-        <button class="btn btn-dark" type="submit">{{button_txt}}</button>
-    </form>
-    {% endblock %}
+    </div>
+</div>
+{% endblock %}
