@@ -227,12 +227,16 @@ def service_update(request, service_id):
             return render(request, "core/service_form.html", context)
 
 
-def masters_services_by_id(request, master_id):
+def masters_services_by_id(request, master_id=None):
     """
     Вью для ajax запросов фронтенда, для подгрузки услуг конкретного мастера в форму
     m2m выбора услуг
     """
-
+    # Если master_id не передан в URL, пробуем получить его из POST-запроса
+    if master_id is None:
+        data = json.loads(request.body)
+        master_id = data.get('master_id')
+        
     # Получаем мастера по id
     master = get_object_or_404(Master, id=master_id)
 

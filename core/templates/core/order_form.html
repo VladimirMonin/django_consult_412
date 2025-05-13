@@ -23,4 +23,18 @@
         </div>
     </div>
 </div>
+<div id="order-form-data" 
+     data-services-url="{% url 'masters_services_by_id_ajax' %}" 
+     data-csrf-token="{{ csrf_token }}">
+</div>
+
+<!-- Расширяем блок скриптов через супер и подключаем order_form.js -->
+
+{% block scripts %}
+    {{ block.super }}
+    <script src="{% static 'js/order_form.js' %}"></script>
+{% endblock %}
+
+{% comment %} Закрываем блок контента {% endcomment %}
+
 {% endblock %}
