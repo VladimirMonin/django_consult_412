@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+{% load static %}
+    
+{% block title %}
+    {{title}}
+{% endblock %}
+    
+{% block content %}
+<div class="row justify-content-center mb-5">
+    <div class="col-12 col-md-8 col-lg-6">
+        <div class="card shadow">
+            <div class="card-header bg-dark text-white">
+                <h3 class="card-title mb-0">{{title}}</h3>
+            </div>
+            <div class="card-body">
+                <form method="post">
+                    {% csrf_token %}
+                    {% comment %} Попробуем form.as_p {% endcomment %}
+                {{form.as_p}}
+                <button type="submit" class="btn btn-dark mt-3">{{button_text}}</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

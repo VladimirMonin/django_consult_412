@@ -1,10 +1,9 @@
 # Импорт служебных объектов Form
+from typing import Any
 from django import forms
 from django.core.exceptions import ValidationError
 from django.forms import ClearableFileInput
-from .models import Service
-
-# Форма создания услуги - делаем форму связанную с моделью
+from .models import Service, Master, Order
 
 
 class ServiceForm(forms.ModelForm):
@@ -46,3 +45,23 @@ class ServiceForm(forms.ModelForm):
         model = Service
         # # Поля, которые будут отображаться в форме
         fields = ["name", "description", "price", "duration", "is_popular", "image"]
+
+
+class OrderForm(forms.ModelForm):
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        # Добавляем класс form-control к каждому полю формы
+        for field_name, field in self.fields.items():
+            field.widget.attrs.update({"class": "form-control"})
+
+    
+    # def save(self):
+    #     # Сохраняем объект заказа
+    #     Сюда можно вклинить логику валидации на бекенде (проверить что мастер предоставляет ВСЕ выбранные услуги)
+    #     super().save()
+
+
+    class Meta:
+        model = Order
+        fields = ["client_name", "phone", "comment", "master", "services", "appointment_date"]

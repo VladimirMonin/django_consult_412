@@ -10,6 +10,7 @@ from .views import (
     service_update,
     services_list,
     masters_services_by_id,
+    order_create,
 )
 
 # Эти маршруты будут доступны с префиксом /barbershop/
@@ -23,4 +24,5 @@ urlpatterns = [
     path("service_create/", service_create, name="service_create"),
     path("service_update/<int:service_id>/", service_update, name="service_update"),
     path("masters_services/<int:master_id>/", masters_services_by_id, name="masters_services_by_id"),
+    path("order_create/", order_create, name="order_create"),
 ]

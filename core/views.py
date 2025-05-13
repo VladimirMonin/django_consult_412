@@ -10,7 +10,7 @@ from django.db.models import Q, F
 
 # messages - это встроенный модуль Django для отображения сообщений пользователю
 from django.contrib import messages
-from .forms import ServiceForm
+from .forms import ServiceForm, OrderForm
 import json
 
 
@@ -255,3 +255,43 @@ def masters_services_by_id(request, master_id):
         json.dumps(response_data, ensure_ascii=False, indent=4),
         content_type="application/json",
     )
+
+
+def order_create(request):
+    """
+    Вью для создания заказа
+    """
+    if request.method == "GET":
+        # Если метод GET - возвращаем пустую форму
+        form = OrderForm()
+
+        context = {
+            "title": "Создание заказа",
+            "form": form,
+            "button_text": "Создать",
+        }
+        return render(request, "core/order_form.html", context)
+    
+    if request.method == "POST":
+        # Создаем форму и передаем в нее POST данные
+        form = OrderForm(request.POST)
+
+        # Если форма валидна:
+        if form.is_valid():
+            # Сохраняем форму в БД
+            form.save()
+            client_name = form.cleaned_data.get("client_name")
+            # Даем пользователю уведомление об успешном создании
+            messages.success(request, f"Заказ для {client_name} успешно создан!")
+
+            # Перенаправляем на страницу со всеми заказами
+            return redirect("thanks")
+
+        # В случае ошибок валидации Django автоматически заполнит form.errors
+        # и отобразит их в шаблоне, поэтому просто возвращаем форму
+        context = {
+            "title": "Создание заказа",
+            "form": form,
+            "button_text": "Создать",
+        }
+        return render(request, "core/order_form.html", context)
