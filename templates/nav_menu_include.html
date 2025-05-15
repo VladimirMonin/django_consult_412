@@ -5,7 +5,7 @@
       </button>
     {% comment %} Нам надо about services masters booking {% endcomment %}
     <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
-      <ul class="navbar-nav">
+      <ul class="navbar-nav me-auto">
         {% for item in menu_items %}
         <li class="nav-item">
           <a
@@ -37,6 +37,17 @@
           >
         </li>
       </ul>
+      
+      <!-- Блок авторизации пользователя -->
+      <div class="navbar-nav">
+        {% if user.is_authenticated %}
+          <span class="nav-item nav-link">{{ user.username }}</span>
+        {% else %}
+          <a href="{% url 'admin:index' %}" class="nav-link">
+            <i class="bi bi-box-arrow-in-right" title="Вход"></i>
+          </a>
+        {% endif %}
+      </div>
     </div>
   </div>
 </nav>
