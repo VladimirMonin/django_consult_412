@@ -25,13 +25,12 @@
     {% endblock styles %} 
     {% block extra_head %} {% comment %} Дополнительные элементы в head {% endcomment %} 
     {% endblock extra_head %}
-  </head>
-  <body>
+  </head>  <body>
     <div class="container">
       <header>
         {% block header %} {% include "nav_menu_include.html" %} {% endblock header %}
       </header>
-      <main>
+      <main class="mt-5 pt-3">
         {% comment %} Тут будет контекнт! {% endcomment %} 
         {% block content %}
         {% comment %} Данные будут вставлятся сюда! {% endcomment %} 
