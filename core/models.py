@@ -1,6 +1,7 @@
 from doctest import master
 from django import db
 from django.db import models
+from django.core.validators import MinValueValidator, MaxValueValidator
 
 class Order(models.Model):
 
@@ -82,3 +83,43 @@ class Service(models.Model):
     class Meta:
         verbose_name = "Услуга"
         verbose_name_plural = "Услуги"
+
+
+class Review(models.Model):
+    """
+    Модель для хранения отзывов клиентов о мастерах
+    """
+    client_name = models.CharField(max_length=100, verbose_name="Имя клиента")
+    text = models.TextField(verbose_name="Текст отзыва")
+    rating = models.IntegerField(
+        verbose_name="Оценка", 
+        validators=[MinValueValidator(1), MaxValueValidator(5)]
+    )
+    master = models.ForeignKey(
+        "Master", 
+        on_delete=models.CASCADE, 
+        related_name="reviews",
+        verbose_name="Мастер"
+    )
+    photo = models.ImageField(
+        upload_to="images/reviews/", 
+        blank=True, 
+        null=True,
+        verbose_name="Фотография"
+    )
+    is_published = models.BooleanField(
+        default=False,
+        verbose_name="Опубликован"
+    )
+    created_at = models.DateTimeField(
+        auto_now_add=True, 
+        verbose_name="Дата создания"
+    )
+
+    def __str__(self):
+        return f"Отзыв от {self.client_name} о мастере {self.master}"
+
+    class Meta:
+        verbose_name = "Отзыв"
+        verbose_name_plural = "Отзывы"
+        ordering = ["-created_at"]
