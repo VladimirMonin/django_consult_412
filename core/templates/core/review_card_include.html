@@ -1,0 +1,32 @@
+{% comment %}
+    Шаблон для отображения карточки отзыва
+    Получает контекст:
+    - review: объект отзыва с полями client_name, text, rating, date, photo
+{% endcomment %}
+
+<div class="card mb-3 review-card">
+    <div class="card-header d-flex justify-content-between align-items-center bg-light py-2">
+        <h5 class="card-title mb-0">{{ review.client_name }}</h5>
+        <div class="rating">
+            {% for i in "12345"|make_list %}
+                {% if forloop.counter <= review.rating %}
+                    <i class="bi bi-star-fill text-warning"></i>
+                {% else %}
+                    <i class="bi bi-star text-warning"></i>
+                {% endif %}
+            {% endfor %}
+        </div>
+    </div>
+    <div class="card-body">
+        {% if review.photo %}
+        <div class="review-photo mb-3">
+            <img src="{{ review.photo.url }}" alt="Фото к отзыву" class="img-fluid rounded" style="max-height: 200px;">
+        </div>
+        {% endif %}
+        
+        <p class="card-text mb-0">{{ review.text }}</p>
+    </div>
+    <div class="card-footer text-muted small">
+        <i class="bi bi-calendar me-1"></i> {{ review.created_at|date:"d.m.Y" }}
+    </div>
+</div>
