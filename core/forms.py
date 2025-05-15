@@ -3,7 +3,7 @@ from typing import Any
 from django import forms
 from django.core.exceptions import ValidationError
 from django.forms import ClearableFileInput
-from .models import Service, Master, Order
+from .models import Service, Master, Order, Review
 
 
 class ServiceForm(forms.ModelForm):
@@ -13,7 +13,7 @@ class ServiceForm(forms.ModelForm):
         super().__init__(*args, **kwargs)
         # Добавляем класс form-control к каждому полю формы (кроме чекбоксов)
         for field_name, field in self.fields.items():
-            if field_name != 'is_popular':  # Пропускаем чекбокс
+            if field_name != "is_popular":  # Пропускаем чекбокс
                 field.widget.attrs.update({"class": "form-control"})
             else:  # Для чекбокса добавляем класс переключателя
                 field.widget.attrs.update({"class": "form-check-input"})
@@ -23,15 +23,17 @@ class ServiceForm(forms.ModelForm):
         max_length=100,
         widget=forms.TextInput(attrs={"placeholder": "Введите название услуги"}),
     )
-    
+
     # Переопределяем поле изображения, чтобы убрать ненужные элементы
     image = forms.ImageField(
         label="Изображение услуги",
-        required=False, 
-        widget=forms.FileInput(attrs={
-            "class": "form-control",
-            "accept": "image/*"  # Разрешаем только изображения
-        })
+        required=False,
+        widget=forms.FileInput(
+            attrs={
+                "class": "form-control",
+                "accept": "image/*",  # Разрешаем только изображения
+            }
+        ),
     )
 
     # Валидатор deля поля description
@@ -55,13 +57,59 @@ class OrderForm(forms.ModelForm):
         for field_name, field in self.fields.items():
             field.widget.attrs.update({"class": "form-control"})
 
-    
     # def save(self):
     #     # Сохраняем объект заказа
     #     Сюда можно вклинить логику валидации на бекенде (проверить что мастер предоставляет ВСЕ выбранные услуги)
     #     super().save()
 
-
     class Meta:
         model = Order
-        fields = ["client_name", "phone", "comment", "master", "services", "appointment_date"]
+        fields = [
+            "client_name",
+            "phone",
+            "comment",
+            "master",
+            "services",
+            "appointment_date",
+        ]
+
+
+class ReviewForm(forms.ModelForm):
+    """
+    Форма для создания отзыва о мастере с использованием Bootstrap 5
+    """
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        # Добавляем класс form-control к каждому полю формы
+        for field_name, field in self.fields.items():
+            if (
+                field_name != "rating"
+            ):  # Для рейтинга будет специальная обработка через JS
+                field.widget.attrs.update({"class": "form-control"})
+
+    # Скрытое поле для рейтинга, которое будет заполняться через JS
+    rating = forms.IntegerField(
+        widget=forms.HiddenInput(),
+        required=True,
+    )
+
+    class Meta:
+        model = Review
+        # Исключаем поле is_published из формы для пользователей
+        exclude = ["is_published"]
+        widgets = {
+            "client_name": forms.TextInput(
+                attrs={"placeholder": "Как к вам обращаться?", "class": "form-control"}
+            ),
+            "text": forms.Textarea(
+                attrs={
+                    "placeholder": "Расскажите о своем опыте посещения мастера",
+                    "class": "form-control",
+                    "rows": "3",
+                }
+            ),
+            "photo": forms.FileInput(
+                attrs={"class": "form-control", "accept": "image/*"}
+            ),
+        }
