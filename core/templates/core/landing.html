@@ -76,10 +76,10 @@
     <section id="booking" class="py-5 bg-dark text-center text-light">
         <h2 class="mb-4">Готовы преобразиться?</h2>
         <p class="lead mb-4">Запишитесь на приём прямо сейчас и получите скидку 10% на первое посещение!</p>
-        <button class="btn btn-warning btn-lg">
+        <a href="{% url 'order_create' %}" class="btn btn-warning btn-lg">
             <i class="bi bi-calendar-check me-2"></i>
             Записаться
-        </button>
+        </a>
     </section>
 </div>
 {% endblock content %}
