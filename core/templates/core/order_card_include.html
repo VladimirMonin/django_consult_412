@@ -1,16 +1,14 @@
 {% comment %} core/templates/core/order_card_include.html {% endcomment %}
 <div
-  class="card h-100 shadow-sm {% if order.status == 'approved' %}border-success{% elif order.status == 'canceled' %}border-danger{% elif order.status == 'completed' %}border-info{% elif order.status == 'spam' %}border-warning{% endif %}"
->
-  <div
-    class="card-header bg-transparent {% if order.status == 'approved' %}text-success{% elif order.status == 'canceled' %}text-danger{% elif order.status == 'completed' %}text-info{% elif order.status == 'spam' %}text-warning{% else %}text-primary{% endif %}"
+  class="card h-100 shadow-sm {% if order.status == 'approved' %}border-success{% elif order.status == 'canceled' %}border-danger{% elif order.status == 'completed' %}border-dark{% elif order.status == 'spam' %}border-warning{% endif %}"
+><div
+    class="card-header bg-transparent {% if order.status == 'approved' %}text-success{% elif order.status == 'canceled' %}text-danger{% elif order.status == 'completed' %}text-dark{% elif order.status == 'spam' %}text-warning{% else %}text-primary{% endif %}"
   >
     <h5 class="card-title text-center m-0">Заявка №{{order.id}}</h5>
   </div>
   <div class="card-body">
-    <div class="mb-3">
-      <span
-        class="badge {% if order.status == 'approved' %}bg-success{% elif order.status == 'canceled' %}bg-danger{% elif order.status == 'completed' %}bg-info{% elif order.status == 'spam' %}bg-warning{% elif order.status == 'moderated' %}bg-primary{% elif order.status == 'in_awaiting' %}bg-secondary{% else %}bg-dark{% endif %} mb-2"
+    <div class="mb-3">      <span
+        class="badge {% if order.status == 'approved' %}bg-success{% elif order.status == 'canceled' %}bg-danger{% elif order.status == 'completed' %}bg-dark{% elif order.status == 'spam' %}bg-warning{% elif order.status == 'moderated' %}bg-primary{% elif order.status == 'in_awaiting' %}bg-secondary{% else %}bg-dark{% endif %} mb-2"
       >
         {{order.get_status_display}}
       </span>
