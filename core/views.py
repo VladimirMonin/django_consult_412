@@ -96,12 +96,15 @@ def thanks(request):
 
 @login_required
 def orders_list(request):
+    # Проверяем, что пользователь является сотрудником
+    if not request.user.is_staff:
+        # Если пользователь не сотрудник, перенаправляем его на главную
+        messages.error(request, "У вас нет доступа к этому разделу")
+        return redirect("landing")
 
     if request.method == "GET":
         # Получаем все заказы
         # Используем жадную загрузку для мастеров и услуг
-        # all_orders = Order.objects.prefetch_related("master", "services").all()
-        # all_orders = Order.objects.all()
         all_orders = (
             Order.objects.select_related("master").prefetch_related("services").all()
         )
@@ -143,6 +146,11 @@ def orders_list(request):
 
 @login_required
 def order_detail(request, order_id: int):
+    # Проверяем, что пользователь является сотрудником
+    if not request.user.is_staff:
+        # Если пользователь не сотрудник, перенаправляем его на главную
+        messages.error(request, "У вас нет доступа к этой странице")
+        return redirect("landing")
 
     order = get_object_or_404(Order, id=order_id)
 
