@@ -161,3 +161,16 @@ SESSION_EXPIRE_AT_BROWSER_CLOSE = False
 
 # Время жизни куки в секундах (2 недели)
 SESSION_COOKIE_AGE = 1209600  # 60 * 60 * 24 * 14 (секунд в двух неделях)
+
+
+MISTRAL_MODERATIONS_GRADES = {
+        'hate_and_discrimination': 0.2, # ненависть и дискриминация
+        'sexual': 0.2, # сексуальный
+        'violence_and_threats': 0.2, # насилие и угрозы
+        'dangerous_and_criminal_content': 0.2, # опасный и криминальный контент
+        'selfharm': 0.2, # самоповреждение
+        'health': 0.2, # здоровье
+        'financial': 0.2, # финансовый
+        'law': 0.2, # закон
+        'pii': 0.2, # личная информация
+}
