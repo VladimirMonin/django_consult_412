@@ -36,4 +36,4 @@ def moderate_review(review_text: str, api_key: str= MISTRAL_API_KEY, grades:dict
             checked_result[key] = value >= grades[key]
 
     # Если все категории в checked_result имеют значение True, то отзыв проходит модерацию
-    return all(checked_result.values())
+    return any(checked_result.values())
