@@ -3,7 +3,7 @@
 from .models import Order, Review
 from django.db.models.signals import post_save, m2m_changed
 from django.dispatch import receiver
-from .mistral import moderate_review
+from .mistral import is_bad_review
 # Импорт всего что нужно для работы бота
 from .telegram_bot import send_telegram_message
 from asyncio import run
@@ -20,11 +20,25 @@ def check_review_text(sender, instance, created, **kwargs):
     Если таких слов нет, то устанавливает is_published в True.
     """
     if created:
-        if not moderate_review(instance.text):
+        if not is_bad_review(instance.text):
             instance.is_published = True
             instance.save()
-            # Вывод в терминал 
-            print(f"Отзыв '{instance.client_name}' опубликован автоматически.")
+            # Тестовый timesleep
+            from time import sleep
+            sleep(10)
+            # Отправка в телеграм
+            message = f"""
+*Новый отзыв от клиента*
+*Имя:* {instance.client_name}
+*Текст:* {instance.text}
+*Оценка:* {instance.rating}
+*Ссылка на отзыв:* http://127.0.0.1:8000/admin/core/review/{instance.id}/change/
+
+#отзыв
+"""
+            run(send_telegram_message(TELEGRAM_BOT_API_KEY, TELEGRAM_USER_ID, message))
+        
+        
         else:
             instance.is_published = False
             instance.save()

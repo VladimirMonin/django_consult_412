@@ -11,7 +11,7 @@ load_dotenv()
 
 MISTRAL_API_KEY = os.getenv("MISTRAL_API_KEY")
 
-def moderate_review(review_text: str, api_key: str= MISTRAL_API_KEY, grades:dict =MISTRAL_MODERATIONS_GRADES) -> bool:
+def is_bad_review(review_text: str, api_key: str= MISTRAL_API_KEY, grades:dict =MISTRAL_MODERATIONS_GRADES) -> bool:
     # Создаем клиента Mistral с переданным API ключом
     client = Mistral(api_key=api_key)
 
@@ -35,5 +35,5 @@ def moderate_review(review_text: str, api_key: str= MISTRAL_API_KEY, grades:dict
         if key in grades:
             checked_result[key] = value >= grades[key]
 
-    # Если все категории в checked_result имеют значение True, то отзыв проходит модерацию
+    # Если одно из значений True, то отзыв не проходит модерацию
     return any(checked_result.values())
