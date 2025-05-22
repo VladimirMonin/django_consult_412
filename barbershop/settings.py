@@ -121,7 +121,34 @@ AUTH_PASSWORD_VALIDATORS = [
 # "ru" - это код языка, который используется для перевода текстов на русский язык.
 LANGUAGE_CODE = "ru"
 
-TIME_ZONE = "UTC"
+# Список часовых зон для этого параметра
+# Asia/Almaty - это код часовой зоны для Алматы, Казахстан.
+# Europe/Moscow - это код часовой зоны для Москвы, Россия.
+# Europe/Moscow (Москва)
+# Europe/Kaliningrad (Калининград)
+# Europe/Samara (Самара)
+# Europe/Volgograd (Волгоград)
+# Europe/Astrakhan (Астрахань)
+# Europe/Ulyanovsk (Ульяновск)
+# Asia/Yekaterinburg (Екатеринбург)
+# Asia/Omsk (Омск)
+# Asia/Novosibirsk (Новосибирск)
+# Asia/Barnaul (Барнаул)
+# Asia/Tomsk (Томск)
+# Asia/Novokuznetsk (Новокузнецк)
+# Asia/Krasnoyarsk (Красноярск)
+# Asia/Irkutsk (Иркутск)
+# Asia/Chita (Чита)
+# Asia/Yakutsk (Якутск)
+# Asia/Khandyga (Хандыга)
+# Asia/Vladivostok (Владивосток)
+# Asia/Ust-Nera (Усть-Нера)
+# Asia/Magadan (Магадан)
+# Asia/Sakhalin (Сахалин)
+# Asia/Srednekolymsk (Среднеколымск)
+# Asia/Kamchatka (Камчатка)
+# Asia/Anadyr (Анадырь)
+TIME_ZONE = "Asia/Almaty"
 
 USE_I18N = True
 

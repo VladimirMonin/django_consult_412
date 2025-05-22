@@ -1,10 +1,65 @@
+"""
+filter_horizontal — для выбора ManyToMany через горизонтальный список.
+filter_vertical — аналогично, но вертикальный список.
+raw_id_fields — для ForeignKey и ManyToMany, чтобы выбирать связанные объекты по ID (без выпадающего списка).
+autocomplete_fields — для ForeignKey и ManyToMany, чтобы выбирать связанные объекты через автодополнение (поиск).
+formfield_overrides — позволяет задать виджет для конкретного типа поля (например, для всех CharField использовать Textarea).
+form — можно указать свою форму (ModelForm) с любыми виджетами и логикой.
+readonly_fields — позволяет сделать поле только для чтения (например, для отображения картинки или вычисляемого значения).
+"""
+
 from django.contrib import admin
 from .models import Order, Master, Service, Review
 
 # Регистрация в одну строку
-admin.site.register(Order)
 admin.site.register(Service)
-admin.site.register(Review)
+
+# Класс OrderAdmin для кастомизации админки для модели Order
+class OrderAdmin(admin.ModelAdmin):
+    # Список отображаемых полей в админке
+    list_display = ("client_name", "phone", "status", "appointment_date", "master")
+    # Редактируемые поля в админке
+    list_editable = ("status", "master")
+    filter_horizontal = ("services",)
+    autocomplete_fields = ("master",)
+    # Поля, по которым можно будет искать
+    search_fields = ("client_name", "phone", "comment")
+    # Фильтры которые Django сделает автоматически сбоку
+    list_filter = ("status", "master", "appointment_date")
+
+    # Нередактируемые поля в админке
+    readonly_fields = ("date_created", "date_updated")
+
+
+    list_per_page = 25
+    actions = ("make_approved", "make_not_approved", "make_spam", "make_completed", "make_canceled")
+
+    # Кастомные действия 
+    @admin.action(description="Подтвердить")
+    def make_approved(self, request, queryset):
+        """Метод для подтверждения выбранных заказов"""
+        queryset.update(status="approved")
+
+    @admin.action(description="Не подтвержденные")
+    def make_not_approved(self, request, queryset):
+        """Метод для перевода выбранных заказов в статус "Не подтвержденные" """
+        queryset.update(status="not_approved")
+
+    @admin.action(description="Спам")
+    def make_spam(self, request, queryset):
+        """Метод для перевода выбранных заказов в статус "Спам" """
+        queryset.update(status="spam")
+
+    @admin.action(description="Завершить")
+    def make_completed(self, request, queryset):
+        """Метод для завершения выбранных заказов"""
+        queryset.update(status="completed")
+
+    @admin.action(description="Отменить")
+    def make_canceled(self, request, queryset):
+        """Метод для отмены выбранных заказов"""
+        queryset.update(status="canceled")
+
 
 # Класс для кастомного фильтра для фильтрации по рейтингу мастера
 # Создаем кастомный фильтр по рейтингу
@@ -72,6 +127,8 @@ class MasterAdmin(admin.ModelAdmin):
 
     # Кастомизация детального представления мастера
     readonly_fields = ("view_count",)
+    # Поле многие ко многим для услуг мастера 
+    filter_horizontal = ("services",)
 
 
     # Какое название будет у поля в админке
@@ -110,3 +167,5 @@ class MasterAdmin(admin.ModelAdmin):
 
     # Регистрация модели Master с кастомной админкой
 admin.site.register(Master, MasterAdmin)
+# Регистрация модели Order с кастомной админкой
+admin.site.register(Order, OrderAdmin)
