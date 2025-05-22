@@ -16,28 +16,29 @@ class Order(models.Model):
         ("completed", "Завершен"),
         ("canceled", "Отменен"),
     ]
-
-    client_name = models.CharField(max_length=100, db_index=True)
-    phone = models.CharField(max_length=20, db_index=True)
-    comment = models.TextField(blank=True, db_index=True)
+    # verboose_name - название модели в админке и в форме связанной с моделью
+    client_name = models.CharField(max_length=100, db_index=True, verbose_name="Имя клиента")
+    phone = models.CharField(max_length=20, db_index=True, verbose_name="Телефон клиента")
+    comment = models.TextField(blank=True, db_index=True, verbose_name="Комментарий клиента")
     # Для поля choices будет добавлен метод get_<field>_display() - в данном случае get_status_display() - возвращает человеческое название статуса
     status = models.CharField(
-        max_length=50, choices=STATUS_CHOICES, default="not_approved"
+        max_length=50, choices=STATUS_CHOICES, default="not_approved", verbose_name="Статус заказа"
     )
-    date_created = models.DateTimeField(auto_now_add=True, db_index=True)
-    date_updated = models.DateTimeField(auto_now=True)
+    date_created = models.DateTimeField(auto_now_add=True, db_index=True, verbose_name="Дата создания")
+    date_updated = models.DateTimeField(auto_now=True, verbose_name="Дата обновления")
     # Один ко многим
     master = models.ForeignKey(
-        "Master", on_delete=models.SET_NULL, null=True, related_name="orders"
+        "Master", on_delete=models.SET_NULL, null=True, related_name="orders", verbose_name="Мастер"
     )
-    services = models.ManyToManyField("Service", related_name="orders", blank=True)
+    services = models.ManyToManyField("Service", related_name="orders", blank=True, verbose_name="Услуги")
     # Дата времени, когда клиент хочет записаться на услугу
-    appointment_date = models.DateTimeField(blank=True, null=True)
+    appointment_date = models.DateTimeField(blank=True, null=True, verbose_name="Дата записи")
 
     def __str__(self):
         return f"Заказ {self.id} от {self.client_name}"
 
     class Meta:
+        # Название модели в админке в ед. числе и в множественном числе
         verbose_name = "Заказ"
         verbose_name_plural = "Заказы"
         # Сортировка по-умолчанию минус это по убыванию
@@ -59,22 +60,29 @@ class Order(models.Model):
 
 
 class Master(models.Model):
-    first_name = models.CharField(max_length=100, db_index=True)
-    last_name = models.CharField(max_length=100)
-    photo = models.ImageField(upload_to="images/masters/", blank=True, null=True)
-    phone = models.CharField(max_length=20, db_index=True)
-    address = models.CharField(max_length=255)
-    email = models.EmailField(blank=True)
-    experience = models.PositiveIntegerField()
+    first_name = models.CharField(max_length=100, db_index=True, verbose_name="Имя мастера")
+    last_name = models.CharField(max_length=100, verbose_name="Фамилия мастера")
+    photo = models.ImageField(upload_to="images/masters/", blank=True, null=True, verbose_name="Фото мастера")
+    phone = models.CharField(max_length=20, db_index=True, verbose_name="Телефон мастера")
+    address = models.CharField(max_length=255, verbose_name="Адрес мастера")
+    email = models.EmailField(blank=True, verbose_name="Email мастера")
+    experience = models.PositiveIntegerField(verbose_name="Опыт работы (лет)")
     # Многие ко многим
-    services = models.ManyToManyField("Service", related_name="masters")
-    is_active = models.BooleanField(default=True)
+    services = models.ManyToManyField("Service", related_name="masters", verbose_name="Услуги мастера")
+    is_active = models.BooleanField(default=True, verbose_name="Активен")
     view_count = models.PositiveIntegerField(
         default=0, verbose_name="Количество просмотров"
     )
 
     def __str__(self):
         return f"{self.first_name} {self.last_name}"
+    
+    class Meta:
+        # Название модели в админке в ед. числе и в множественном числе
+        verbose_name = "Мастер"
+        verbose_name_plural = "Мастера"
+        # Сортировка по-умолчанию минус это по убыванию
+        ordering = ["experience"]
 
 
 class Service(models.Model):

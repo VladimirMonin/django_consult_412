@@ -116,7 +116,9 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/5.1/topics/i18n/
 
-LANGUAGE_CODE = "en-us"
+# "en-us" - это код языка, который используется в проекте. Он указывает, что язык по умолчанию - английский (США).
+# "ru" - это код языка, который используется для перевода текстов на русский язык.
+LANGUAGE_CODE = "ru"
 
 TIME_ZONE = "UTC"
 
