@@ -113,6 +113,21 @@ files = [
 django = ">=4.2"
 
 [[package]]
+name = "django-jazzmin"
+version = "3.0.1"
+description = "Drop-in theme for django admin, that utilises AdminLTE 3 & Bootstrap 4 to make yo' admin look jazzy"
+optional = false
+python-versions = ">=3.8"
+groups = ["main"]
+files = [
+    {file = "django_jazzmin-3.0.1-py3-none-any.whl", hash = "sha256:12a0a4c1d4fd09c2eef22acf6a1f03112b515ba695c59faa8ea80efc81c1f21b"},
+    {file = "django_jazzmin-3.0.1.tar.gz", hash = "sha256:67ae148bade41267a09ca8e4352ddefa6121795ebbac238bb9a6564ff841eb1b"},
+]
+
+[package.dependencies]
+django = ">=4.2"
+
+[[package]]
 name = "eval-type-backport"
 version = "0.2.2"
 description = "Like `typing._eval_type`, but lets older Python versions use newer typing features."
@@ -627,4 +642,4 @@ files = [
 [metadata]
 lock-version = "2.1"
 python-versions = "^3.13.2"
-content-hash = "62868441f2fb3fec1af99e0c9fb122030455c1c418c3ec118ff005595840b989"
+content-hash = "d0becca15ea84978c81c5f938edcc62e83cadabbaf6e33b9be377f6497c788cb"
