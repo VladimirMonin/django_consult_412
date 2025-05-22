@@ -67,8 +67,13 @@ class MasterAdmin(admin.ModelAdmin):
     list_editable = ("is_active", "experience")
     # Подключение кастомных действий
     actions = ("make_active", "make_inactive")
+    # Настройка для пагинатора (сколько мастеров на одной странице)
+    list_per_page = 25
 
-    
+    # Кастомизация детального представления мастера
+    readonly_fields = ("view_count",)
+
+
     # Какое название будет у поля в админке
     @admin.display(description="Средняя оценка")
     def avg_rating_display(self, obj) -> str:
