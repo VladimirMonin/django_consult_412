@@ -63,6 +63,10 @@ class MasterAdmin(admin.ModelAdmin):
     search_fields = ("first_name", "last_name", "phone")
     # Порядок сортировки
     ordering = ("last_name", "first_name")
+    # Редактируемые поля в админке (не должны быть в list_display_links)
+    list_editable = ("is_active", "experience")
+    # Подключение кастомных действий
+    actions = ("make_active", "make_inactive")
 
     
     # Какое название будет у поля в админке
@@ -85,7 +89,19 @@ class MasterAdmin(admin.ModelAdmin):
             return "⭐⭐⭐⭐⭐"
         else:
             return "❌"
+        
+    # Кастомное действие для админки (Сделать Активным)
+
+    @admin.action(description="Сделать активными")
+    def make_active(self, request, queryset):
+        """Метод для активации выбранных мастеров"""
+        queryset.update(is_active=True)
+
+    @admin.action(description="Сделать неактивными")
+    def make_inactive(self, request, queryset):
+        """Метод для деактивации выбранных мастеров"""
+        queryset.update(is_active=False)
 
 
-# Регистрация модели Master с кастомной админкой
+    # Регистрация модели Master с кастомной админкой
 admin.site.register(Master, MasterAdmin)
