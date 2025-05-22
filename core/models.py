@@ -74,6 +74,19 @@ class Master(models.Model):
         default=0, verbose_name="Количество просмотров"
     )
 
+    def avg_rating(self)-> float:
+        """Вычисляет среднюю оценку мастера на основе опубликованных отзывов"""
+    # Получаем только опубликованные отзывы
+        published_reviews = self.reviews.filter(is_published=True)
+        
+        # Проверяем, есть ли отзывы
+        if published_reviews.exists():
+            # Вычисляем среднее значение и округляем до 1 знака после запятой
+            return round(sum(review.rating for review in published_reviews) / published_reviews.count(), 1)
+        else:
+            # Если отзывов нет, возвращаем 0 или None
+            return 0.0
+
     def __str__(self):
         return f"{self.first_name} {self.last_name}"
     
