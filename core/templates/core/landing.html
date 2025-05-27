@@ -46,18 +46,25 @@
         <h2 class="text-center mb-5">Наши мастера</h2>
         <div class="row row-cols-1 row-cols-md-3 g-4">            {% for master in masters %}
             <div class="col">
-                <div class="card h-100 border-0 shadow-sm">
+                <div class="card h-100 border-0 shadow-sm {% if not master.is_active %}border-warning{% endif %}">
                     <div class="card-body text-center">
+                        {# Плашка "В отпуске" для неактивных мастеров #}
+                        {% if not master.is_active %}
+                        <div class="badge bg-warning text-dark mb-2 fs-6">
+                            <i class="bi bi-calendar-x me-1"></i>В отпуске
+                        </div>
+                        {% endif %}
+                        
                         {# Если есть фото мастера, показываем его #}
                         {% if master.photo %}
                         <div class="rounded-circle overflow-hidden mb-3 mx-auto" style="width: 150px; height: 150px;">
                             <img src="{{ master.photo.url }}" alt="{{ master.first_name }} {{ master.last_name }}" 
-                                 class="img-fluid w-100 h-100 object-fit-cover">
+                                 class="img-fluid w-100 h-100 object-fit-cover{% if not master.is_active %} opacity-75{% endif %}">
                         </div>
                         {% endif %}
-                        <h5 class="card-title">{{ master.first_name }} {{ master.last_name }}</h5>
-                        <p class="card-text">Опыт работы: {{ master.experience }} лет</p>
-                        <a href="{% url 'master_detail' master_id=master.id %}" class="btn btn-outline-dark mt-2">
+                        <h5 class="card-title{% if not master.is_active %} text-muted{% endif %}">{{ master.first_name }} {{ master.last_name }}</h5>
+                        <p class="card-text{% if not master.is_active %} text-muted{% endif %}">Опыт работы: {{ master.experience }} лет</p>
+                        <a href="{% url 'master_detail' master_id=master.id %}" class="btn {% if master.is_active %}btn-outline-dark{% else %}btn-outline-secondary{% endif %} mt-2">
                             <i class="bi bi-info-circle me-1"></i> Подробнее
                         </a>
                     </div>

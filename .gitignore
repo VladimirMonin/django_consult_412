@@ -5,6 +5,7 @@ db.sqlite3
 .env
 notes/images/*
 media/images/services/*
-
+media/images/*
 db.sqlite3-wal
 db.sqlite3-shm
+notes/mark.md

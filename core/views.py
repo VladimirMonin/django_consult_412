@@ -15,8 +15,8 @@ import json
 
 
 def landing(request):
-    # Получаем список активных мастеров из базы данных
-    masters_db = Master.objects.filter(is_active=True)
+    # Получаем всех мастеров из базы данных (включая неактивных)
+    masters_db = Master.objects.all()
 
     # Получаем все услуги из базы данных вместо только популярных
     all_services = Service.objects.all()
@@ -83,12 +83,17 @@ def master_detail(request, master_id):
     return render(request, "core/master_detail.html", context)
 
 
-def thanks(request):
+def thanks(request, source=None):
+    """
+    Страница благодарности с поддержкой разных источников перехода
+    source может быть 'order' (из формы заказа) или 'review' (из формы отзыва)
+    """
     # Получаем количество активных мастеров из базы данных
     masters_count = Master.objects.filter(is_active=True).count()
 
     context = {
         "masters_count": masters_count,
+        "source": source,  # Передаем источник в шаблон
     }
 
     return render(request, "core/thanks.html", context)
@@ -303,10 +308,10 @@ def order_create(request):
             form.save()
             client_name = form.cleaned_data.get("client_name")
             # Даем пользователю уведомление об успешном создании
-            messages.success(request, f"Заказ для {client_name} успешно создан!")
-
-            # Перенаправляем на страницу со всеми заказами
-            return redirect("thanks")
+            messages.success(
+                request, f"Заказ для {client_name} успешно создан!"
+            )  # Перенаправляем на страницу благодарности с указанием источника
+            return redirect("thanks_with_source", source="order")
 
         # В случае ошибок валидации Django автоматически заполнит form.errors
         # и отобразит их в шаблоне, поэтому просто возвращаем форму
@@ -357,10 +362,8 @@ def create_review(request):
             messages.success(
                 request,
                 "Ваш отзыв успешно добавлен! Он будет опубликован после проверки модератором.",
-            )
-
-            # Перенаправляем на страницу благодарности
-            return redirect("thanks")
+            )  # Перенаправляем на страницу благодарности с указанием источника
+            return redirect("thanks_with_source", source="review")
 
         # В случае ошибок валидации возвращаем форму с ошибками
         context = {

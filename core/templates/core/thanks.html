@@ -4,9 +4,11 @@
     <div class="row justify-content-center">
         <div class="col-md-8">
             <div class="card shadow-lg">
-                <div class="card-body text-center py-5">
-                    <i class="bi bi-check-circle-fill text-success display-1 mb-4"></i>
+                <div class="card-body text-center py-5">                    <i class="bi bi-check-circle-fill text-success display-1 mb-4"></i>
                     <h1 class="display-4 mb-4">Спасибо!</h1>
+                    
+                    {% if source == "order" %}
+                    <!-- Текст для создания заказа -->
                     <p class="lead">
                         Ваша заявка успешно принята. Один из наших {{ masters_count }} мастеров 
                         будет рад встретить вас в ближайшее время!
@@ -15,6 +17,27 @@
                     <p class="text-muted">
                         Мы свяжемся с вами для подтверждения записи.
                     </p>
+                    {% elif source == "review" %}
+                    <!-- Текст для отзыва -->
+                    <p class="lead">
+                        Ваш отзыв успешно отправлен! Мы ценим ваше мнение и обязательно 
+                        учтем его для улучшения нашего сервиса.
+                    </p>
+                    <hr class="my-4">
+                    <p class="text-muted">
+                        После модерации отзыв будет опубликован на нашем сайте.
+                    </p>
+                    {% else %}
+                    <!-- Универсальный текст по умолчанию -->
+                    <p class="lead">
+                        Ваша заявка успешно принята. Один из наших {{ masters_count }} мастеров 
+                        будет рад встретить вас в ближайшее время!
+                    </p>
+                    <hr class="my-4">
+                    <p class="text-muted">
+                        Мы свяжемся с вами для подтверждения записи.
+                    </p>
+                    {% endif %}
                     <a href="{% url 'landing' %}" class="btn btn-dark btn-lg mt-3">
                         <i class="bi bi-house-door me-2"></i>
                         На главную

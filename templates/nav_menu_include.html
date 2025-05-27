@@ -25,23 +25,24 @@
           <a class="nav-link active" aria-current="page" href="{% url 'landing' %}#services"
             >Услуги</a
           >
-        </li>
-        <li class="nav-item">
+        </li>        <li class="nav-item">
           <a class="nav-link active" aria-current="page" href="{% url 'landing' %}#masters"
             >Мастера</a
           >
         </li>
         <li class="nav-item">
-          <a class="nav-link active" aria-current="page" href="{% url 'landing' %}#booking"
+          <a class="nav-link active" aria-current="page" href="{% url 'order_create' %}"
             >Запись</a
           >
         </li>
       </ul>
-      
-      <!-- Блок авторизации пользователя -->
+        <!-- Блок авторизации пользователя -->
       <div class="navbar-nav">
         {% if user.is_authenticated %}
           <span class="nav-item nav-link">{{ user.username }}</span>
+          <a href="http://127.0.0.1:8000/admin/logout/" class="nav-link">
+            <i class="bi bi-box-arrow-left" title="Выход"></i>
+          </a>
         {% else %}
           <a href="{% url 'admin:index' %}" class="nav-link">
             <i class="bi bi-box-arrow-in-right" title="Вход"></i>
