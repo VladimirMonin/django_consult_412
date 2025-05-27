@@ -4,11 +4,18 @@
     - service: объект услуги
 {% endcomment %}
 
-<div class="card h-100 shadow-sm {% if service.is_popular %}border-warning{% endif %}">
-    {% if service.is_popular %}
-    <div class="position-absolute top-0 end-0 p-2">
+<div class="card h-100 shadow-sm {% if service.is_popular %}border-warning{% endif %}">    {% if service.is_popular %}
+    <!-- Полная версия для десктопа и планшета (lg и больше) -->
+    <div class="position-absolute top-0 end-0 p-2 d-none d-lg-block">
         <span class="badge bg-warning text-dark">
             <i class="bi bi-star-fill me-1"></i> Популярная
+        </span>
+    </div>
+    
+    <!-- Сокращенная версия только со звездочкой для мобильных (меньше md) -->
+    <div class="position-absolute top-0 end-0 p-2 d-block d-lg-none">
+        <span class="badge bg-warning text-dark">
+            <i class="bi bi-star-fill"></i>
         </span>
     </div>
     {% endif %}
@@ -20,9 +27,8 @@
     <div class="card-body">
         <h5 class="card-title">{{ service.name }}</h5>
         <p class="card-text">{{ service.description|truncatechars:100 }}</p>
-    </div>
-    <div class="card-footer d-flex justify-content-between align-items-center">
-        <span class="text-primary fw-bold">{{ service.price }} руб.</span>
+    </div>    <div class="card-footer d-flex justify-content-between align-items-center">
+        <span class="text-dark fw-bold">{{ service.price }} руб.</span>
         <span class="text-muted small"><i class="bi bi-clock me-1"></i>{{ service.duration }} мин.</span>
     </div>
 </div>

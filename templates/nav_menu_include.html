@@ -39,7 +39,10 @@
         <!-- Блок авторизации пользователя -->
       <div class="navbar-nav">
         {% if user.is_authenticated %}
-          <span class="nav-item nav-link">{{ user.username }}</span>
+            <a href="{% url 'admin:index' %}" class="nav-link">
+                <i class="bi bi-person-circle" title="Профиль"></i>
+          <span class="nav-item nav-link"></span>
+          </a>
           <a href="http://127.0.0.1:8000/admin/logout/" class="nav-link">
             <i class="bi bi-box-arrow-left" title="Выход"></i>
           </a>
