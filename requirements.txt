@@ -1,0 +1,9 @@
+django
+mistralai
+markdown
+python-dotenv
+django-extensions
+pillow
+django-debug-toolbar
+python-telegram-bot
+django-jazzmin
