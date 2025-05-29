@@ -29,6 +29,8 @@ ALLOWED_HOSTS = [
     'localhost',  # Для локальной разработки
     '127.0.0.1',  # Для локальной разработки
     '0.0.0.0',
+    'exception-blog.ru'
+    'www.exception-blog.ru',
 ]
 
 # ...existing code...
@@ -40,6 +42,8 @@ CSRF_TRUSTED_ORIGINS = [
     'http://vladimirmonin-django-consult-412-1cdd.twc1.net',
     'https://www.vladimirmonin-django-consult-412-1cdd.twc1.net',
     'http://www.vladimirmonin-django-consult-412-1cdd.twc1.net',
+    'https://exception-blog.ru',
+    'http://exception-blog.ru',
 
 ]
 
