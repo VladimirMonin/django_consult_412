@@ -23,14 +23,14 @@ DEBUG = True
 
 # Добавляем разрешенные хосты для нашего домена и IP
 ALLOWED_HOSTS = [
-    'vladimirmonin-django-consult-412-1cdd.twc1.net',  # Основной домен
-    'www.vladimirmonin-django-consult-412-1cdd.twc1.net',  # С www
-    '37.220.80.53',  # Публичный IP
-    'localhost',  # Для локальной разработки
-    '127.0.0.1',  # Для локальной разработки
-    '0.0.0.0',
-    'exception-blog.ru'
-    'www.exception-blog.ru',
+    "vladimirmonin-django-consult-412-1cdd.twc1.net",  # Основной домен
+    "www.vladimirmonin-django-consult-412-1cdd.twc1.net",  # С www
+    "37.220.80.53",  # Публичный IP
+    "localhost",  # Для локальной разработки
+    "127.0.0.1",  # Для локальной разработки
+    "0.0.0.0",
+    "exception-blog.ru",
+    "www.exception-blog.ru",
 ]
 
 # ...existing code...
@@ -38,13 +38,13 @@ ALLOWED_HOSTS = [
 # Настройки безопасности для продакшена
 # Настройки CSRF для разрешения запросов с нашего домена
 CSRF_TRUSTED_ORIGINS = [
-    'https://vladimirmonin-django-consult-412-1cdd.twc1.net',
-    'http://vladimirmonin-django-consult-412-1cdd.twc1.net',
-    'https://www.vladimirmonin-django-consult-412-1cdd.twc1.net',
-    'http://www.vladimirmonin-django-consult-412-1cdd.twc1.net',
-    'https://exception-blog.ru',
-    'http://exception-blog.ru',
-
+    "https://vladimirmonin-django-consult-412-1cdd.twc1.net",
+    "http://vladimirmonin-django-consult-412-1cdd.twc1.net",
+    "https://www.vladimirmonin-django-consult-412-1cdd.twc1.net",
+    "http://www.vladimirmonin-django-consult-412-1cdd.twc1.net",
+    "https://exception-blog.ru",
+    "http://exception-blog.ru",
+    "https://www.exception-blog.ru",
 ]
 
 
@@ -206,15 +206,15 @@ SESSION_COOKIE_AGE = 1209600  # 60 * 60 * 24 * 14 (секунд в двух не
 
 
 MISTRAL_MODERATIONS_GRADES = {
-        'hate_and_discrimination': 0.1, # ненависть и дискриминация
-        'sexual': 0.1, # сексуальный
-        'violence_and_threats': 0.1, # насилие и угрозы
-        'dangerous_and_criminal_content': 0.1, # опасный и криминальный контент
-        'selfharm': 0.1, # самоповреждение
-        'health': 0.1, # здоровье
-        'financial': 0.1, # финансовый
-        'law': 0.1, # закон
-        'pii': 0.1, # личная информация
+    "hate_and_discrimination": 0.1,  # ненависть и дискриминация
+    "sexual": 0.1,  # сексуальный
+    "violence_and_threats": 0.1,  # насилие и угрозы
+    "dangerous_and_criminal_content": 0.1,  # опасный и криминальный контент
+    "selfharm": 0.1,  # самоповреждение
+    "health": 0.1,  # здоровье
+    "financial": 0.1,  # финансовый
+    "law": 0.1,  # закон
+    "pii": 0.1,  # личная информация
 }
 
 
