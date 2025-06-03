@@ -20,8 +20,7 @@ class UserLoginForm(AuthenticationForm):
 class UserRegisterForm(UserCreationForm):
     email = forms.EmailField(
         widget=forms.EmailInput(attrs={'class': 'form-control mb-2', 'placeholder': 'Email'}),
-        required=True, # Делаем email обязательным
-        help_text="Обязательное поле."
+        required=True # Делаем email обязательным
     )
 
     class Meta: # Убрали наследование от UserCreationForm.Meta
@@ -43,6 +42,10 @@ class UserRegisterForm(UserCreationForm):
             'class': 'form-control',
             'placeholder': 'Повторите пароль'
         })
+        # Убираем help_text для стандартных полей циклом
+        for field_name in ('username', 'password1', 'password2'):
+            if self.fields.get(field_name): # Проверяем, существует ли поле
+                self.fields[field_name].help_text = ''
     
     def save(self, commit=True):
         user = super().save(commit=False)
