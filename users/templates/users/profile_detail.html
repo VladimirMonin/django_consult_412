@@ -26,9 +26,7 @@
         {% endif %}
 
         {% if is_own_profile %}
-            {# Кнопка редактирования будет добавлена на этапе 10 #}
-            {# Например: <a href="{% url 'users:profile_edit' %}" class="btn btn-primary mt-3">Редактировать профиль</a> #}
-            <p class="mt-3"><small><em>(Возможность редактирования будет добавлена)</em></small></p>
+            <a href="{% url 'users:profile_edit' %}" class="btn btn-primary mt-3">Редактировать профиль</a>
         {% endif %}
     </div>
 </div>

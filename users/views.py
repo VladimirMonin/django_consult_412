@@ -2,7 +2,7 @@
 from django.views.generic import DetailView # Добавлен DetailView
 from django.contrib.auth.mixins import LoginRequiredMixin # Для CBV
 from django.contrib.auth.views import LoginView, LogoutView, PasswordChangeView # Добавлен PasswordChangeView
-from django.views.generic.edit import CreateView
+from django.views.generic.edit import CreateView, UpdateView # Добавлен UpdateView
 from django.contrib.auth import login  # для автоматического входа после регистрации
 from django.urls import reverse_lazy
 from django.contrib import messages
@@ -122,4 +122,29 @@ class UserPasswordChangeView(LoginRequiredMixin, PasswordChangeView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['title'] = 'Смена пароля'
+        return context
+
+
+class UserProfileUpdateView(LoginRequiredMixin, UpdateView):
+    model = User
+    form_class = UserProfileUpdateForm # Используем существующую форму
+    template_name = 'users/profile_update_form.html' # Новый шаблон для формы редактирования
+    # context_object_name = 'user_profile' # Можно задать, если нужно другое имя в шаблоне
+
+    def get_object(self, queryset=None):
+        # UpdateView будет редактировать только текущего пользователя
+        return self.request.user
+
+    def get_success_url(self):
+        messages.success(self.request, 'Ваш профиль успешно обновлен.')
+        # После обновления перенаправляем на страницу просмотра своего профиля
+        return reverse_lazy('users:profile_detail', kwargs={'pk': self.request.user.pk})
+
+    def form_invalid(self, form):
+        messages.error(self.request, 'Пожалуйста, исправьте ошибки в форме.')
+        return super().form_invalid(form)
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['title'] = 'Редактирование профиля'
         return context
