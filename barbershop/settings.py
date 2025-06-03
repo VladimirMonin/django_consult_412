@@ -191,7 +191,9 @@ MEDIA_ROOT = BASE_DIR / "media"
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 # Настройка маршрут для авторизации
-LOGIN_URL = "/admin/"
+LOGIN_URL = 'users:login'  # Имя маршрута для страницы входа
+LOGIN_REDIRECT_URL = 'landing'  # Куда перенаправлять после успешного входа (если не указано в LoginView)
+LOGOUT_REDIRECT_URL = 'landing' # Куда перенаправлять после выхода (используется LogoutView, если next_page не задан)
 
 # Настройка для отладки в локальной сети
 INTERNAL_IPS = [
