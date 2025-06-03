@@ -61,7 +61,7 @@ INSTALLED_APPS = [
     "django_extensions",
     "debug_toolbar",
     "core",
-    "users", # Добавили наше новое приложение
+    "users.apps.UsersConfig", # Добавили наше новое приложение
 ]
 
 MIDDLEWARE = [
@@ -220,6 +220,7 @@ MISTRAL_MODERATIONS_GRADES = {
     "pii": 0.1,  # личная информация
 }
 
+AUTH_USER_MODEL = 'users.User'
 
 TELEGRAM_BOT_API_KEY = os.getenv("TELEGRAM_BOT_API_KEY")
 TELEGRAM_USER_ID = os.getenv("TELEGRAM_USER_ID")
