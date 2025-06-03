@@ -12,4 +12,6 @@ urlpatterns = [
     path('profile/<int:pk>/', views.UserProfileDetailView.as_view(), name='profile_detail'),
     # Обновленный маршрут для смены пароля
     path('password_change/', views.UserPasswordChangeView.as_view(), name='password_change'),
+    # Новый маршрут для редактирования профиля
+    path('profile/edit/', views.UserProfileUpdateView.as_view(), name='profile_edit'),
 ]
