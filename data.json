@@ -1,0 +1,1450 @@
+[
+{
+  "model": "admin.logentry",
+  "pk": 1,
+  "fields": {
+    "action_time": "2025-04-10T18:20:45.819Z",
+    "user": 1,
+    "content_type": 9,
+    "object_id": "3",
+    "object_repr": "Service object (3)",
+    "action_flag": 1,
+    "change_message": "[{\"added\": {}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 2,
+  "fields": {
+    "action_time": "2025-04-10T18:20:53.011Z",
+    "user": 1,
+    "content_type": 9,
+    "object_id": "3",
+    "object_repr": "Service object (3)",
+    "action_flag": 2,
+    "change_message": "[{\"changed\": {\"fields\": [\"\\u0418\\u0437\\u043e\\u0431\\u0440\\u0430\\u0436\\u0435\\u043d\\u0438\\u0435 \\u0443\\u0441\\u043b\\u0443\\u0433\\u0438\"]}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 3,
+  "fields": {
+    "action_time": "2025-04-15T16:08:39.081Z",
+    "user": 1,
+    "content_type": 7,
+    "object_id": "2",
+    "object_repr": "Order object (2)",
+    "action_flag": 1,
+    "change_message": "[{\"added\": {}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 4,
+  "fields": {
+    "action_time": "2025-04-15T16:15:56.546Z",
+    "user": 1,
+    "content_type": 7,
+    "object_id": "2",
+    "object_repr": "Order object (2)",
+    "action_flag": 2,
+    "change_message": "[{\"changed\": {\"fields\": [\"Services\", \"Appointment date\"]}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 5,
+  "fields": {
+    "action_time": "2025-04-15T16:16:08.616Z",
+    "user": 1,
+    "content_type": 7,
+    "object_id": "1",
+    "object_repr": "Order object (1)",
+    "action_flag": 2,
+    "change_message": "[{\"changed\": {\"fields\": [\"Status\", \"Services\", \"Appointment date\"]}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 6,
+  "fields": {
+    "action_time": "2025-04-15T16:22:46.752Z",
+    "user": 1,
+    "content_type": 7,
+    "object_id": "2",
+    "object_repr": "Заказ 2 от Филлип Киркоров",
+    "action_flag": 2,
+    "change_message": "[{\"changed\": {\"fields\": [\"Services\"]}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 7,
+  "fields": {
+    "action_time": "2025-04-15T16:36:52.242Z",
+    "user": 1,
+    "content_type": 7,
+    "object_id": "3",
+    "object_repr": "Заказ 3 от Шмелев",
+    "action_flag": 1,
+    "change_message": "[{\"added\": {}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 8,
+  "fields": {
+    "action_time": "2025-04-29T17:33:31.688Z",
+    "user": 1,
+    "content_type": 9,
+    "object_id": "1",
+    "object_repr": "услуга 5555 - 1005.00 руб.",
+    "action_flag": 2,
+    "change_message": "[{\"changed\": {\"fields\": [\"\\u041d\\u0430\\u0437\\u0432\\u0430\\u043d\\u0438\\u0435 \\u0443\\u0441\\u043b\\u0443\\u0433\\u0438\", \"\\u0418\\u0437\\u043e\\u0431\\u0440\\u0430\\u0436\\u0435\\u043d\\u0438\\u0435 \\u0443\\u0441\\u043b\\u0443\\u0433\\u0438\"]}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 9,
+  "fields": {
+    "action_time": "2025-04-29T17:44:55.923Z",
+    "user": 1,
+    "content_type": 9,
+    "object_id": "1",
+    "object_repr": "услуга 5555 - 1005.00 руб.",
+    "action_flag": 2,
+    "change_message": "[{\"changed\": {\"fields\": [\"\\u0418\\u0437\\u043e\\u0431\\u0440\\u0430\\u0436\\u0435\\u043d\\u0438\\u0435 \\u0443\\u0441\\u043b\\u0443\\u0433\\u0438\"]}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 10,
+  "fields": {
+    "action_time": "2025-05-15T13:25:58.790Z",
+    "user": 1,
+    "content_type": 9,
+    "object_id": "9",
+    "object_repr": "услуга 5555 - 1005.00 руб.",
+    "action_flag": 3,
+    "change_message": ""
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 11,
+  "fields": {
+    "action_time": "2025-05-15T13:25:58.790Z",
+    "user": 1,
+    "content_type": 9,
+    "object_id": "8",
+    "object_repr": "услуга 1 - 1005.00 руб.",
+    "action_flag": 3,
+    "change_message": ""
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 12,
+  "fields": {
+    "action_time": "2025-05-15T13:25:58.790Z",
+    "user": 1,
+    "content_type": 9,
+    "object_id": "7",
+    "object_repr": "Модель форм - 222.00 руб.",
+    "action_flag": 3,
+    "change_message": ""
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 13,
+  "fields": {
+    "action_time": "2025-05-15T13:25:58.790Z",
+    "user": 1,
+    "content_type": 9,
+    "object_id": "6",
+    "object_repr": "тест 1 - 1.00 руб.",
+    "action_flag": 3,
+    "change_message": ""
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 14,
+  "fields": {
+    "action_time": "2025-05-15T13:25:58.790Z",
+    "user": 1,
+    "content_type": 9,
+    "object_id": "5",
+    "object_repr": "тест формы 1 - 1.00 руб.",
+    "action_flag": 3,
+    "change_message": ""
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 15,
+  "fields": {
+    "action_time": "2025-05-15T13:25:58.790Z",
+    "user": 1,
+    "content_type": 9,
+    "object_id": "4",
+    "object_repr": "Тест услуга 4 - 444.00 руб.",
+    "action_flag": 3,
+    "change_message": ""
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 16,
+  "fields": {
+    "action_time": "2025-05-15T13:25:58.790Z",
+    "user": 1,
+    "content_type": 9,
+    "object_id": "3",
+    "object_repr": "Полировка лысых - 1000.00 руб.",
+    "action_flag": 3,
+    "change_message": ""
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 17,
+  "fields": {
+    "action_time": "2025-05-15T13:25:58.790Z",
+    "user": 1,
+    "content_type": 9,
+    "object_id": "2",
+    "object_repr": "Услуга 2 - 2000.00 руб.",
+    "action_flag": 3,
+    "change_message": ""
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 18,
+  "fields": {
+    "action_time": "2025-05-15T13:25:58.790Z",
+    "user": 1,
+    "content_type": 9,
+    "object_id": "1",
+    "object_repr": "услуга 5555 - 1005.00 руб.",
+    "action_flag": 3,
+    "change_message": ""
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 19,
+  "fields": {
+    "action_time": "2025-05-15T13:26:18.300Z",
+    "user": 1,
+    "content_type": 9,
+    "object_id": "10",
+    "object_repr": "Бритье бороды - 100 руб.",
+    "action_flag": 1,
+    "change_message": "[{\"added\": {}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 20,
+  "fields": {
+    "action_time": "2025-05-15T13:26:32.435Z",
+    "user": 1,
+    "content_type": 9,
+    "object_id": "11",
+    "object_repr": "Бритье головы - 1000 руб.",
+    "action_flag": 1,
+    "change_message": "[{\"added\": {}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 21,
+  "fields": {
+    "action_time": "2025-05-15T13:26:34.331Z",
+    "user": 1,
+    "content_type": 8,
+    "object_id": "2",
+    "object_repr": "Александр Бородач",
+    "action_flag": 2,
+    "change_message": "[{\"changed\": {\"fields\": [\"Services\"]}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 22,
+  "fields": {
+    "action_time": "2025-05-15T13:26:49.194Z",
+    "user": 1,
+    "content_type": 9,
+    "object_id": "12",
+    "object_repr": "Покраска бороды - 300 руб.",
+    "action_flag": 1,
+    "change_message": "[{\"added\": {}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 23,
+  "fields": {
+    "action_time": "2025-05-15T13:27:08.767Z",
+    "user": 1,
+    "content_type": 9,
+    "object_id": "13",
+    "object_repr": "Покраска бровей - 200 руб.",
+    "action_flag": 1,
+    "change_message": "[{\"added\": {}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 24,
+  "fields": {
+    "action_time": "2025-05-15T13:27:11.744Z",
+    "user": 1,
+    "content_type": 8,
+    "object_id": "1",
+    "object_repr": "Алефтина Арбузова",
+    "action_flag": 2,
+    "change_message": "[{\"changed\": {\"fields\": [\"Services\"]}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 25,
+  "fields": {
+    "action_time": "2025-05-15T14:26:19.115Z",
+    "user": 1,
+    "content_type": 8,
+    "object_id": "1",
+    "object_repr": "Алефтина Арбузова",
+    "action_flag": 2,
+    "change_message": "[{\"changed\": {\"fields\": [\"\\u041a\\u043e\\u043b\\u0438\\u0447\\u0435\\u0441\\u0442\\u0432\\u043e \\u043f\\u0440\\u043e\\u0441\\u043c\\u043e\\u0442\\u0440\\u043e\\u0432\"]}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 26,
+  "fields": {
+    "action_time": "2025-05-15T14:26:20.298Z",
+    "user": 1,
+    "content_type": 8,
+    "object_id": "1",
+    "object_repr": "Алефтина Арбузова",
+    "action_flag": 2,
+    "change_message": "[]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 27,
+  "fields": {
+    "action_time": "2025-05-15T15:58:21.424Z",
+    "user": 1,
+    "content_type": 10,
+    "object_id": "2",
+    "object_repr": "Отзыв от Леголас о мастере Алефтина Арбузова",
+    "action_flag": 2,
+    "change_message": "[{\"changed\": {\"fields\": [\"\\u041e\\u043f\\u0443\\u0431\\u043b\\u0438\\u043a\\u043e\\u0432\\u0430\\u043d\"]}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 28,
+  "fields": {
+    "action_time": "2025-05-22T17:08:56.566Z",
+    "user": 1,
+    "content_type": 8,
+    "object_id": "1",
+    "object_repr": "Алефтина Арбузова",
+    "action_flag": 2,
+    "change_message": "[{\"changed\": {\"fields\": [\"\\u0410\\u043a\\u0442\\u0438\\u0432\\u0435\\u043d\"]}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 29,
+  "fields": {
+    "action_time": "2025-05-22T17:09:10.972Z",
+    "user": 1,
+    "content_type": 8,
+    "object_id": "1",
+    "object_repr": "Алефтина Арбузова",
+    "action_flag": 2,
+    "change_message": "[{\"changed\": {\"fields\": [\"\\u0410\\u043a\\u0442\\u0438\\u0432\\u0435\\u043d\"]}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 30,
+  "fields": {
+    "action_time": "2025-05-22T17:10:39.776Z",
+    "user": 1,
+    "content_type": 8,
+    "object_id": "1",
+    "object_repr": "Алефтина Арбузова",
+    "action_flag": 2,
+    "change_message": "[{\"changed\": {\"fields\": [\"\\u041e\\u043f\\u044b\\u0442 \\u0440\\u0430\\u0431\\u043e\\u0442\\u044b (\\u043b\\u0435\\u0442)\"]}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 31,
+  "fields": {
+    "action_time": "2025-05-22T17:10:39.777Z",
+    "user": 1,
+    "content_type": 8,
+    "object_id": "2",
+    "object_repr": "Александр Бородач",
+    "action_flag": 2,
+    "change_message": "[{\"changed\": {\"fields\": [\"\\u041e\\u043f\\u044b\\u0442 \\u0440\\u0430\\u0431\\u043e\\u0442\\u044b (\\u043b\\u0435\\u0442)\"]}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 32,
+  "fields": {
+    "action_time": "2025-05-22T17:17:43.996Z",
+    "user": 1,
+    "content_type": 8,
+    "object_id": "1",
+    "object_repr": "Алефтина Арбузова",
+    "action_flag": 2,
+    "change_message": "[{\"changed\": {\"fields\": [\"\\u0410\\u043a\\u0442\\u0438\\u0432\\u0435\\u043d\"]}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 33,
+  "fields": {
+    "action_time": "2025-05-22T17:18:08.431Z",
+    "user": 1,
+    "content_type": 8,
+    "object_id": "1",
+    "object_repr": "Алефтина Арбузова",
+    "action_flag": 2,
+    "change_message": "[{\"changed\": {\"fields\": [\"\\u0410\\u043a\\u0442\\u0438\\u0432\\u0435\\u043d\"]}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 34,
+  "fields": {
+    "action_time": "2025-05-22T17:18:08.432Z",
+    "user": 1,
+    "content_type": 8,
+    "object_id": "2",
+    "object_repr": "Александр Бородач",
+    "action_flag": 2,
+    "change_message": "[{\"changed\": {\"fields\": [\"\\u0410\\u043a\\u0442\\u0438\\u0432\\u0435\\u043d\"]}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 35,
+  "fields": {
+    "action_time": "2025-05-22T18:06:56.589Z",
+    "user": 1,
+    "content_type": 7,
+    "object_id": "9",
+    "object_repr": "Заказ 9 от Перегрин Тук",
+    "action_flag": 2,
+    "change_message": "[{\"changed\": {\"fields\": [\"\\u041c\\u0430\\u0441\\u0442\\u0435\\u0440\"]}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 36,
+  "fields": {
+    "action_time": "2025-05-27T15:52:22.976Z",
+    "user": 1,
+    "content_type": 8,
+    "object_id": "1",
+    "object_repr": "Алефтина Арбузова",
+    "action_flag": 2,
+    "change_message": "[{\"changed\": {\"fields\": [\"\\u0410\\u043a\\u0442\\u0438\\u0432\\u0435\\u043d\"]}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 37,
+  "fields": {
+    "action_time": "2025-05-27T15:52:27.316Z",
+    "user": 1,
+    "content_type": 8,
+    "object_id": "2",
+    "object_repr": "Александр Бородач",
+    "action_flag": 2,
+    "change_message": "[{\"changed\": {\"fields\": [\"\\u0410\\u043a\\u0442\\u0438\\u0432\\u0435\\u043d\"]}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 38,
+  "fields": {
+    "action_time": "2025-05-27T15:52:55.373Z",
+    "user": 1,
+    "content_type": 8,
+    "object_id": "1",
+    "object_repr": "Алефтина Арбузова",
+    "action_flag": 2,
+    "change_message": "[{\"changed\": {\"fields\": [\"\\u0424\\u043e\\u0442\\u043e \\u043c\\u0430\\u0441\\u0442\\u0435\\u0440\\u0430\"]}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 39,
+  "fields": {
+    "action_time": "2025-05-27T15:53:00.885Z",
+    "user": 1,
+    "content_type": 8,
+    "object_id": "2",
+    "object_repr": "Александр Бородач",
+    "action_flag": 2,
+    "change_message": "[{\"changed\": {\"fields\": [\"\\u0424\\u043e\\u0442\\u043e \\u043c\\u0430\\u0441\\u0442\\u0435\\u0440\\u0430\"]}}]"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 1,
+  "fields": {
+    "name": "Can add log entry",
+    "content_type": 1,
+    "codename": "add_logentry"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 2,
+  "fields": {
+    "name": "Can change log entry",
+    "content_type": 1,
+    "codename": "change_logentry"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 3,
+  "fields": {
+    "name": "Can delete log entry",
+    "content_type": 1,
+    "codename": "delete_logentry"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 4,
+  "fields": {
+    "name": "Can view log entry",
+    "content_type": 1,
+    "codename": "view_logentry"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 5,
+  "fields": {
+    "name": "Can add permission",
+    "content_type": 2,
+    "codename": "add_permission"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 6,
+  "fields": {
+    "name": "Can change permission",
+    "content_type": 2,
+    "codename": "change_permission"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 7,
+  "fields": {
+    "name": "Can delete permission",
+    "content_type": 2,
+    "codename": "delete_permission"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 8,
+  "fields": {
+    "name": "Can view permission",
+    "content_type": 2,
+    "codename": "view_permission"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 9,
+  "fields": {
+    "name": "Can add group",
+    "content_type": 3,
+    "codename": "add_group"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 10,
+  "fields": {
+    "name": "Can change group",
+    "content_type": 3,
+    "codename": "change_group"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 11,
+  "fields": {
+    "name": "Can delete group",
+    "content_type": 3,
+    "codename": "delete_group"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 12,
+  "fields": {
+    "name": "Can view group",
+    "content_type": 3,
+    "codename": "view_group"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 13,
+  "fields": {
+    "name": "Can add user",
+    "content_type": 4,
+    "codename": "add_user"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 14,
+  "fields": {
+    "name": "Can change user",
+    "content_type": 4,
+    "codename": "change_user"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 15,
+  "fields": {
+    "name": "Can delete user",
+    "content_type": 4,
+    "codename": "delete_user"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 16,
+  "fields": {
+    "name": "Can view user",
+    "content_type": 4,
+    "codename": "view_user"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 17,
+  "fields": {
+    "name": "Can add content type",
+    "content_type": 5,
+    "codename": "add_contenttype"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 18,
+  "fields": {
+    "name": "Can change content type",
+    "content_type": 5,
+    "codename": "change_contenttype"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 19,
+  "fields": {
+    "name": "Can delete content type",
+    "content_type": 5,
+    "codename": "delete_contenttype"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 20,
+  "fields": {
+    "name": "Can view content type",
+    "content_type": 5,
+    "codename": "view_contenttype"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 21,
+  "fields": {
+    "name": "Can add session",
+    "content_type": 6,
+    "codename": "add_session"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 22,
+  "fields": {
+    "name": "Can change session",
+    "content_type": 6,
+    "codename": "change_session"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 23,
+  "fields": {
+    "name": "Can delete session",
+    "content_type": 6,
+    "codename": "delete_session"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 24,
+  "fields": {
+    "name": "Can view session",
+    "content_type": 6,
+    "codename": "view_session"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 25,
+  "fields": {
+    "name": "Can add order",
+    "content_type": 7,
+    "codename": "add_order"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 26,
+  "fields": {
+    "name": "Can change order",
+    "content_type": 7,
+    "codename": "change_order"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 27,
+  "fields": {
+    "name": "Can delete order",
+    "content_type": 7,
+    "codename": "delete_order"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 28,
+  "fields": {
+    "name": "Can view order",
+    "content_type": 7,
+    "codename": "view_order"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 29,
+  "fields": {
+    "name": "Can add master",
+    "content_type": 8,
+    "codename": "add_master"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 30,
+  "fields": {
+    "name": "Can change master",
+    "content_type": 8,
+    "codename": "change_master"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 31,
+  "fields": {
+    "name": "Can delete master",
+    "content_type": 8,
+    "codename": "delete_master"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 32,
+  "fields": {
+    "name": "Can view master",
+    "content_type": 8,
+    "codename": "view_master"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 33,
+  "fields": {
+    "name": "Can add service",
+    "content_type": 9,
+    "codename": "add_service"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 34,
+  "fields": {
+    "name": "Can change service",
+    "content_type": 9,
+    "codename": "change_service"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 35,
+  "fields": {
+    "name": "Can delete service",
+    "content_type": 9,
+    "codename": "delete_service"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 36,
+  "fields": {
+    "name": "Can view service",
+    "content_type": 9,
+    "codename": "view_service"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 37,
+  "fields": {
+    "name": "Can add Отзыв",
+    "content_type": 10,
+    "codename": "add_review"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 38,
+  "fields": {
+    "name": "Can change Отзыв",
+    "content_type": 10,
+    "codename": "change_review"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 39,
+  "fields": {
+    "name": "Can delete Отзыв",
+    "content_type": 10,
+    "codename": "delete_review"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 40,
+  "fields": {
+    "name": "Can view Отзыв",
+    "content_type": 10,
+    "codename": "view_review"
+  }
+},
+{
+  "model": "auth.user",
+  "pk": 1,
+  "fields": {
+    "password": "pbkdf2_sha256$870000$aPKiSdC5wjB713sftJU4IZ$Byg4ZL7QeH6mNkJDbB42zFqpYbyEkhXl3vTQ2nFuYxQ=",
+    "last_login": "2025-05-27T16:36:56.633Z",
+    "is_superuser": true,
+    "username": "admin",
+    "first_name": "",
+    "last_name": "",
+    "email": "ad@ad.ru",
+    "is_staff": true,
+    "is_active": true,
+    "date_joined": "2025-04-10T18:14:10.228Z",
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "contenttypes.contenttype",
+  "pk": 1,
+  "fields": {
+    "app_label": "admin",
+    "model": "logentry"
+  }
+},
+{
+  "model": "contenttypes.contenttype",
+  "pk": 2,
+  "fields": {
+    "app_label": "auth",
+    "model": "permission"
+  }
+},
+{
+  "model": "contenttypes.contenttype",
+  "pk": 3,
+  "fields": {
+    "app_label": "auth",
+    "model": "group"
+  }
+},
+{
+  "model": "contenttypes.contenttype",
+  "pk": 4,
+  "fields": {
+    "app_label": "auth",
+    "model": "user"
+  }
+},
+{
+  "model": "contenttypes.contenttype",
+  "pk": 5,
+  "fields": {
+    "app_label": "contenttypes",
+    "model": "contenttype"
+  }
+},
+{
+  "model": "contenttypes.contenttype",
+  "pk": 6,
+  "fields": {
+    "app_label": "sessions",
+    "model": "session"
+  }
+},
+{
+  "model": "contenttypes.contenttype",
+  "pk": 7,
+  "fields": {
+    "app_label": "core",
+    "model": "order"
+  }
+},
+{
+  "model": "contenttypes.contenttype",
+  "pk": 8,
+  "fields": {
+    "app_label": "core",
+    "model": "master"
+  }
+},
+{
+  "model": "contenttypes.contenttype",
+  "pk": 9,
+  "fields": {
+    "app_label": "core",
+    "model": "service"
+  }
+},
+{
+  "model": "contenttypes.contenttype",
+  "pk": 10,
+  "fields": {
+    "app_label": "core",
+    "model": "review"
+  }
+},
+{
+  "model": "sessions.session",
+  "pk": "2vauwejd8m0cotkb2y7dj19idctp1xpp",
+  "fields": {
+    "session_data": ".eJxVjMEOgjAQRP9lz6QpRVrg6N0vMKbZ7S6CSkko6MH470LChdvMvJn5wruXj7AfMM0yJWiueWZuGXhc5s4vSSbfMzSQwyEjDE-JG-AHxvuowhjnqSe1VdROk7qMLK_z3j0cdJi6dV1oLoNY0sa5ELAoNRFXJ1e3zthVF62rSJeWLeLqpCWLpnZSo5GcK4HfH5fDQI4:1uFafX:NeS3vM5hInySKyqCW2K39ngcOS-8arIhT57UACXnGVg",
+    "expire_date": "2025-05-29T15:38:47.125Z"
+  }
+},
+{
+  "model": "sessions.session",
+  "pk": "31ap3wu4qbvvwy0pa6kjm01rti9fd3w7",
+  "fields": {
+    "session_data": ".eJxVjDsOwjAQRO_iGlmOjX-U9Jwh2vWucQDZUj4V4u44UgroZubNzFuMsK1l3Baex4nERQzi9JshpCfXHdAD6r3J1Oo6Tyj3ijzoIm-N-HU9un8HBZbS10aRTexQae9TAmMVIoWzj9lr17XJPqCyjhxAd5zRgY6eI2geKLD4fAH0Oji7:1u2wQT:Kc8dbYDcU-c_LqqteSZA9DwHcZ-aMNh4KfjnOWM2v_E",
+    "expire_date": "2025-04-24T18:14:57.755Z"
+  }
+},
+{
+  "model": "sessions.session",
+  "pk": "h9ebvuian7x4nbacvsyxl1zuvvaj29bw",
+  "fields": {
+    "session_data": "eyJ2aWV3ZWRfbWFzdGVycyI6WzJdfQ:1u7Hbv:kQYv6djXTI8B7Dgz5R4FZAlxq-twbx7lKkjC_mLMgpE",
+    "expire_date": "2025-05-06T17:40:43.762Z"
+  }
+},
+{
+  "model": "sessions.session",
+  "pk": "jupue9vfxgrcod97wo8gyrudsxye34gt",
+  "fields": {
+    "session_data": ".eJxVjDsOwjAQRO_iGlmOjX-U9Jwh2vWucQDZUj4V4u44UgroZubNzFuMsK1l3Baex4nERQzi9JshpCfXHdAD6r3J1Oo6Tyj3ijzoIm-N-HU9un8HBZbS10aRTexQae9TAmMVIoWzj9lr17XJPqCyjhxAd5zRgY6eI2geKLD4fAH0Oji7:1uJxIO:_Me53-fsrN_6W8Grj1PCufjQ_d1YoST6DPrcwdWEVks",
+    "expire_date": "2025-06-10T16:36:56.649Z"
+  }
+},
+{
+  "model": "sessions.session",
+  "pk": "mzbkmptigedkcmi4i5p3zmcd42pqb0ll",
+  "fields": {
+    "session_data": ".eJxVjMEOgjAQRP9lz6QpRVrg6N0vMKbZ7S6CSkko6MH470LChdvMvJn5wruXj7AfMM0yJWiuJstvGXhc5s4vSSbfMzSQwyEjDE-JG-AHxvuowhjnqSe1VdROk7qMLK_z3j0cdJi6dV1oLoNY0sa5ELAoNRFXJ1e3zthVF62rSJeWLeLqpCWLpnZSo5GcK4HfH5fFQI4:1u7HwW:LRqwgfmuVnn3vpdnmvswYepkWmy5MWrN4a_LxdKBP3Q",
+    "expire_date": "2025-05-06T18:02:00.385Z"
+  }
+},
+{
+  "model": "sessions.session",
+  "pk": "ni79xw051lth5fbf7pyyrqi0fpmajwas",
+  "fields": {
+    "session_data": ".eJxVjDsOwjAQRO_iGlmOjX-U9Jwh2vWucQDZUj4V4u44UgroZubNzFuMsK1l3Baex4nERQzi9JshpCfXHdAD6r3J1Oo6Tyj3ijzoIm-N-HU9un8HBZbS10aRTexQae9TAmMVIoWzj9lr17XJPqCyjhxAd5zRgY6eI2geKLD4fAH0Oji7:1u5RgE:H8umatE4enQRsow5GRvW41qOQaL-i5yeDUTelT1a_8Q",
+    "expire_date": "2025-05-01T16:01:34.360Z"
+  }
+},
+{
+  "model": "sessions.session",
+  "pk": "r3csbyp3j8iwhjrxetgku0mqjcw5jpht",
+  "fields": {
+    "session_data": "eyJ2aWV3ZWRfbWFzdGVycyI6WzJdfQ:1u7Hap:isnpVCq0kl2t469TUFaRz54CfPTqIKA4v8QdTOHngJU",
+    "expire_date": "2025-05-06T17:39:35.742Z"
+  }
+},
+{
+  "model": "sessions.session",
+  "pk": "v3h00vspoazwiqzqz7zbhmaucar4i8ha",
+  "fields": {
+    "session_data": ".eJxVjDsOwjAQRO_iGlmOjX-U9Jwh2vWucQDZUj4V4u44UgroZubNzFuMsK1l3Baex4nERQzi9JshpCfXHdAD6r3J1Oo6Tyj3ijzoIm-N-HU9un8HBZbS10aRTexQae9TAmMVIoWzj9lr17XJPqCyjhxAd5zRgY6eI2geKLD4fAH0Oji7:1u7GI0:omm2-hbrUtfXMXlhXw1yic0v1Ijc34PRagjLSDv_X0w",
+    "expire_date": "2025-05-06T16:16:04.660Z"
+  }
+},
+{
+  "model": "sessions.session",
+  "pk": "yqe5wcnhfphz6wcoxgjoievo9civt1jg",
+  "fields": {
+    "session_data": ".eJxVjDsOwjAQRO_iGlmOjX-U9Jwh2vWucQDZUj4V4u44UgroZubNzFuMsK1l3Baex4nERQzi9JshpCfXHdAD6r3J1Oo6Tyj3ijzoIm-N-HU9un8HBZbS10aRTexQae9TAmMVIoWzj9lr17XJPqCyjhxAd5zRgY6eI2geKLD4fAH0Oji7:1uI883:_4ZijRi8ryJ9lT8wwD8KtFegTQJFpyOONF8Ho4_lMPA",
+    "expire_date": "2025-06-05T15:46:43.110Z"
+  }
+},
+{
+  "model": "core.order",
+  "pk": 1,
+  "fields": {
+    "client_name": "Сергей Безруков",
+    "phone": "+7 (999) 999-99-99",
+    "comment": "",
+    "status": "moderated",
+    "date_created": "2025-04-10T17:34:00.001Z",
+    "date_updated": "2025-04-15T16:16:08.614Z",
+    "master": 2,
+    "appointment_date": "2025-04-15T16:16:07Z",
+    "services": []
+  }
+},
+{
+  "model": "core.order",
+  "pk": 2,
+  "fields": {
+    "client_name": "Филлип Киркоров",
+    "phone": "+777777",
+    "comment": "Под Страуса!!!!!!!!!!",
+    "status": "moderated",
+    "date_created": "2025-04-15T16:08:39.079Z",
+    "date_updated": "2025-04-15T16:22:46.750Z",
+    "master": 2,
+    "appointment_date": "2025-04-15T16:15:53Z",
+    "services": []
+  }
+},
+{
+  "model": "core.order",
+  "pk": 3,
+  "fields": {
+    "client_name": "Шмелев",
+    "phone": "+77772233948",
+    "comment": "",
+    "status": "moderated",
+    "date_created": "2025-04-15T16:36:52.240Z",
+    "date_updated": "2025-04-15T16:36:52.240Z",
+    "master": 1,
+    "appointment_date": "2025-04-15T16:36:49Z",
+    "services": []
+  }
+},
+{
+  "model": "core.order",
+  "pk": 4,
+  "fields": {
+    "client_name": "Сергей",
+    "phone": "+1111111",
+    "comment": "Тест телеграм бота",
+    "status": "not_approved",
+    "date_created": "2025-05-20T16:44:06.903Z",
+    "date_updated": "2025-05-20T16:44:06.903Z",
+    "master": 1,
+    "appointment_date": "2025-05-21T11:11:00Z",
+    "services": [
+      12
+    ]
+  }
+},
+{
+  "model": "core.order",
+  "pk": 5,
+  "fields": {
+    "client_name": "Андрей Петрович",
+    "phone": "123123",
+    "comment": "Завивка!",
+    "status": "not_approved",
+    "date_created": "2025-05-20T16:48:00.554Z",
+    "date_updated": "2025-05-20T16:48:00.554Z",
+    "master": 1,
+    "appointment_date": "2025-05-23T22:22:00Z",
+    "services": [
+      13
+    ]
+  }
+},
+{
+  "model": "core.order",
+  "pk": 6,
+  "fields": {
+    "client_name": "Гимли",
+    "phone": "+77772233948",
+    "comment": "Завивка бороды",
+    "status": "not_approved",
+    "date_created": "2025-05-20T17:20:24.521Z",
+    "date_updated": "2025-05-20T17:20:24.521Z",
+    "master": 1,
+    "appointment_date": "2025-05-22T11:11:00Z",
+    "services": [
+      12,
+      13
+    ]
+  }
+},
+{
+  "model": "core.order",
+  "pk": 7,
+  "fields": {
+    "client_name": "Пиппин",
+    "phone": "+79951540286",
+    "comment": "Покраска кудряшек",
+    "status": "not_approved",
+    "date_created": "2025-05-20T17:22:01.217Z",
+    "date_updated": "2025-05-20T17:22:01.217Z",
+    "master": 1,
+    "appointment_date": "2225-06-27T22:02:00Z",
+    "services": []
+  }
+},
+{
+  "model": "core.order",
+  "pk": 8,
+  "fields": {
+    "client_name": "Мериадок Брендибак",
+    "phone": "+77772233948",
+    "comment": "Покраска ресниц",
+    "status": "completed",
+    "date_created": "2025-05-20T17:46:54.528Z",
+    "date_updated": "2025-05-20T17:46:54.528Z",
+    "master": 1,
+    "appointment_date": "2025-05-21T22:22:00Z",
+    "services": [
+      12,
+      13
+    ]
+  }
+},
+{
+  "model": "core.order",
+  "pk": 9,
+  "fields": {
+    "client_name": "Перегрин Тук",
+    "phone": "+7054143200",
+    "comment": "Тест 555",
+    "status": "completed",
+    "date_created": "2025-05-20T17:55:45.069Z",
+    "date_updated": "2025-05-22T18:06:56.588Z",
+    "master": 1,
+    "appointment_date": "2025-05-21T22:22:00Z",
+    "services": [
+      10,
+      11
+    ]
+  }
+},
+{
+  "model": "core.order",
+  "pk": 10,
+  "fields": {
+    "client_name": "Гермиона Грейнджер",
+    "phone": "+79951540286",
+    "comment": "Покраска бровей",
+    "status": "not_approved",
+    "date_created": "2025-05-27T15:47:01.273Z",
+    "date_updated": "2025-05-27T15:47:01.273Z",
+    "master": 2,
+    "appointment_date": "2025-12-22T17:22:00Z",
+    "services": [
+      10
+    ]
+  }
+},
+{
+  "model": "core.order",
+  "pk": 11,
+  "fields": {
+    "client_name": "Гарри",
+    "phone": "+77777777",
+    "comment": "Стрижка под горшок",
+    "status": "not_approved",
+    "date_created": "2025-05-27T16:29:36.631Z",
+    "date_updated": "2025-05-27T16:29:36.631Z",
+    "master": 1,
+    "appointment_date": "2025-06-22T17:22:00Z",
+    "services": [
+      13
+    ]
+  }
+},
+{
+  "model": "core.master",
+  "pk": 1,
+  "fields": {
+    "first_name": "Алефтина",
+    "last_name": "Арбузова",
+    "photo": "images/masters/1.jpg",
+    "phone": "+7 (999) 999-99-99",
+    "address": "г. Москва, ул. Ленина, д. 1",
+    "email": "",
+    "experience": 6,
+    "is_active": true,
+    "view_count": 70,
+    "services": [
+      12,
+      13
+    ]
+  }
+},
+{
+  "model": "core.master",
+  "pk": 2,
+  "fields": {
+    "first_name": "Александр",
+    "last_name": "Бородач",
+    "photo": "images/masters/2.jpg",
+    "phone": "+7 (999) 999-99-99",
+    "address": "г. Москва, ул. Ленина, д. 2",
+    "email": "",
+    "experience": 13,
+    "is_active": true,
+    "view_count": 14,
+    "services": [
+      10,
+      11
+    ]
+  }
+},
+{
+  "model": "core.service",
+  "pk": 10,
+  "fields": {
+    "name": "Бритье бороды",
+    "description": "Бритье бороды",
+    "price": "100.00",
+    "duration": 20,
+    "is_popular": false,
+    "image": ""
+  }
+},
+{
+  "model": "core.service",
+  "pk": 11,
+  "fields": {
+    "name": "Бритье головы",
+    "description": "Бритье головы",
+    "price": "1000.00",
+    "duration": 20,
+    "is_popular": false,
+    "image": ""
+  }
+},
+{
+  "model": "core.service",
+  "pk": 12,
+  "fields": {
+    "name": "Покраска бороды",
+    "description": "Покраска бороды",
+    "price": "300.00",
+    "duration": 20,
+    "is_popular": true,
+    "image": ""
+  }
+},
+{
+  "model": "core.service",
+  "pk": 13,
+  "fields": {
+    "name": "Покраска бровей",
+    "description": "Покраска бровей",
+    "price": "200.00",
+    "duration": 20,
+    "is_popular": false,
+    "image": ""
+  }
+},
+{
+  "model": "core.review",
+  "pk": 1,
+  "fields": {
+    "client_name": "Леголас",
+    "text": "Покраска волос изумительна!",
+    "rating": 5,
+    "master": 1,
+    "photo": "",
+    "is_published": false,
+    "created_at": "2025-05-15T14:24:40.171Z"
+  }
+},
+{
+  "model": "core.review",
+  "pk": 2,
+  "fields": {
+    "client_name": "Леголас",
+    "text": "Отлично покрасили брови в блонд!!!",
+    "rating": 5,
+    "master": 1,
+    "photo": "",
+    "is_published": true,
+    "created_at": "2025-05-15T15:57:33.720Z"
+  }
+},
+{
+  "model": "core.review",
+  "pk": 3,
+  "fields": {
+    "client_name": "Гимли",
+    "text": "плохо, просто УЖАСНО покрасили мою бороду! Я просил рыжий, а не розовый!!!!!!!!!!!",
+    "rating": 1,
+    "master": 1,
+    "photo": "",
+    "is_published": false,
+    "created_at": "2025-05-15T16:34:08.913Z"
+  }
+},
+{
+  "model": "core.review",
+  "pk": 4,
+  "fields": {
+    "client_name": "Гендальф",
+    "text": "В целом норм. Подстригли брови и покрасили их в белый цвет согласно новому статусу!",
+    "rating": 5,
+    "master": 1,
+    "photo": "",
+    "is_published": true,
+    "created_at": "2025-05-15T16:35:18.906Z"
+  }
+},
+{
+  "model": "core.review",
+  "pk": 5,
+  "fields": {
+    "client_name": "Пиппин",
+    "text": "Завили мои кудряшки просто песня! Кстати, это очень хорошо делают в барбершопе Лютик, который находится через дорогу и цены там гораздо ниже. Вот сайт lutik.ru/order - переходите по ссылке!!!!!!!!!",
+    "rating": 5,
+    "master": 2,
+    "photo": "",
+    "is_published": false,
+    "created_at": "2025-05-15T17:51:11.206Z"
+  }
+},
+{
+  "model": "core.review",
+  "pk": 6,
+  "fields": {
+    "client_name": "Арагорн",
+    "text": "Очень хорошо подстригли бороду. Лучшие цены в Средиземье. Вернусь еще раз!",
+    "rating": 5,
+    "master": 2,
+    "photo": "",
+    "is_published": true,
+    "created_at": "2025-05-15T17:54:36.311Z"
+  }
+},
+{
+  "model": "core.review",
+  "pk": 7,
+  "fields": {
+    "client_name": "Сэмуайз Гэмджи",
+    "text": "Великолепно скрыли мой третий подбородок покрасив бороду в блонд! Приду еще!",
+    "rating": 5,
+    "master": 2,
+    "photo": "",
+    "is_published": false,
+    "created_at": "2025-05-20T18:10:04.989Z"
+  }
+},
+{
+  "model": "core.review",
+  "pk": 8,
+  "fields": {
+    "client_name": "Сэмуайз Гэмджи",
+    "text": "Великолепно скрыли мой третий подбородок покрасив бороду в блонд! Приду еще!",
+    "rating": 5,
+    "master": 2,
+    "photo": "",
+    "is_published": true,
+    "created_at": "2025-05-20T18:12:46.702Z"
+  }
+},
+{
+  "model": "core.review",
+  "pk": 9,
+  "fields": {
+    "client_name": "Саурон темный",
+    "text": "Отличная покраска волос. Гендальф меня не узнал!",
+    "rating": 5,
+    "master": 2,
+    "photo": "",
+    "is_published": true,
+    "created_at": "2025-05-20T18:20:19.922Z"
+  }
+},
+{
+  "model": "core.review",
+  "pk": 10,
+  "fields": {
+    "client_name": "Рон Уизли",
+    "text": "Отлично покрасили в рыжий!",
+    "rating": 5,
+    "master": 1,
+    "photo": "",
+    "is_published": false,
+    "created_at": "2025-05-27T15:48:59.338Z"
+  }
+},
+{
+  "model": "core.review",
+  "pk": 11,
+  "fields": {
+    "client_name": "Гарри",
+    "text": "Стрижка под горшок. Удачно. Однако волосы у меня быстро отрастают...",
+    "rating": 4,
+    "master": 1,
+    "photo": "",
+    "is_published": true,
+    "created_at": "2025-05-27T16:28:40.158Z"
+  }
+}
+]
