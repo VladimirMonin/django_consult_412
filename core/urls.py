@@ -3,7 +3,7 @@ from django.contrib import admin
 from django.urls import path
 from .views import (
     master_detail,
-    thanks,
+    ThanksView,
     orders_list,
     order_detail,
     service_create,
@@ -19,8 +19,8 @@ from .views import (
 
 urlpatterns = [
     path("masters/<int:master_id>/", master_detail, name="master_detail"),
-    path("thanks/", thanks, name="thanks"),
-    path("thanks/<str:source>/", thanks, name="thanks_with_source"),
+    path("thanks/", ThanksView.as_view(), name="thanks"),
+    path("thanks/<str:source>/", ThanksView.as_view(), name="thanks_with_source"),
     path("orders/", orders_list, name="orders_list"),
     path("orders/<int:order_id>/", order_detail, name="order_detail"),
     path("services/", services_list, name="services_list"),
