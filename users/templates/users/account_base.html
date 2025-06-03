@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Личный кабинет - {{ block.super }}{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="row">
+        <div class="col-md-3">
+            {% include "users/account_menu_include.html" %}
+        </div>
+        <div class="col-md-9">
+            {% block account_content %}
+                {# Сюда будет выводиться содержимое конкретной вкладки ЛК #}
+            {% endblock account_content %}
+        </div>
+    </div>
+</div>
+{% endblock content %}
