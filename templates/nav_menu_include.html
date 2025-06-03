@@ -44,7 +44,7 @@
                         <i class="bi bi-person-check-fill"></i> Админ
                     </a>
                 {% else %}
-                    <a href="{% url 'users:profile_detail' user_id=user.id %}" class="nav-link" title="Личный кабинет">
+                    <a href="{% url 'users:profile_detail' pk=user.pk %}" class="nav-link" title="Личный кабинет">
                         <i class="bi bi-person-circle"></i> {{ user.username|capfirst }} (Профиль)
                     </a>
                 {% endif %}
