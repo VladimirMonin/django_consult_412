@@ -1,8 +1,7 @@
 # barbershop/urls.py
 from django.contrib import admin
-from django.urls import path
+from django.urls import path, include # Добавили include
 from core.views import landing
-from django.urls import include
 from django.conf import settings
 from django.conf.urls.static import static
 
@@ -11,6 +10,7 @@ urlpatterns = [
     path("", landing, name="landing"),
     # Подключаем маршруты из приложения core
     path("barbershop/", include("core.urls")),
+    path("users/", include("users.urls")), # Подключили URL-ы приложения users
 ]
 
 if settings.DEBUG:
