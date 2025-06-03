@@ -44,10 +44,9 @@
                         <i class="bi bi-person-check-fill"></i> Админ
                     </a>
                 {% else %}
-                    {# Если есть страница профиля пользователя, ссылка будет здесь. Пока просто имя. #}
-                    <span class="nav-link">
-                        <i class="bi bi-person-circle"></i> {{ user.username|capfirst }}
-                    </span>
+                    <a href="{% url 'users:profile_detail' user_id=user.id %}" class="nav-link" title="Личный кабинет">
+                        <i class="bi bi-person-circle"></i> {{ user.username|capfirst }} (Профиль)
+                    </a>
                 {% endif %}
                 <a href="{% url 'users:logout' %}" class="nav-link" title="Выйти">
                     <i class="bi bi-box-arrow-right"></i> Выйти

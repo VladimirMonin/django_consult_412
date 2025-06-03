@@ -4,8 +4,10 @@ from django.views.generic.edit import CreateView
 from django.contrib.auth import login # для автоматического входа после регистрации
 from django.urls import reverse_lazy
 from django.contrib import messages
-from .forms import UserRegisterForm, UserLoginForm
-from django.shortcuts import redirect
+from .forms import UserRegisterForm, UserLoginForm, UserProfileUpdateForm # Добавлен импорт UserProfileUpdateForm
+from django.shortcuts import redirect, render, get_object_or_404 # Добавлены render, get_object_or_404
+from .models import User # Добавлен импорт модели User
+from django.contrib.auth.decorators import login_required # Добавлен импорт login_required
 
 class UserRegisterView(CreateView):
     form_class = UserRegisterForm
@@ -65,3 +67,36 @@ class UserLogoutView(LogoutView):
         if request.user.is_authenticated:
              messages.info(request, 'Вы успешно вышли из системы.')
         return super().dispatch(request, *args, **kwargs)
+
+@login_required
+def profile_view(request, user_id):
+    profile_user = get_object_or_404(User, id=user_id)
+    is_own_profile = (request.user == profile_user)
+
+    if is_own_profile:
+        if request.method == 'POST':
+            form = UserProfileUpdateForm(request.POST, request.FILES, instance=profile_user)
+            if form.is_valid():
+                form.save()
+                messages.success(request, 'Ваш профиль успешно обновлен.')
+                return redirect('users:profile_detail', user_id=profile_user.id)
+            else:
+                messages.error(request, 'Пожалуйста, исправьте ошибки в форме.')
+        else:
+            form = UserProfileUpdateForm(instance=profile_user)
+        
+        context = {
+            'title': f'Профиль: {profile_user.username}',
+            'profile_user': profile_user,
+            'form': form,
+            'is_own_profile': is_own_profile,
+        }
+        return render(request, 'users/profile_detail.html', context)
+    else:
+        # Просмотр чужого профиля
+        context = {
+            'title': f'Профиль: {profile_user.username}',
+            'profile_user': profile_user,
+            'is_own_profile': is_own_profile,
+        }
+        return render(request, 'users/profile_detail.html', context)
