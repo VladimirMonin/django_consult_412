@@ -15,6 +15,9 @@ from django.contrib import messages
 from .forms import ServiceForm, OrderForm, ReviewForm
 import json
 
+# Импорт LoginRequiredMixin для использования в CBV
+from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
+
 
 def landing(request):
     # Получаем всех мастеров из базы данных (включая неактивных)
@@ -190,6 +193,15 @@ def order_detail(request, order_id: int):
 
     return render(request, "core/order_detail.html", context)
 
+
+class OrderDetailView(LoginRequiredMixin, UserPassesTestMixin, DetailView):
+    model = Order
+    template_name = "core/order_detail.html"
+    pk_url_kwarg = "order_id"  # Указываем, что pk будет извлекаться из order_id в URL
+
+    def test_func(self):
+        # Проверяем, что пользователь является сотрудником
+        return self.request.user.is_staff
 
 def service_create(request):
 
