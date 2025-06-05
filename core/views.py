@@ -8,7 +8,7 @@ from .models import Order, Master, Service, Review
 from django.shortcuts import get_object_or_404
 from django.db.models import Q, F
 from django.views import View  # Импортируем базовый View
-from django.views.generic import TemplateView
+from django.views.generic import TemplateView, ListView, DetailView
 
 # messages - это встроенный модуль Django для отображения сообщений пользователю
 from django.contrib import messages
@@ -505,6 +505,26 @@ class AboutUsView(TemplateView):
         
         # Возвращаем обновленный словарь контекста.
         return context
+
+
+
+class ServiceDetailView(DetailView):
+    """
+    Представление для отображения детальной информации об услуге.
+    Использует модель Service и явно указанное имя шаблона.
+    В шаблон будет передан объект service (имя по умолчанию для контекстной переменной).
+    """
+    model = Service  # Указываем, какую модель мы хотим отобразить
+    template_name = 'core/service_detail.html'  # Указываем шаблон
+
+    # Если template_name не указать, Django будет искать:
+    # 'core/service_detail.html' (т.е. <app_label>/<model_name_lowercase>_detail.html)
+
+
+
+
+
+
 
 
 
