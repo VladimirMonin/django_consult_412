@@ -505,3 +505,72 @@ class AboutUsView(TemplateView):
         
         # Возвращаем обновленный словарь контекста.
         return context
+
+
+
+# --- Этап 2: Работа со списками и отдельными объектами - ListView и DetailView ---
+
+# 3. ListView - Отображение списков объектов
+
+# Пример 1: Базовый ServiceListView
+class ServiceListView(ListView):
+    """
+    Базовое представление для отображения списка всех услуг.
+    Использует модель Service и явно указанное имя шаблона.
+    В шаблон будет передан object_list (имя по умолчанию для контекстной переменной списка).
+    """
+    model = Service # Указываем, какую модель мы хотим отобразить
+    template_name = 'core/service_list_cbv.html' 
+    # Если template_name не указать, Django будет искать:
+    # 'core/service_list.html' (т.е. <app_label>/<model_name_lowercase>_list.html)
+
+
+# Пример 2: Кастомизированный ServiceListViewAdvanced
+class ServiceListViewAdvanced(ListView):
+    """
+    Расширенное представление для отображения списка услуг с кастомизацией:
+    - Показывает только популярные услуги, отсортированные по цене (через get_queryset).
+    - Использует кастомное имя для списка объектов в контексте ('services') через context_object_name.
+    - Включает пагинацию (3 объекта на страницу) через paginate_by.
+    - Добавляет дополнительную информацию в контекст (через get_context_data).
+    """
+    model = Service # Указываем модель
+    template_name = 'core/service_list_advanced_cbv.html' # Указываем шаблон
+    context_object_name = 'services'  # Имя переменной в шаблоне будет {{ services }} вместо {{ object_list }}
+    paginate_by = 3  # Количество объектов на странице для пагинации
+    # ordering = ['name'] # Можно было бы задать сортировку по умолчанию здесь, но мы ее переопределим в get_queryset
+
+    def get_queryset(self):
+        """
+        Возвращает QuerySet только для популярных услуг, отсортированных по цене.
+        Этот метод переопределяет стандартное поведение (которое было бы Service.objects.all()).
+        """
+        # Мы хотим показать только те услуги, у которых поле is_popular=True,
+        # и отсортировать их по полю price.
+        queryset = Service.objects.filter(is_popular=True).order_by('price')
+        return queryset
+
+    def get_context_data(self, **kwargs):
+        """
+        Добавляет дополнительную информацию в контекст шаблона.
+        """
+        # Сначала получаем базовый контекст от родительского ListView.
+        # Он уже будет содержать:
+        # - 'services' (так как мы указали context_object_name)
+        # - 'paginator' (объект Paginator)
+        # - 'page_obj' (объект Page, представляющий текущую страницу)
+        # - 'is_paginated' (True, если включена пагинация и объектов больше, чем на одной странице)
+        context = super().get_context_data(**kwargs)
+        
+        # Добавляем свои кастомные данные в контекст
+        context['page_title'] = "Наши самые популярные и выгодные услуги"
+        
+        # Общее количество всех услуг в системе (для справки)
+        context['total_services_in_system'] = Service.objects.count() 
+        
+        # Количество услуг, которые фактически отображаются (т.е. популярных)
+        # self.get_queryset() вернет отфильтрованный queryset (популярные, отсортированные по цене)
+        # .count() на нем даст общее число таких услуг до пагинации.
+        context['popular_services_total_count'] = self.get_queryset().count()
+
+        return context
