@@ -14,6 +14,8 @@ from .views import (
     create_review,
     get_master_info,
     GreetingView, # Добавили импорт GreetingView
+    SimplePageView, # Добавили импорт SimplePageView
+    AboutUsView,    # Добавили импорт AboutUsView
 )
 
 # Эти маршруты будут доступны с префиксом /barbershop/
@@ -36,4 +38,6 @@ urlpatterns = [
     path("api/master-info/", get_master_info, name="get_master_info"),
     # --- Этап 1: Базовые CBV ---
     path("greeting/", GreetingView.as_view(), name="greeting"),
+    path("simple-page/", SimplePageView.as_view(), name="simple_page"),
+    path("about-us/", AboutUsView.as_view(), name="about_us"),
 ]

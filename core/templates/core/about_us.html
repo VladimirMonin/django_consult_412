@@ -1,0 +1,58 @@
+{% extends "base.html" %}
+
+{% block title %}{{ page_title|default:"О нас" }}{% endblock title %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="row">
+        <div class="col-md-8 offset-md-2">
+            <div class="card">
+                <div class="card-header bg-primary text-white">
+                    <h1>{{ page_title|default:"О компании" }}</h1>
+                </div>
+                <div class="card-body">
+                    <p class="lead">Добро пожаловать в <strong>{{ company_name|default:"наш барбершоп" }}</strong>!</p>
+                    <p>Мы гордимся тем, что предоставляем высококачественные парикмахерские услуги и создаем неповторимый стиль для каждого нашего клиента.</p>
+                    
+                    {% if start_year %}
+                    <p>Наша история началась в <strong>{{ start_year }}</strong> году, 
+                    {% if years_on_market > 0 %}
+                        и вот уже <strong>{{ years_on_market }}</strong> 
+                        {% if years_on_market == 1 %}
+                            год
+                        {% elif years_on_market >= 2 and years_on_market <= 4 %}
+                            года
+                        {% else %}
+                            лет
+                        {% endif %}
+                        мы работаем для вас, совершенствуя свое мастерство.
+                    {% else %}
+                        и мы только начинаем наш путь!
+                    {% endif %}
+                    </p>
+                    {% endif %}
+
+                    <p>Мы стремимся не просто стричь и брить, а создавать атмосферу, в которой каждый мужчина может расслабиться, отвлечься от повседневной суеты и получить заряд уверенности.</p>
+                    
+                    <h4>Наши принципы:</h4>
+                    <ul>
+                        <li>Индивидуальный подход к каждому клиенту</li>
+                        <li>Высокое качество используемых материалов и инструментов</li>
+                        <li>Профессионализм и опыт наших мастеров</li>
+                        <li>Уютная и дружелюбная атмосфера</li>
+                    </ul>
+
+                    {% if contact_email %}
+                    <p>Если у вас есть вопросы или предложения, пишите нам на <a href="mailto:{{ contact_email }}">{{ contact_email }}</a>.</p>
+                    {% endif %}
+
+                    <p>Текущий год: {{ current_year|default:"Неизвестно" }}.</p>
+                </div>
+                <div class="card-footer text-center">
+                    <a href="{% url 'landing' %}" class="btn btn-secondary">Вернуться на главную</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock content %}

@@ -7,7 +7,7 @@ from django.contrib.auth.decorators import login_required
 from .models import Order, Master, Service, Review
 from django.shortcuts import get_object_or_404
 from django.db.models import Q, F
-from django.views import View # Импортируем базовый View
+from django.views import View  # Импортируем базовый View
 from django.views.generic import TemplateView
 
 # messages - это встроенный модуль Django для отображения сообщений пользователю
@@ -85,18 +85,44 @@ def master_detail(request, master_id):
     return render(request, "core/master_detail.html", context)
 
 
-
 # Перепишем представление thanks на TemplateView
-class ThanksView(TemplateView):
+class ThanksView(TemplateView): # Существующий класс, дорабатываем его
     template_name = "core/thanks.html"
 
     def get_context_data(self, **kwargs):
+        """
+        Формирует и возвращает словарь контекста для шаблона "Спасибо".
+        Добавляет количество активных мастеров, дополнительное сообщение
+        и обрабатывает параметр 'source' из URL.
+        """
         context = super().get_context_data(**kwargs)
+        
         # Получаем количество активных мастеров из базы данных
+        # Это полезная информация, которую можно отобразить на странице благодарности.
         masters_count = Master.objects.filter(is_active=True).count()
         context["masters_count"] = masters_count
         
+        # Добавим новый статический элемент в контекст для демонстрации
+        context["additional_message"] = "Спасибо, что выбрали наш первоклассный сервис!"
+        
+        # Проверим, передан ли параметр 'source' в URL.
+        # kwargs содержит именованные аргументы, захваченные из URL-шаблона.
+        # Например, если URL /thanks/order/, то kwargs будет {'source': 'order'}
+        if 'source' in kwargs:
+            source_page = kwargs['source']
+            if source_page == 'order':
+                context['source_message'] = "Ваш заказ успешно создан и принят в обработку."
+            elif source_page == 'review':
+                context['source_message'] = "Ваш отзыв успешно отправлен и будет опубликован после модерации."
+            else:
+                # Общий случай, если источник не 'order' и не 'review'
+                context['source_message'] = f"Благодарим вас за ваше действие, инициированное со страницы: {source_page}."
+        else:
+            # Если параметр 'source' не передан
+            context['source_message'] = "Благодарим вас за посещение!"
+            
         return context
+
 
 @login_required
 def orders_list(request):
@@ -405,6 +431,7 @@ class GreetingView(View):
     Простое представление на основе базового класса View.
     Демонстрирует обработку GET и POST запросов.
     """
+
     # Сообщения для разных типов запросов
     greeting_get_message = "Привет, мир! Это GET запрос из GreetingView."
     greeting_post_message = "Вы успешно отправили POST запрос в GreetingView!"
@@ -431,3 +458,50 @@ class GreetingView(View):
         # Здесь могла бы быть логика обработки данных из POST-запроса,
         # например, сохранение данных формы.
         return HttpResponse(self.greeting_post_message)
+
+
+# 2. TemplateView - Отображение шаблонов с контекстом
+
+# Пример 1: Простой TemplateView ("View в 2 строки")
+class SimplePageView(TemplateView):
+    """
+    Простейшее представление для отображения статической страницы.
+    Использует атрибут template_name для указания шаблона.
+    """
+    template_name = "core/simple_page.html"
+    # Для этого View не требуется передавать дополнительный контекст,
+    # поэтому метод get_context_data() не переопределяется.
+
+
+# Пример 2: TemplateView с дополнительным контекстом
+class AboutUsView(TemplateView):
+    """
+    Представление для страницы "О нас".
+    Демонстрирует передачу как статического, так и динамического контекста в шаблон
+    через переопределение метода get_context_data().
+    """
+    template_name = "core/about_us.html"
+
+    def get_context_data(self, **kwargs):
+        """
+        Формирует и возвращает словарь контекста для шаблона.
+        """
+        # Сначала получаем базовый контекст от родительского класса (TemplateView).
+        # Это важно, так как родительский класс может добавлять в контекст полезные данные,
+        # например, экземпляр самого View (`view`).
+        context = super().get_context_data(**kwargs)
+        
+        # Добавляем наши собственные данные в контекст.
+        # Эти данные будут доступны в шаблоне по указанным ключам.
+        context['company_name'] = "Барбершоп 'Арбуз'"
+        context['start_year'] = 2010
+        # Динамически вычисляем текущий год и количество лет на рынке.
+        # Для этого импортируем модуль datetime.
+        import datetime # Лучше импортировать в начале файла, но для примера здесь
+        context['current_year'] = datetime.date.today().year
+        context['years_on_market'] = datetime.date.today().year - context['start_year']
+        context['page_title'] = "О нас - Барбершоп 'Арбуз'"
+        context['contact_email'] = "contact@arbuz-barbershop.com"
+        
+        # Возвращаем обновленный словарь контекста.
+        return context

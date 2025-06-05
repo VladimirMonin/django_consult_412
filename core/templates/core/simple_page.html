@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+
+{% block title %}Простая страница CBV{% endblock title %}
+
+{% block content %}
+<div class="container mt-4">
+    <h1>Это простая страница, отображаемая с помощью TemplateView!</h1>
+    <p class="lead">Всего две строки кода во <code>views.py</code> (не считая импорта) и одна в <code>urls.py</code> для создания этой страницы!</p>
+    <p>Это демонстрирует базовую мощь и простоту Django Class-Based Views для отображения статических шаблонов.</p>
+    <a href="{% url 'landing' %}" class="btn btn-primary">Вернуться на главную</a>
+</div>
+{% endblock content %}
