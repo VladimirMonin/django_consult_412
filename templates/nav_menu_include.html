@@ -49,9 +49,13 @@
                         <i class="bi bi-person-circle"></i> {{ user.username|capfirst }}
                     </span>
                 {% endif %}
-                <a href="{% url 'users:logout' %}" class="nav-link" title="Выйти">
-                    <i class="bi bi-box-arrow-right"></i> Выйти
-                </a>
+                {% comment %} Сделать это же методом POST {% endcomment %}
+                <form action="{% url 'users:logout' %}" method="post" class="d-inline">
+                    {% csrf_token %}
+                    <button type="submit" class="nav-link btn btn-link" title="Выйти">
+                        <i class="bi bi-box-arrow-right"></i> Выйти
+                    </button>
+                </form>
             {% else %}
                 <a href="{% url 'users:login' %}" class="nav-link" title="Войти">
                     <i class="bi bi-box-arrow-in-right"></i> Войти
