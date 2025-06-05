@@ -65,3 +65,20 @@ class OrderDetailView(LoginRequiredMixin, DetailView):
         # который уже вызовет get(), post() и т.д.
         return super().dispatch(request, *args, **kwargs)
 ```
+
+```python
+class StaffRequiredMixin(UserPassesTestMixin):
+    """
+    Миксин для проверки, является ли пользователь сотрудником (is_staff).
+    Если проверка не пройдена, пользователь перенаправляется на главную страницу
+    с сообщением об ошибке.
+    """
+    def test_func(self):
+        # Проверяем, аутентифицирован ли пользователь и является ли он сотрудником
+        return self.request.user.is_authenticated and self.request.user.is_staff
+
+    def handle_no_permission(self):
+        # Этот метод вызывается, если test_func вернул False
+        messages.error(self.request, "У вас нет доступа к этому разделу.")
+        return redirect("landing") # Предполагаем, что 'landing' - это имя URL главной страницы
+```

@@ -17,7 +17,8 @@ from .views import (
     SimplePageView, # Добавили импорт SimplePageView
     AboutUsView,    # Добавили импорт AboutUsView
     ServiceDetailView,
-    OrderDetailView
+    OrderDetailView,
+    ServicesListView
 )
 
 # Эти маршруты будут доступны с префиксом /barbershop/
@@ -28,7 +29,7 @@ urlpatterns = [
     path("thanks/<str:source>/", ThanksView.as_view(), name="thanks_with_source"),
     path("orders/", orders_list, name="orders_list"),
     path("orders/<int:order_id>/", OrderDetailView.as_view(), name="order_detail"),
-    path("services/", services_list, name="services_list"), # Это FBV, оставим пока
+    path("services/", ServicesListView.as_view(), name="services_list"), # Это FBV, оставим пока
     # path("services_cbv/", ServiceListView.as_view(), name="services_list_cbv"), # Закомментируем, т.к. ServiceListView еще не создан
     path("service/<int:pk>/", ServiceDetailView.as_view(), name="service_detail"),
     path("service_create/", service_create, name="service_create"),
