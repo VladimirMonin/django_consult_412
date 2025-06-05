@@ -13,6 +13,7 @@ from .views import (
     order_create,
     create_review,
     get_master_info,
+    GreetingView, # Добавили импорт GreetingView
 )
 
 # Эти маршруты будут доступны с префиксом /barbershop/
@@ -23,7 +24,8 @@ urlpatterns = [
     path("thanks/<str:source>/", ThanksView.as_view(), name="thanks_with_source"),
     path("orders/", orders_list, name="orders_list"),
     path("orders/<int:order_id>/", order_detail, name="order_detail"),
-    path("services/", services_list, name="services_list"),
+    path("services/", services_list, name="services_list"), # Это FBV, оставим пока
+    # path("services_cbv/", ServiceListView.as_view(), name="services_list_cbv"), # Закомментируем, т.к. ServiceListView еще не создан
     path("service_create/", service_create, name="service_create"),
     path("service_update/<int:service_id>/", service_update, name="service_update"),
     path(
@@ -32,4 +34,6 @@ urlpatterns = [
     path("order_create/", order_create, name="order_create"),
     path("review/create/", create_review, name="create_review"),
     path("api/master-info/", get_master_info, name="get_master_info"),
+    # --- Этап 1: Базовые CBV ---
+    path("greeting/", GreetingView.as_view(), name="greeting"),
 ]

@@ -7,6 +7,7 @@ from django.contrib.auth.decorators import login_required
 from .models import Order, Master, Service, Review
 from django.shortcuts import get_object_or_404
 from django.db.models import Q, F
+from django.views import View # Импортируем базовый View
 from django.views.generic import TemplateView
 
 # messages - это встроенный модуль Django для отображения сообщений пользователю
@@ -395,3 +396,38 @@ def get_master_info(request):
                 return JsonResponse({"success": False, "error": "Мастер не найден"})
         return JsonResponse({"success": False, "error": "Не указан ID мастера"})
     return JsonResponse({"success": False, "error": "Недопустимый запрос"})
+
+
+# --- Этап 1: Базовые CBV ---
+# 1. GreetingView на основе django.views.View
+class GreetingView(View):
+    """
+    Простое представление на основе базового класса View.
+    Демонстрирует обработку GET и POST запросов.
+    """
+    # Сообщения для разных типов запросов
+    greeting_get_message = "Привет, мир! Это GET запрос из GreetingView."
+    greeting_post_message = "Вы успешно отправили POST запрос в GreetingView!"
+
+    # Атрибут http_method_names определяет, какие HTTP-методы разрешены для этого View.
+    # По умолчанию он включает 'get', 'post', 'put', 'patch', 'delete', 'head', 'options', 'trace'.
+    # Мы можем его переопределить, если хотим ограничить поддерживаемые методы.
+    # http_method_names = ['get', 'post'] # В данном случае это избыточно, т.к. мы реализуем get и post
+
+    def get(self, request, *args, **kwargs):
+        """
+        Обрабатывает GET-запросы.
+        Возвращает простое HTTP-сообщение.
+        """
+        # request - это объект HttpRequest
+        # args и kwargs - это позиционные и именованные аргументы, захваченные из URL
+        return HttpResponse(self.greeting_get_message)
+
+    def post(self, request, *args, **kwargs):
+        """
+        Обрабатывает POST-запросы.
+        Возвращает простое HTTP-сообщение.
+        """
+        # Здесь могла бы быть логика обработки данных из POST-запроса,
+        # например, сохранение данных формы.
+        return HttpResponse(self.greeting_post_message)
