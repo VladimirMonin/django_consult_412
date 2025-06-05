@@ -194,14 +194,24 @@ def order_detail(request, order_id: int):
     return render(request, "core/order_detail.html", context)
 
 
-class OrderDetailView(LoginRequiredMixin, UserPassesTestMixin, DetailView):
+class OrderDetailView(LoginRequiredMixin, DetailView):
     model = Order
     template_name = "core/order_detail.html"
     pk_url_kwarg = "order_id"  # Указываем, что pk будет извлекаться из order_id в URL
 
-    def test_func(self):
-        # Проверяем, что пользователь является сотрудником
-        return self.request.user.is_staff
+    def dispatch(self, request, *args, **kwargs):
+    # Сначала проверяем, аутентифицирован ли пользователь (это делает LoginRequiredMixin,
+    # но если бы его не было, проверка была бы здесь: if not request.user.is_authenticated:)
+    # Затем проверяем, является ли пользователь сотрудником
+        if not request.user.is_staff:
+            messages.error(request, "У вас нет доступа к этой странице.")
+            return redirect("landing") 
+            # Или можно было бы вызвать Http403: from django.http import Http403; raise Http403("Доступ запрещен")
+        
+        # Если все проверки пройдены, вызываем родительский метод dispatch,
+        # который уже вызовет get(), post() и т.д.
+        return super().dispatch(request, *args, **kwargs)
+
 
 def service_create(request):
 

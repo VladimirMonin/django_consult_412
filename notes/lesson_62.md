@@ -50,3 +50,18 @@ class OrderDetailView(LoginRequiredMixin, DetailView):
 - Классический вариант - `UserPassesTestMixin` для проверки, является ли пользователь `is_staff`.
 - Второй вариант - расширить `dispatch` и добавить проверку на `is_staff`.
 
+
+```python
+    def dispatch(self, request, *args, **kwargs):
+    # Сначала проверяем, аутентифицирован ли пользователь (это делает LoginRequiredMixin,
+    # но если бы его не было, проверка была бы здесь: if not request.user.is_authenticated:)
+    # Затем проверяем, является ли пользователь сотрудником
+        if not request.user.is_staff:
+            messages.error(request, "У вас нет доступа к этой странице.")
+            return redirect("landing") 
+            # Или можно было бы вызвать Http403: from django.http import Http403; raise Http403("Доступ запрещен")
+        
+        # Если все проверки пройдены, вызываем родительский метод dispatch,
+        # который уже вызовет get(), post() и т.д.
+        return super().dispatch(request, *args, **kwargs)
+```
