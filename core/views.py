@@ -199,6 +199,52 @@ def orders_list(request):
         }
 
         return render(request, "core/orders_list.html", context)
+    
+class OrdersListView(StaffRequiredMixin, ListView):
+    model = Order
+    template_name = "core/orders_list.html"
+    context_object_name = "orders"
+
+    def get_queryset(self):
+        """
+        Переопределяем метод get_queryset для получения всех заказов с жадной загрузкой мастеров и услуг.
+        А так же обработкой всех вариантов фильтрации и поиска.
+        """
+         # Получаем все заказы
+        # Используем жадную загрузку для мастеров и услуг
+        all_orders = (
+            Order.objects.select_related("master").prefetch_related("services").all()
+        )
+
+        # Получаем строку поиска
+        search_query = self.request.GET.get("search", None)
+
+        if search_query:
+            # Получаем чекбоксы
+            check_boxes = self.request.GET.getlist("search_in")
+
+            # Проверяем Чекбоксы и добавляем Q объекты в запрос
+            # |= это оператор "или" для Q объектов
+            filters = Q()
+
+            if "phone" in check_boxes:
+                # Полная запись где мы увеличиваем фильтры
+                filters = filters | Q(phone__icontains=search_query)
+
+            if "name" in check_boxes:
+                # Сокращенная запись через inplace оператор
+                filters |= Q(client_name__icontains=search_query)
+
+            if "comment" in check_boxes:
+                filters |= Q(comment__icontains=search_query)
+
+            if filters:
+                # Если фильтры появились. Если Q остался пустым, мы не попадем сюда
+                all_orders = all_orders.filter(filters)
+
+        # Возвращаем отфильтрованный QuerySet
+        return all_orders
+        
 
 
 @login_required

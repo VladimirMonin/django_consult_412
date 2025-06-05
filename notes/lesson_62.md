@@ -82,3 +82,11 @@ class StaffRequiredMixin(UserPassesTestMixin):
         messages.error(self.request, "У вас нет доступа к этому разделу.")
         return redirect("landing") # Предполагаем, что 'landing' - это имя URL главной страницы
 ```
+
+
+## ListView
+Данные по методам и атрибутам
+
+пример из кода
+- Список услуг
+- Список заявок
