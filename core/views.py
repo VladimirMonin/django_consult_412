@@ -385,6 +385,18 @@ class ServiceCreateView(CreateView):
         "button_txt": "Создать",
     }
 
+    def form_valid(self, form):
+        """
+        Метод вызывается, когда форма валидна
+        form: Django помещает в эту переменную данные из формы
+        """
+        messages.success(self.request, f"Услуга '{form.cleaned_data['name']}' успешно создана!")
+        return super().form_valid(form)
+    
+    def form_invalid(self, form):
+        messages.error(self.request, "Ошибка формы: проверьте ввод данных.")
+        return super().form_invalid(form)
+
 
 def masters_services_by_id(request, master_id=None):
     """
