@@ -33,9 +33,13 @@
                     <strong>Опыт работы:</strong> {{ master.experience }} 
                     {{ master.experience|yesno:"год,года,лет" }}
                     <span class="ms-2">
-                        {% for i in "x"|ljust:master.experience %}
-                        <i class="bi bi-scissors text-danger"></i> 
+                        {% with exp=master.experience|default:0 %}
+                        {% for i in ""|center:exp %}
+                            <i class="bi bi-scissors text-danger"></i> 
+                            {% empty %}
+                            <span class="text-muted">Нет опыта</span>
                         {% endfor %}
+                        {% endwith %}
                     </span>
                 </p>
                 

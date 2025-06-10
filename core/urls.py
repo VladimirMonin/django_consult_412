@@ -17,12 +17,13 @@ from .views import (
     OrdersListView,
     ServiceCreateView,
     ServiceUpdateView,
+    MasterDetailView,
 )
 
 # Эти маршруты будут доступны с префиксом /barbershop/
 
 urlpatterns = [
-    path("masters/<int:master_id>/", master_detail, name="master_detail"),
+    path("masters/<int:pk>/", MasterDetailView.as_view(), name="master_detail"),
     path("thanks/", ThanksView.as_view(), name="thanks"),
     path("thanks/<str:source>/", ThanksView.as_view(), name="thanks_with_source"),
     path("orders/", OrdersListView.as_view(), name="orders_list"),

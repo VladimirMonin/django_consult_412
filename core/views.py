@@ -18,21 +18,6 @@ import json
 # Импорт LoginRequiredMixin для использования в CBV
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 
-#TODO - Тут подойдет либо TemplateView либо View с метдом get
-def landing(request):
-    # Получаем всех мастеров из базы данных (включая неактивных)
-    masters_db = Master.objects.all()
-
-    # Получаем все услуги из базы данных вместо только популярных
-    all_services = Service.objects.all()
-
-    context = {
-        "title": "Главная - Барбершоп Арбуз",
-        "services": all_services,  # Все услуги из базы данных
-        "masters": masters_db,  # Из базы данных
-        "years_on_market": 50,
-    }
-    return render(request, "core/landing.html", context)
 
 class LandingPageView(TemplateView):
     template_name = "core/landing.html"
@@ -107,6 +92,50 @@ def master_detail(request, master_id):
     }
 
     return render(request, "core/master_detail.html", context)
+
+class MasterDetailView(DetailView):
+    model = Master
+    template_name = "core/master_detail.html"
+    context_object_name = "master"
+
+    def get_object(self, queryset=None):
+        """
+        Получает объект мастера по ID из URL жадной загрузкой добывает связанные данные и обновляет счетчик просмотров если мастер еще не был просмотрен в текущей сессии.
+        """
+        master_id = self.kwargs.get("pk")
+        
+        # Жадная подгрузка Мастера + отзывы + услуги
+        master = Master.objects.get(id=master_id)
+        self.reviews = master.reviews.filter(is_published=True).order_by("-created_at")
+        self.services = master.services.all()
+
+        # Получаем список просмотренных мастеров из сессии
+        viewed_masters = self.request.session.get("viewed_masters", [])
+
+        # Если мастер еще не был просмотрен в текущей сессии, увеличиваем счетчик просмотров
+        if master_id not in viewed_masters:
+            Master.objects.filter(id=master_id).update(view_count=F("view_count") + 1)
+
+            # Добавляем мастера в список просмотренных
+            viewed_masters.append(master_id)
+            self.request.session["viewed_masters"] = viewed_masters
+
+            # Обновляем объект после изменения в БД
+            master.refresh_from_db()  # Получаем связанные услуги мастера
+
+        return master
+
+    def get_context_data(self, **kwargs):
+        """
+        Формирует и возвращает словарь контекста для шаблона "Детали мастера".
+        """
+        context = super().get_context_data(**kwargs)
+        context["reviews"] = self.reviews
+        context["services"] = self.services
+
+
+
+
 
 
 class ThanksView(TemplateView):  # Существующий класс, дорабатываем его
