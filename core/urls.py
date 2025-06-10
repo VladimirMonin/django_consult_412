@@ -3,10 +3,10 @@ from django.contrib import admin
 from django.urls import path
 from .views import (
     ThanksView,
-    masters_services_by_id,
-    order_create,
-    create_review,
-    get_master_info,
+    MastersServicesAjaxView,
+    OrderCreateView,
+    ReviewCreateView,
+    MasterInfoAjaxView,
     GreetingView,  # Добавили импорт GreetingView
     SimplePageView,  # Добавили импорт SimplePageView
     AboutUsView,  # Добавили импорт AboutUsView
@@ -35,11 +35,11 @@ urlpatterns = [
     path("service_create/<str:form_mode>/", ServiceCreateView.as_view(), name="service_create"),
     path("service_update/<int:pk>/", ServiceUpdateView.as_view(), name="service_update"),
     path(
-        "masters_services/", masters_services_by_id, name="masters_services_by_id_ajax"
+        "masters_services/", MastersServicesAjaxView.as_view(), name="masters_services_by_id_ajax"
     ),
-    path("order_create/", order_create, name="order_create"),
-    path("review/create/", create_review, name="create_review"),
-    path("api/master-info/", get_master_info, name="get_master_info"),
+    path("order_create/", OrderCreateView.as_view(), name="order_create"),
+    path("review/create/", ReviewCreateView.as_view(), name="create_review"),
+    path("api/master-info/", MasterInfoAjaxView.as_view(), name="get_master_info"),
     # --- Этап 1: Базовые CBV ---
     path("greeting/", GreetingView.as_view(), name="greeting"),
     path("simple-page/", SimplePageView.as_view(), name="simple_page"),

@@ -226,51 +226,6 @@ class OrderDetailView(LoginRequiredMixin, DetailView):
         return super().dispatch(request, *args, **kwargs)
 
 
-
-def service_update(request, service_id):
-    # Вне зависимости от метода - получаем услугу
-    service = get_object_or_404(Service, id=service_id)
-
-    # Если метод GET - возвращаем форму
-    if request.method == "GET":
-        # У нас форма связана с моделью. Рендер всех полей
-        # Просто ложим в форму объект услуги
-        form = ServiceForm(instance=service)
-
-        context = {
-            "title": f"Редактирование услуги {service.name}",
-            "form": form,
-            "button_txt": "Обновить",
-        }
-        return render(request, "core/service_form.html", context)
-
-    elif request.method == "POST":
-        # Создаем форму и передаем в нее POST данные, FILES для загрузки файлов и экземпляр для обновления
-        form = ServiceForm(request.POST, request.FILES, instance=service)
-
-        # Если форма валидна:
-        if form.is_valid():
-            # Форма связана с моделью, просто сохраним ее
-            form.save()
-
-            service_name = form.cleaned_data.get("name")
-            # Даем пользователю уведомление об успешном обновлении
-            messages.success(request, f"Услуга {service_name} успешно обновлена!")
-
-            # Перенаправляем на страницу со всеми услугами
-            return redirect("orders_list")
-        else:
-            # Если данные не валидны, возвращаем ошибку
-            messages.error(request, "Ошибка: вы что-то сделали не так.")
-
-            context = {
-                "title": f"Редактирование услуги {service.name}",
-                "form": form,
-                "button_txt": "Обновить",
-            }
-
-            return render(request, "core/service_form.html", context)
-
 class ServiceUpdateView(UpdateView):
     form_class = ServiceForm
     model = Service
@@ -332,155 +287,101 @@ class ServiceCreateView(CreateView):
         elif form_mode == "easy":
             return ServiceEasyForm
 
-#TODO - Тут подойдет обычная View
-def masters_services_by_id(request, master_id=None):
-    """
-    Вью для ajax запросов фронтенда, для подгрузки услуг конкретного мастера в форму
-    m2m выбора услуг
-    """
-    # Если master_id не передан в URL, пробуем получить его из POST-запроса
-    if master_id is None:
+class MastersServicesAjaxView(View):
+    def get(self, request, *args, **kwargs):
+        master_id = request.GET.get("master_id")
+        return self.get_services_json_response(master_id)
+
+    def post(self, request, *args, **kwargs):
         data = json.loads(request.body)
         master_id = data.get("master_id")
+        return self.get_services_json_response(master_id)
 
-    # Получаем мастера по id
-    master = get_object_or_404(Master, id=master_id)
+    def get_services_json_response(self, master_id):
+        if not master_id:
+            return JsonResponse({"error": "master_id is required"}, status=400)
 
-    # Получаем услуги
-    services = master.services.all()
+        master = get_object_or_404(Master, id=master_id)
+        services = master.services.all()
+        response_data = [{"id": service.id, "name": service.name} for service in services]
+        return JsonResponse(response_data, safe=False)
 
-    # Формируем ответ в виде JSON
-    response_data = []
+class OrderCreateView(CreateView):
+    model = Order
+    form_class = OrderForm
+    template_name = "core/order_form.html"
+    
+    def get_success_url(self):
+        return reverse_lazy("thanks_with_source", kwargs={"source": "order"})
 
-    for service in services:
-        # Добавляем в ответ id и название услуги
-        response_data.append(
-            {
-                "id": service.id,
-                "name": service.name,
-            }
-        )
-    # Возвращаем ответ в формате JSON
-    return HttpResponse(
-        json.dumps(response_data, ensure_ascii=False, indent=4),
-        content_type="application/json",
-    )
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["title"] = "Создание заказа"
+        context["button_text"] = "Создать"
+        return context
 
-# #TODO - Тут подойдет CreateView
-def order_create(request):
-    """
-    Вью для создания заказа
-    """
-    if request.method == "GET":
-        # Если метод GET - возвращаем пустую форму
-        form = OrderForm()
+    def form_valid(self, form):
+        client_name = form.cleaned_data.get("client_name")
+        messages.success(self.request, f"Заказ для {client_name} успешно создан!")
+        return super().form_valid(form)
 
-        context = {
-            "title": "Создание заказа",
-            "form": form,
-            "button_text": "Создать",
-        }
-        return render(request, "core/order_form.html", context)
 
-    if request.method == "POST":
-        # Создаем форму и передаем в нее POST данные
-        form = OrderForm(request.POST)
+class ReviewCreateView(CreateView):
+    model = Review
+    form_class = ReviewForm
+    template_name = "core/review_form.html"
 
-        # Если форма валидна:
-        if form.is_valid():
-            # Сохраняем форму в БД
-            form.save()
-            client_name = form.cleaned_data.get("client_name")
-            # Даем пользователю уведомление об успешном создании
-            messages.success(
-                request, f"Заказ для {client_name} успешно создан!"
-            )  # Перенаправляем на страницу благодарности с указанием источника
-            return redirect("thanks_with_source", source="order")
+    def get_success_url(self):
+        return reverse_lazy("thanks_with_source", kwargs={"source": "review"})
 
-        # В случае ошибок валидации Django автоматически заполнит form.errors
-        # и отобразит их в шаблоне, поэтому просто возвращаем форму
-        context = {
-            "title": "Создание заказа",
-            "form": form,
-            "button_text": "Создать",
-        }
-        return render(request, "core/order_form.html", context)
-
-# #TODO - Тут подойдет CreateView
-def create_review(request):
-    """
-    Представление для создания отзыва о мастере
-    """
-    if request.method == "GET":
-        # При GET-запросе показываем форму, если указан ID мастера, устанавливаем его в поле мастера
-        master_id = request.GET.get("master_id")
-
-        initial_data = {}
+    def get_initial(self):
+        initial = super().get_initial()
+        master_id = self.request.GET.get("master_id")
         if master_id:
             try:
-                master = Master.objects.get(pk=master_id)
-                initial_data["master"] = master
+                initial["master"] = Master.objects.get(pk=master_id)
             except Master.DoesNotExist:
                 pass
+        return initial
 
-        form = ReviewForm(initial=initial_data)
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["title"] = "Оставить отзыв"
+        context["button_text"] = "Отправить"
+        return context
 
-        context = {
-            "title": "Оставить отзыв",
-            "form": form,
-            "button_text": "Отправить",
-        }
-        return render(request, "core/review_form.html", context)
+    def form_valid(self, form):
+        review = form.save(commit=False)
+        review.is_published = False
+        review.save()
+        
+        messages.success(
+            self.request,
+            "Ваш отзыв успешно добавлен! Он будет опубликован после проверки модератором.",
+        )
+        return redirect(self.get_success_url())
 
-    elif request.method == "POST":
-        form = ReviewForm(request.POST, request.FILES)
+class MasterInfoAjaxView(View):
+    def get(self, request, *args, **kwargs):
+        if not request.headers.get("X-Requested-With") == "XMLHttpRequest":
+            return JsonResponse({"success": False, "error": "Недопустимый запрос"}, status=400)
 
-        if form.is_valid():
-            review = form.save(
-                commit=False
-            )  # Не сохраняем сразу, чтобы установить is_published=False
-            review.is_published = False  # Отзыв по умолчанию не опубликован
-            review.save()  # Сохраняем отзыв
-
-            # Сообщаем пользователю, что его отзыв успешно добавлен и будет опубликован после модерации
-            messages.success(
-                request,
-                "Ваш отзыв успешно добавлен! Он будет опубликован после проверки модератором.",
-            )  # Перенаправляем на страницу благодарности с указанием источника
-            return redirect("thanks_with_source", source="review")
-
-        # В случае ошибок валидации возвращаем форму с ошибками
-        context = {
-            "title": "Оставить отзыв",
-            "form": form,
-            "button_text": "Отправить",
-        }
-        return render(request, "core/review_form.html", context)
-
-#TODO - Тут подойдет либо DetailView, либо View
-def get_master_info(request):
-    """
-    Универсальное представление для получения информации о мастере через AJAX.
-    Возвращает данные мастера в формате JSON.
-    """
-    if request.headers.get("X-Requested-With") == "XMLHttpRequest":
         master_id = request.GET.get("master_id")
-        if master_id:
-            try:
-                master = Master.objects.get(pk=master_id)
-                # Формируем данные для ответа
-                master_data = {
-                    "id": master.id,
-                    "name": f"{master.first_name} {master.last_name}",
-                    "experience": master.experience,
-                    "photo": master.photo.url if master.photo else None,
-                    "services": list(master.services.values("id", "name", "price")),
-                }
-                return JsonResponse({"success": True, "master": master_data})
-            except Master.DoesNotExist:
-                return JsonResponse({"success": False, "error": "Мастер не найден"})
-        return JsonResponse({"success": False, "error": "Не указан ID мастера"})
-    return JsonResponse({"success": False, "error": "Недопустимый запрос"})
+        if not master_id:
+            return JsonResponse({"success": False, "error": "Не указан ID мастера"}, status=400)
+
+        try:
+            master = Master.objects.get(pk=master_id)
+            master_data = {
+                "id": master.id,
+                "name": f"{master.first_name} {master.last_name}",
+                "experience": master.experience,
+                "photo": master.photo.url if master.photo else None,
+                "services": list(master.services.values("id", "name", "price")),
+            }
+            return JsonResponse({"success": True, "master": master_data})
+        except Master.DoesNotExist:
+            return JsonResponse({"success": False, "error": "Мастер не найден"}, status=404)
 
 
 # --- Этап 1: Базовые CBV ---
