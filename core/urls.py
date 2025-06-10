@@ -13,13 +13,14 @@ from .views import (
     order_create,
     create_review,
     get_master_info,
-    GreetingView, # Добавили импорт GreetingView
-    SimplePageView, # Добавили импорт SimplePageView
-    AboutUsView,    # Добавили импорт AboutUsView
+    GreetingView,  # Добавили импорт GreetingView
+    SimplePageView,  # Добавили импорт SimplePageView
+    AboutUsView,  # Добавили импорт AboutUsView
     ServiceDetailView,
     OrderDetailView,
     ServicesListView,
     OrdersListView,
+    ServiceCreateView,
 )
 
 # Эти маршруты будут доступны с префиксом /barbershop/
@@ -30,10 +31,12 @@ urlpatterns = [
     path("thanks/<str:source>/", ThanksView.as_view(), name="thanks_with_source"),
     path("orders/", OrdersListView.as_view(), name="orders_list"),
     path("orders/<int:order_id>/", OrderDetailView.as_view(), name="order_detail"),
-    path("services/", ServicesListView.as_view(), name="services_list"), # Это FBV, оставим пока
+    path(
+        "services/", ServicesListView.as_view(), name="services_list"
+    ),  # Это FBV, оставим пока
     # path("services_cbv/", ServiceListView.as_view(), name="services_list_cbv"), # Закомментируем, т.к. ServiceListView еще не создан
     path("service/<int:pk>/", ServiceDetailView.as_view(), name="service_detail"),
-    path("service_create/", service_create, name="service_create"),
+    path("service_create/", ServiceCreateView.as_view(), name="service_create"),
     path("service_update/<int:service_id>/", service_update, name="service_update"),
     path(
         "masters_services/", masters_services_by_id, name="masters_services_by_id_ajax"

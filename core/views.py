@@ -1,5 +1,3 @@
-from math import e
-import re
 from django.shortcuts import redirect, render
 from django.http import HttpResponse, JsonResponse
 from .data import *
@@ -9,6 +7,8 @@ from django.shortcuts import get_object_or_404
 from django.db.models import Q, F
 from django.views import View  # Импортируем базовый View
 from django.views.generic import TemplateView, ListView, DetailView
+from django.views.generic.edit import CreateView, UpdateView, DeleteView
+from django.urls import reverse_lazy
 
 # messages - это встроенный модуль Django для отображения сообщений пользователю
 from django.contrib import messages
@@ -51,12 +51,14 @@ def services_list(request):
 
     return render(request, "core/services_list.html", context)
 
+
 class StaffRequiredMixin(UserPassesTestMixin):
     """
     Миксин для проверки, является ли пользователь сотрудником (is_staff).
     Если проверка не пройдена, пользователь перенаправляется на главную страницу
     с сообщением об ошибке.
     """
+
     def test_func(self):
         # Проверяем, аутентифицирован ли пользователь и является ли он сотрудником
         return self.request.user.is_authenticated and self.request.user.is_staff
@@ -64,7 +66,9 @@ class StaffRequiredMixin(UserPassesTestMixin):
     def handle_no_permission(self):
         # Этот метод вызывается, если test_func вернул False
         messages.error(self.request, "У вас нет доступа к этому разделу.")
-        return redirect("landing") # Предполагаем, что 'landing' - это имя URL главной страницы
+        return redirect(
+            "landing"
+        )  # Предполагаем, что 'landing' - это имя URL главной страницы
 
 
 class ServicesListView(StaffRequiredMixin, ListView):
@@ -113,7 +117,7 @@ def master_detail(request, master_id):
 
 
 # Перепишем представление thanks на TemplateView
-class ThanksView(TemplateView): # Существующий класс, дорабатываем его
+class ThanksView(TemplateView):  # Существующий класс, дорабатываем его
     template_name = "core/thanks.html"
 
     def get_context_data(self, **kwargs):
@@ -123,31 +127,37 @@ class ThanksView(TemplateView): # Существующий класс, дора�
         и обрабатывает параметр 'source' из URL.
         """
         context = super().get_context_data(**kwargs)
-        
+
         # Получаем количество активных мастеров из базы данных
         # Это полезная информация, которую можно отобразить на странице благодарности.
         masters_count = Master.objects.filter(is_active=True).count()
         context["masters_count"] = masters_count
-        
+
         # Добавим новый статический элемент в контекст для демонстрации
         context["additional_message"] = "Спасибо, что выбрали наш первоклассный сервис!"
-        
+
         # Проверим, передан ли параметр 'source' в URL.
         # kwargs содержит именованные аргументы, захваченные из URL-шаблона.
         # Например, если URL /thanks/order/, то kwargs будет {'source': 'order'}
-        if 'source' in kwargs:
-            source_page = kwargs['source']
-            if source_page == 'order':
-                context['source_message'] = "Ваш заказ успешно создан и принят в обработку."
-            elif source_page == 'review':
-                context['source_message'] = "Ваш отзыв успешно отправлен и будет опубликован после модерации."
+        if "source" in kwargs:
+            source_page = kwargs["source"]
+            if source_page == "order":
+                context["source_message"] = (
+                    "Ваш заказ успешно создан и принят в обработку."
+                )
+            elif source_page == "review":
+                context["source_message"] = (
+                    "Ваш отзыв успешно отправлен и будет опубликован после модерации."
+                )
             else:
                 # Общий случай, если источник не 'order' и не 'review'
-                context['source_message'] = f"Благодарим вас за ваше действие, инициированное со страницы: {source_page}."
+                context["source_message"] = (
+                    f"Благодарим вас за ваше действие, инициированное со страницы: {source_page}."
+                )
         else:
             # Если параметр 'source' не передан
-            context['source_message'] = "Благодарим вас за посещение!"
-            
+            context["source_message"] = "Благодарим вас за посещение!"
+
         return context
 
 
@@ -199,7 +209,8 @@ def orders_list(request):
         }
 
         return render(request, "core/orders_list.html", context)
-    
+
+
 class OrdersListView(StaffRequiredMixin, ListView):
     model = Order
     template_name = "core/orders_list.html"
@@ -210,7 +221,7 @@ class OrdersListView(StaffRequiredMixin, ListView):
         Переопределяем метод get_queryset для получения всех заказов с жадной загрузкой мастеров и услуг.
         А так же обработкой всех вариантов фильтрации и поиска.
         """
-         # Получаем все заказы
+        # Получаем все заказы
         # Используем жадную загрузку для мастеров и услуг
         all_orders = (
             Order.objects.select_related("master").prefetch_related("services").all()
@@ -244,7 +255,6 @@ class OrdersListView(StaffRequiredMixin, ListView):
 
         # Возвращаем отфильтрованный QuerySet
         return all_orders
-        
 
 
 @login_required
@@ -270,14 +280,14 @@ class OrderDetailView(LoginRequiredMixin, DetailView):
     pk_url_kwarg = "order_id"  # Указываем, что pk будет извлекаться из order_id в URL
 
     def dispatch(self, request, *args, **kwargs):
-    # Сначала проверяем, аутентифицирован ли пользователь (это делает LoginRequiredMixin,
-    # но если бы его не было, проверка была бы здесь: if not request.user.is_authenticated:)
-    # Затем проверяем, является ли пользователь сотрудником
+        # Сначала проверяем, аутентифицирован ли пользователь (это делает LoginRequiredMixin,
+        # но если бы его не было, проверка была бы здесь: if not request.user.is_authenticated:)
+        # Затем проверяем, является ли пользователь сотрудником
         if not request.user.is_staff:
             messages.error(request, "У вас нет доступа к этой странице.")
-            return redirect("landing") 
+            return redirect("landing")
             # Или можно было бы вызвать Http403: from django.http import Http403; raise Http403("Доступ запрещен")
-        
+
         # Если все проверки пройдены, вызываем родительский метод dispatch,
         # который уже вызовет get(), post() и т.д.
         return super().dispatch(request, *args, **kwargs)
@@ -364,6 +374,16 @@ def service_update(request, service_id):
             }
 
             return render(request, "core/service_form.html", context)
+
+
+class ServiceCreateView(CreateView):
+    form_class = ServiceForm
+    template_name = "core/service_form.html"
+    success_url = reverse_lazy("services_list")
+    extra_context = {
+        "title": "Создание услуги",
+        "button_txt": "Создать",
+    }
 
 
 def masters_services_by_id(request, master_id=None):
@@ -554,12 +574,14 @@ class GreetingView(View):
 
 # 2. TemplateView - Отображение шаблонов с контекстом
 
+
 # Пример 1: Простой TemplateView ("View в 2 строки")
 class SimplePageView(TemplateView):
     """
     Простейшее представление для отображения статической страницы.
     Использует атрибут template_name для указания шаблона.
     """
+
     template_name = "core/simple_page.html"
     # Для этого View не требуется передавать дополнительный контекст,
     # поэтому метод get_context_data() не переопределяется.
@@ -572,6 +594,7 @@ class AboutUsView(TemplateView):
     Демонстрирует передачу как статического, так и динамического контекста в шаблон
     через переопределение метода get_context_data().
     """
+
     template_name = "core/about_us.html"
 
     def get_context_data(self, **kwargs):
@@ -582,22 +605,22 @@ class AboutUsView(TemplateView):
         # Это важно, так как родительский класс может добавлять в контекст полезные данные,
         # например, экземпляр самого View (`view`).
         context = super().get_context_data(**kwargs)
-        
+
         # Добавляем наши собственные данные в контекст.
         # Эти данные будут доступны в шаблоне по указанным ключам.
-        context['company_name'] = "Барбершоп 'Арбуз'"
-        context['start_year'] = 2010
+        context["company_name"] = "Барбершоп 'Арбуз'"
+        context["start_year"] = 2010
         # Динамически вычисляем текущий год и количество лет на рынке.
         # Для этого импортируем модуль datetime.
-        import datetime # Лучше импортировать в начале файла, но для примера здесь
-        context['current_year'] = datetime.date.today().year
-        context['years_on_market'] = datetime.date.today().year - context['start_year']
-        context['page_title'] = "О нас - Барбершоп 'Арбуз'"
-        context['contact_email'] = "contact@arbuz-barbershop.com"
-        
+        import datetime  # Лучше импортировать в начале файла, но для примера здесь
+
+        context["current_year"] = datetime.date.today().year
+        context["years_on_market"] = datetime.date.today().year - context["start_year"]
+        context["page_title"] = "О нас - Барбершоп 'Арбуз'"
+        context["contact_email"] = "contact@arbuz-barbershop.com"
+
         # Возвращаем обновленный словарь контекста.
         return context
-
 
 
 class ServiceDetailView(DetailView):
@@ -606,23 +629,18 @@ class ServiceDetailView(DetailView):
     Использует модель Service и явно указанное имя шаблона.
     В шаблон будет передан объект service (имя по умолчанию для контекстной переменной).
     """
+
     model = Service  # Указываем, какую модель мы хотим отобразить
-    template_name = 'core/service_detail.html'  # Указываем шаблон
+    template_name = "core/service_detail.html"  # Указываем шаблон
 
     # Если template_name не указать, Django будет искать:
     # 'core/service_detail.html' (т.е. <app_label>/<model_name_lowercase>_detail.html)
 
 
-
-
-
-
-
-
-
 # --- Этап 2: Работа со списками и отдельными объектами - ListView и DetailView ---
 
 # 3. ListView - Отображение списков объектов
+
 
 # Пример 1: Базовый ServiceListView
 class ServiceListView(ListView):
@@ -631,8 +649,9 @@ class ServiceListView(ListView):
     Использует модель Service и явно указанное имя шаблона.
     В шаблон будет передан object_list (имя по умолчанию для контекстной переменной списка).
     """
-    model = Service # Указываем, какую модель мы хотим отобразить
-    template_name = 'core/service_list_cbv.html' 
+
+    model = Service  # Указываем, какую модель мы хотим отобразить
+    template_name = "core/service_list_cbv.html"
     # Если template_name не указать, Django будет искать:
     # 'core/service_list.html' (т.е. <app_label>/<model_name_lowercase>_list.html)
 
@@ -646,9 +665,10 @@ class ServiceListViewAdvanced(ListView):
     - Включает пагинацию (3 объекта на страницу) через paginate_by.
     - Добавляет дополнительную информацию в контекст (через get_context_data).
     """
-    model = Service # Указываем модель
-    template_name = 'core/service_list_advanced_cbv.html' # Указываем шаблон
-    context_object_name = 'services'  # Имя переменной в шаблоне будет {{ services }} вместо {{ object_list }}
+
+    model = Service  # Указываем модель
+    template_name = "core/service_list_advanced_cbv.html"  # Указываем шаблон
+    context_object_name = "services"  # Имя переменной в шаблоне будет {{ services }} вместо {{ object_list }}
     paginate_by = 3  # Количество объектов на странице для пагинации
     # ordering = ['name'] # Можно было бы задать сортировку по умолчанию здесь, но мы ее переопределим в get_queryset
 
@@ -659,7 +679,7 @@ class ServiceListViewAdvanced(ListView):
         """
         # Мы хотим показать только те услуги, у которых поле is_popular=True,
         # и отсортировать их по полю price.
-        queryset = Service.objects.filter(is_popular=True).order_by('price')
+        queryset = Service.objects.filter(is_popular=True).order_by("price")
         return queryset
 
     def get_context_data(self, **kwargs):
@@ -673,16 +693,16 @@ class ServiceListViewAdvanced(ListView):
         # - 'page_obj' (объект Page, представляющий текущую страницу)
         # - 'is_paginated' (True, если включена пагинация и объектов больше, чем на одной странице)
         context = super().get_context_data(**kwargs)
-        
+
         # Добавляем свои кастомные данные в контекст
-        context['page_title'] = "Наши самые популярные и выгодные услуги"
-        
+        context["page_title"] = "Наши самые популярные и выгодные услуги"
+
         # Общее количество всех услуг в системе (для справки)
-        context['total_services_in_system'] = Service.objects.count() 
-        
+        context["total_services_in_system"] = Service.objects.count()
+
         # Количество услуг, которые фактически отображаются (т.е. популярных)
         # self.get_queryset() вернет отфильтрованный queryset (популярные, отсортированные по цене)
         # .count() на нем даст общее число таких услуг до пагинации.
-        context['popular_services_total_count'] = self.get_queryset().count()
+        context["popular_services_total_count"] = self.get_queryset().count()
 
         return context
