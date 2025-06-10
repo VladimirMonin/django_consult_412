@@ -89,6 +89,22 @@ urlpatterns = [
 
 Это значительно сократило бы код по сравнению с Function-Based View, убрав ручную обработку GET/POST запросов и валидации формы.
 
+```python
+    def get_form_class(self):
+        """
+        Обрабатывает параметр form_mode в URL и возвращает нужную форму
+        2 варианта: "normal" и "easy"
+        """
+        form_mode = self.kwargs.get("form_mode")
+        if form_mode == "normal":
+            return ServiceForm
+        
+        elif form_mode == "easy":
+            return ServiceEasyForm
+```
+
+Позволит в зависимости от параметра в URL использовать разные формы.
+
 ## 2. UpdateView (`django.views.generic.edit.UpdateView`)
 
 `UpdateView` — это представление для редактирования существующего экземпляра модели. Оно автоматически загружает объект (GET-запрос), отображает форму с предзаполненными данными и сохраняет изменения после успешной отправки (POST-запрос).

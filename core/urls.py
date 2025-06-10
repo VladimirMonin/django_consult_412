@@ -6,8 +6,6 @@ from .views import (
     ThanksView,
     orders_list,
     order_detail,
-    service_create,
-    service_update,
     services_list,
     masters_services_by_id,
     order_create,
@@ -21,6 +19,7 @@ from .views import (
     ServicesListView,
     OrdersListView,
     ServiceCreateView,
+    ServiceUpdateView,
 )
 
 # Эти маршруты будут доступны с префиксом /barbershop/
@@ -37,7 +36,7 @@ urlpatterns = [
     # path("services_cbv/", ServiceListView.as_view(), name="services_list_cbv"), # Закомментируем, т.к. ServiceListView еще не создан
     path("service/<int:pk>/", ServiceDetailView.as_view(), name="service_detail"),
     path("service_create/<str:form_mode>/", ServiceCreateView.as_view(), name="service_create"),
-    path("service_update/<int:service_id>/", service_update, name="service_update"),
+    path("service_update/<int:pk>/", ServiceUpdateView.as_view(), name="service_update"),
     path(
         "masters_services/", masters_services_by_id, name="masters_services_by_id_ajax"
     ),

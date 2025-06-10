@@ -293,43 +293,6 @@ class OrderDetailView(LoginRequiredMixin, DetailView):
         return super().dispatch(request, *args, **kwargs)
 
 
-def service_create(request):
-
-    # Если метод GET - возвращаем пустую форму
-    if request.method == "GET":
-        form = ServiceForm()
-        context = {
-            "title": "Создание услуги",
-            "form": form,
-            "button_txt": "Создать",
-        }
-        return render(request, "core/service_form.html", context)
-
-    elif request.method == "POST":
-        # Создаем форму и передаем в нее POST данные и FILES для загрузки файлов
-        form = ServiceForm(request.POST, request.FILES)
-
-        # Если форма валидна:
-        if form.is_valid():
-            # Так как это ModelForm - нам не надо извлекать поля по отдельности
-            # Сохраняем форму в БД
-            form.save()
-            service_name = form.cleaned_data.get("name")
-            # Даем пользователю уведомление об успешном создании
-            messages.success(request, f"Услуга {service_name} успешно создана!")
-
-            # Перенаправляем на страницу со всеми услугами
-            return redirect("orders_list")
-
-        # В случае ошибок валидации Django автоматически заполнит form.errors
-        # и отобразит их в шаблоне, поэтому просто возвращаем форму
-        context = {
-            "title": "Создание услуги",
-            "form": form,
-            "button_txt": "Создать",
-        }
-        return render(request, "core/service_form.html", context)
-
 
 def service_update(request, service_id):
     # Вне зависимости от метода - получаем услугу
@@ -374,6 +337,16 @@ def service_update(request, service_id):
             }
 
             return render(request, "core/service_form.html", context)
+
+class ServiceUpdateView(UpdateView):
+    form_class = ServiceForm
+    model = Service
+    template_name = "core/service_form.html"
+    success_url = reverse_lazy("services_list")
+    extra_context = {
+        "title": f'Редактирование услуги',
+        "button_txt": "Обновить",
+    }
 
 
 class ServiceCreateView(CreateView):
