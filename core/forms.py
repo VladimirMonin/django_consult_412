@@ -18,24 +18,6 @@ class ServiceForm(forms.ModelForm):
             else:  # Для чекбокса добавляем класс переключателя
                 field.widget.attrs.update({"class": "form-check-input"})
 
-    name = forms.CharField(
-        label="Название услуги",
-        max_length=100,
-        widget=forms.TextInput(attrs={"placeholder": "Введите название услуги"}),
-    )
-
-    # Переопределяем поле изображения, чтобы убрать ненужные элементы
-    image = forms.ImageField(
-        label="Изображение услуги",
-        required=False,
-        widget=forms.FileInput(
-            attrs={
-                "class": "form-control",
-                "accept": "image/*",  # Разрешаем только изображения
-            }
-        ),
-    )
-
     # Валидатор deля поля description
     def clean_description(self):
         description = self.cleaned_data.get("description")
