@@ -4,9 +4,6 @@ from django.urls import path
 from .views import (
     master_detail,
     ThanksView,
-    orders_list,
-    order_detail,
-    services_list,
     masters_services_by_id,
     order_create,
     create_review,

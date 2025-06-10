@@ -245,26 +245,26 @@ class OrderDetailView(LoginRequiredMixin, UserPassesTestMixin, DetailView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         # Добавляем пустую форму комментария для GET-запроса
-        # context['comment_form'] = CommentForm()
-        # context['comments'] = self.object.comments.all().order_by('-created_at') # Если у Order есть related_name 'comments'
+        context['comment_form'] = CommentForm()
+        context['comments'] = self.object.comments.all().order_by('-created_at') # Если у Order есть related_name 'comments'
         return context
 
     def post(self, request, *args, **kwargs):
         self.object = self.get_object() # Получаем текущий объект Order
-        # comment_form = CommentForm(request.POST) # Создаем форму из POST-данных
+        comment_form = CommentForm(request.POST) # Создаем форму из POST-данных
 
-        # if comment_form.is_valid():
-            # comment = comment_form.save(commit=False)
-            # comment.order = self.object
-            # comment.author = request.user
-            # comment.save()
-            # messages.success(request, "Комментарий успешно добавлен!")
-            # return redirect(self.object.get_absolute_url()) # Перенаправляем на ту же страницу
-        # else:
-            # messages.error(request, "Ошибка при добавлении комментария.")
-            # context = self.get_context_data() # Получаем контекст, чтобы передать форму с ошибками
-            # context['comment_form'] = comment_form
-            # return self.render_to_response(context) # Рендерим шаблон с ошибками
+        if comment_form.is_valid():
+            comment = comment_form.save(commit=False)
+            comment.order = self.object
+            comment.author = request.user
+            comment.save()
+            messages.success(request, "Комментарий успешно добавлен!")
+            return redirect(self.object.get_absolute_url()) # Перенаправляем на ту же страницу
+        else:
+            messages.error(request, "Ошибка при добавлении комментария.")
+            context = self.get_context_data() # Получаем контекст, чтобы передать форму с ошибками
+            context['comment_form'] = comment_form
+            return self.render_to_response(context) # Рендерим шаблон с ошибками
 ```
 
 Этот подход требует ручной обработки формы, включая создание экземпляра формы, проверку валидации, сохранение и рендеринг шаблона с ошибками.
@@ -290,8 +290,8 @@ class OrderDetailWithCommentView(LoginRequiredMixin, UserPassesTestMixin, FormMi
     template_name = "core/order_detail.html"
     pk_url_kwarg = "order_id"
     # Добавляем атрибуты FormMixin
-    # form_class = CommentForm # Класс формы для комментария
-    # success_url = "/" # Временно, будет переопределен в get_success_url
+    form_class = CommentForm # Класс формы для комментария
+    success_url = "/" # Временно, будет переопределен в get_success_url
 
     def test_func(self):
         return self.request.user.is_authenticated and self.request.user.is_staff

@@ -18,7 +18,7 @@ import json
 # Импорт LoginRequiredMixin для использования в CBV
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 
-
+#TODO - Тут подойдет либо TemplateView либо View с метдом get
 def landing(request):
     # Получаем всех мастеров из базы данных (включая неактивных)
     masters_db = Master.objects.all()
@@ -34,22 +34,15 @@ def landing(request):
     }
     return render(request, "core/landing.html", context)
 
-
-@login_required
-def services_list(request):
-    """
-    Представление для отображения списка всех услуг
-    с возможностью их редактирования или удаления
-    """
-    # Получаем все услуги из базы данных
-    services = Service.objects.all()
-
-    context = {
-        "title": "Управление услугами",
-        "services": services,
+class LandingPageView(TemplateView):
+    template_name = "core/landing.html"
+    extra_context = {
+        "title": "Главная - Барбершоп Арбуз",
+        "years_on_market": 50,
+        "masters": Master.objects.all(),
+        "services": Service.objects.all(),
     }
 
-    return render(request, "core/services_list.html", context)
 
 
 class StaffRequiredMixin(UserPassesTestMixin):
@@ -79,7 +72,7 @@ class ServicesListView(StaffRequiredMixin, ListView):
         "title": "Управление услугами",
     }
 
-
+#TODO - Тут подойдет DetailView
 def master_detail(request, master_id):
     # Получаем мастера по id
     master = get_object_or_404(Master, id=master_id)
@@ -116,7 +109,6 @@ def master_detail(request, master_id):
     return render(request, "core/master_detail.html", context)
 
 
-# Перепишем представление thanks на TemplateView
 class ThanksView(TemplateView):  # Существующий класс, дорабатываем его
     template_name = "core/thanks.html"
 
@@ -160,55 +152,6 @@ class ThanksView(TemplateView):  # Существующий класс, дора
 
         return context
 
-
-@login_required
-def orders_list(request):
-    # Проверяем, что пользователь является сотрудником
-    if not request.user.is_staff:
-        # Если пользователь не сотрудник, перенаправляем его на главную
-        messages.error(request, "У вас нет доступа к этому разделу")
-        return redirect("landing")
-
-    if request.method == "GET":
-        # Получаем все заказы
-        # Используем жадную загрузку для мастеров и услуг
-        all_orders = (
-            Order.objects.select_related("master").prefetch_related("services").all()
-        )
-
-        # Получаем строку поиска
-        search_query = request.GET.get("search", None)
-
-        if search_query:
-            # Получаем чекбоксы
-            check_boxes = request.GET.getlist("search_in")
-
-            # Проверяем Чекбоксы и добавляем Q объекты в запрос
-            # |= это оператор "или" для Q объектов
-            filters = Q()
-
-            if "phone" in check_boxes:
-                # Полная запись где мы увеличиваем фильтры
-                filters = filters | Q(phone__icontains=search_query)
-
-            if "name" in check_boxes:
-                # Сокращенная запись через inplace оператор
-                filters |= Q(client_name__icontains=search_query)
-
-            if "comment" in check_boxes:
-                filters |= Q(comment__icontains=search_query)
-
-            if filters:
-                # Если фильтры появились. Если Q остался пустым, мы не попадем сюда
-                all_orders = all_orders.filter(filters)
-
-        # Отправляем все заказы в контекст
-        context = {
-            "title": "Заказы",
-            "orders": all_orders,
-        }
-
-        return render(request, "core/orders_list.html", context)
 
 
 class OrdersListView(StaffRequiredMixin, ListView):
@@ -255,23 +198,6 @@ class OrdersListView(StaffRequiredMixin, ListView):
 
         # Возвращаем отфильтрованный QuerySet
         return all_orders
-
-
-@login_required
-def order_detail(request, order_id: int):
-    # Проверяем, что пользователь является сотрудником
-    if not request.user.is_staff:
-        # Если пользователь не сотрудник, перенаправляем его на главную
-        messages.error(request, "У вас нет доступа к этой странице")
-        return redirect("landing")
-
-    order = get_object_or_404(Order, id=order_id)
-
-    # Если заказ не найден, возвращаем 404 - данные не найдены
-
-    context = {"title": f"Заказ №{order_id}", "order": order}
-
-    return render(request, "core/order_detail.html", context)
 
 
 class OrderDetailView(LoginRequiredMixin, DetailView):
@@ -399,7 +325,7 @@ class ServiceCreateView(CreateView):
         elif form_mode == "easy":
             return ServiceEasyForm
 
-
+#TODO - Тут подойдет обычная View
 def masters_services_by_id(request, master_id=None):
     """
     Вью для ajax запросов фронтенда, для подгрузки услуг конкретного мастера в форму
@@ -433,7 +359,7 @@ def masters_services_by_id(request, master_id=None):
         content_type="application/json",
     )
 
-
+# #TODO - Тут подойдет CreateView
 def order_create(request):
     """
     Вью для создания заказа
@@ -473,7 +399,7 @@ def order_create(request):
         }
         return render(request, "core/order_form.html", context)
 
-
+# #TODO - Тут подойдет CreateView
 def create_review(request):
     """
     Представление для создания отзыва о мастере
@@ -524,7 +450,7 @@ def create_review(request):
         }
         return render(request, "core/review_form.html", context)
 
-
+#TODO - Тут подойдет либо DetailView, либо View
 def get_master_info(request):
     """
     Универсальное представление для получения информации о мастере через AJAX.
