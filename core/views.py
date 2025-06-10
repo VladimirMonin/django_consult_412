@@ -4,7 +4,7 @@ from .data import *
 from django.contrib.auth.decorators import login_required
 from .models import Order, Master, Service, Review
 from django.shortcuts import get_object_or_404
-from django.db.models import Q, F
+from django.db.models import Q, F, Prefetch
 from django.views import View  # Импортируем базовый View
 from django.views.generic import TemplateView, ListView, DetailView
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
@@ -57,81 +57,59 @@ class ServicesListView(StaffRequiredMixin, ListView):
         "title": "Управление услугами",
     }
 
-#TODO - Тут подойдет DetailView
-def master_detail(request, master_id):
-    # Получаем мастера по id
-    master = get_object_or_404(Master, id=master_id)
-
-    # Проверяем, просматривал ли пользователь этого мастера ранее
-    viewed_masters = request.session.get("viewed_masters", [])
-
-    # Если этот мастер ещё не был просмотрен этим пользователем в текущей сессии
-    if master_id not in viewed_masters:
-
-        # Увеличиваем счетчик просмотров мастера
-        # F - это специальный объект, который позволяет ссылаться на поля модели
-
-        Master.objects.filter(id=master_id).update(view_count=F("view_count") + 1)
-
-        # Добавляем мастера в список просмотренных
-        viewed_masters.append(master_id)
-        request.session["viewed_masters"] = viewed_masters
-
-        # Обновляем объект после изменения в БД
-        master.refresh_from_db()  # Получаем связанные услуги мастера
-    services = master.services.all()
-
-    # Получаем опубликованные отзывы о мастере, сортируем по дате создания (сначала новые)
-    reviews = master.reviews.filter(is_published=True).order_by("-created_at")
-
-    context = {
-        "title": f"Мастер {master.first_name} {master.last_name}",
-        "master": master,
-        "services": services,
-        "reviews": reviews,
-    }
-
-    return render(request, "core/master_detail.html", context)
-
 class MasterDetailView(DetailView):
     model = Master
     template_name = "core/master_detail.html"
     context_object_name = "master"
 
+    def get_queryset(self):
+        """
+        Переопределяем queryset, чтобы сразу включить жадную загрузку
+        связанных услуг и опубликованных отзывов.
+        Это решает проблему N+1 запросов.
+        """
+        # prefetch_related - для Many-to-Many и обратных ForeignKey связей
+        return Master.objects.prefetch_related(
+            'services', 
+            # Мы можем даже фильтровать предзагруженные данные
+            Prefetch('reviews', queryset=Review.objects.filter(is_published=True).order_by("-created_at"))
+        )
+
     def get_object(self, queryset=None):
         """
-        Получает объект мастера по ID из URL жадной загрузкой добывает связанные данные и обновляет счетчик просмотров если мастер еще не был просмотрен в текущей сессии.
+        Получаем объект и обновляем счетчик просмотров.
         """
-        master_id = self.kwargs.get("pk")
+        # super().get_object() вызовет .get(pk=...) на нашем get_queryset()
+        master = super().get_object(queryset)
         
-        # Жадная подгрузка Мастера + отзывы + услуги
-        master = Master.objects.get(id=master_id)
-        self.reviews = master.reviews.filter(is_published=True).order_by("-created_at")
-        self.services = master.services.all()
-
-        # Получаем список просмотренных мастеров из сессии
+        master_id = master.id
         viewed_masters = self.request.session.get("viewed_masters", [])
 
-        # Если мастер еще не был просмотрен в текущей сессии, увеличиваем счетчик просмотров
         if master_id not in viewed_masters:
+            # Используем F-выражение для атомарного увеличения счетчика
             Master.objects.filter(id=master_id).update(view_count=F("view_count") + 1)
-
-            # Добавляем мастера в список просмотренных
+            
             viewed_masters.append(master_id)
             self.request.session["viewed_masters"] = viewed_masters
-
-            # Обновляем объект после изменения в БД
-            master.refresh_from_db()  # Получаем связанные услуги мастера
+            
+            # Обновляем счетчик в текущем объекте, чтобы он сразу отобразился в шаблоне
+            master.view_count += 1
+            # master.refresh_from_db() больше не нужен, если мы обновляем поле вручную
 
         return master
 
     def get_context_data(self, **kwargs):
         """
-        Формирует и возвращает словарь контекста для шаблона "Детали мастера".
+        Добавляем связанные данные в контекст.
+        Теперь они уже загружены и не вызывают новых запросов к БД.
         """
         context = super().get_context_data(**kwargs)
-        context["reviews"] = self.reviews
-        context["services"] = self.services
+        # self.object - это наш 'master', уже со всеми предзагруженными данными
+        # Обратите внимание, что reviews уже отфильтрованы в get_queryset
+        context['reviews'] = self.object.reviews.all()
+        context['services'] = self.object.services.all()
+        context['title'] = f"Мастер {self.object.first_name} {self.object.last_name}"
+        return context
 
 
 

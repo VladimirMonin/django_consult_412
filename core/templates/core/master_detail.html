@@ -1,5 +1,6 @@
 {% extends "base.html" %} 
 {% load static %} 
+{% load range_tags %}
 
 {% block content %}
 <div class="container py-5">
@@ -33,13 +34,11 @@
                     <strong>Опыт работы:</strong> {{ master.experience }} 
                     {{ master.experience|yesno:"год,года,лет" }}
                     <span class="ms-2">
-                        {% with exp=master.experience|default:0 %}
-                        {% for i in ""|center:exp %}
-                            <i class="bi bi-scissors text-danger"></i> 
-                            {% empty %}
+                        {% for i in master.experience|to_range %}
+                            <i class="bi bi-scissors text-danger"></i>
+                        {% empty %}
                             <span class="text-muted">Нет опыта</span>
                         {% endfor %}
-                        {% endwith %}
                     </span>
                 </p>
                 

@@ -2,7 +2,6 @@
 from django.contrib import admin
 from django.urls import path
 from .views import (
-    master_detail,
     ThanksView,
     masters_services_by_id,
     order_create,
