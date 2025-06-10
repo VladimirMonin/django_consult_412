@@ -12,7 +12,7 @@ from django.urls import reverse_lazy
 
 # messages - это встроенный модуль Django для отображения сообщений пользователю
 from django.contrib import messages
-from .forms import ServiceForm, OrderForm, ReviewForm
+from .forms import ServiceForm, OrderForm, ReviewForm, ServiceEasyForm
 import json
 
 # Импорт LoginRequiredMixin для использования в CBV
@@ -377,6 +377,11 @@ def service_update(request, service_id):
 
 
 class ServiceCreateView(CreateView):
+    """
+    Вью для создания услуги.
+    service_create/<str:form_mode>
+    Через метод get_form_class выбираем форму в зависимости от параметра form_mode
+    """
     form_class = ServiceForm
     template_name = "core/service_form.html"
     success_url = reverse_lazy("services_list")
@@ -396,6 +401,18 @@ class ServiceCreateView(CreateView):
     def form_invalid(self, form):
         messages.error(self.request, "Ошибка формы: проверьте ввод данных.")
         return super().form_invalid(form)
+    
+    def get_form_class(self):
+        """
+        Обрабатывает параметр form_mode в URL и возвращает нужную форму
+        2 варианта: "normal" и "easy"
+        """
+        form_mode = self.kwargs.get("form_mode")
+        if form_mode == "normal":
+            return ServiceForm
+        
+        elif form_mode == "easy":
+            return ServiceEasyForm
 
 
 def masters_services_by_id(request, master_id=None):

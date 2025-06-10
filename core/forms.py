@@ -31,6 +31,12 @@ class ServiceForm(forms.ModelForm):
         fields = ["name", "description", "price", "duration", "is_popular", "image"]
 
 
+class ServiceEasyForm(ServiceForm):
+    class Meta:
+        model = Service
+        fields = ["name", "description", "price"]
+
+
 class OrderForm(forms.ModelForm):
 
     def __init__(self, *args, **kwargs):

@@ -36,7 +36,7 @@ urlpatterns = [
     ),  # Это FBV, оставим пока
     # path("services_cbv/", ServiceListView.as_view(), name="services_list_cbv"), # Закомментируем, т.к. ServiceListView еще не создан
     path("service/<int:pk>/", ServiceDetailView.as_view(), name="service_detail"),
-    path("service_create/", ServiceCreateView.as_view(), name="service_create"),
+    path("service_create/<str:form_mode>/", ServiceCreateView.as_view(), name="service_create"),
     path("service_update/<int:service_id>/", service_update, name="service_update"),
     path(
         "masters_services/", masters_services_by_id, name="masters_services_by_id_ajax"
