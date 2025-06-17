@@ -1,8 +1,8 @@
 <div class="list-group">
-    <a href="#" class="list-group-item list-group-item-action {% if request.resolver_match.url_name == 'profile_detail' %}active{% endif %}" id="profile-info-link">
+    <a href="{% url 'users:profile_detail' pk=user.pk %}" class="list-group-item list-group-item-action {% if request.resolver_match.url_name == 'profile_detail' %}active{% endif %}" id="profile-info-link">
         Информация о пользователе
     </a>
-    <a href="#" class="list-group-item list-group-item-action {% if request.resolver_match.url_name == 'password_change' %}active{% endif %}" id="change-password-link">
+    <a href="{% url 'users:password_change' %}" class="list-group-item list-group-item-action {% if request.resolver_match.url_name == 'password_change' %}active{% endif %}" id="change-password-link">
         Сменить пароль
     </a>
     {# Другие пункты меню можно будет добавить сюда позже #}

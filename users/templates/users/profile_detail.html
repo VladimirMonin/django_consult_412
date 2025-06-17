@@ -1,0 +1,33 @@
+{% extends "users/account_base.html" %}
+{% load static %}
+
+{% block title %}{{ title }} - {{ block.super }}{% endblock %}
+
+{% block account_content %}
+<h3>{{ title }}</h3>
+
+<div class="card">
+    <div class="card-body">
+        {% if profile_user.avatar %}
+            <img src="{{ profile_user.avatar.url }}" alt="Аватар {{ profile_user.username }}" class="img-thumbnail mb-3" style="max-width: 150px;">
+        {% else %}
+            <p><small>Аватар не загружен</small></p>
+        {% endif %}
+        <p><strong>Имя пользователя:</strong> {{ profile_user.username }}</p>
+        <p><strong>Email:</strong> {{ profile_user.email }}</p>
+        {% if profile_user.birth_date %}
+            <p><strong>Дата рождения:</strong> {{ profile_user.birth_date|date:"d.m.Y" }}</p>
+        {% endif %}
+        {% if profile_user.telegram_id %}
+            <p><strong>Telegram ID:</strong> {{ profile_user.telegram_id }}</p>
+        {% endif %}
+        {% if profile_user.github_id %}
+            <p><strong>GitHub ID:</strong> {{ profile_user.github_id }}</p>
+        {% endif %}
+
+        {% if is_own_profile %}
+            <a href="{% url 'users:profile_edit' %}" class="btn btn-primary mt-3">Редактировать профиль</a>
+        {% endif %}
+    </div>
+</div>
+{% endblock account_content %}
