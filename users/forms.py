@@ -30,23 +30,30 @@ class UserRegisterForm(UserCreationForm):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
+        
+        # for field_name in ('username', 'password1', 'password2'):
+        #     if self.fields.get(field_name): # Проверяем, существует ли поле
+        #         self.fields[field_name].help_text = ''
+        
         self.fields['username'].widget.attrs.update({
             'class': 'form-control mb-2',
-            'placeholder': 'Имя пользователя'
+            'placeholder': 'Имя пользователя',
+   
         })
         # Для полей пароля UserCreationForm уже добавляет placeholder'ы, но мы можем переопределить классы
         self.fields['password1'].widget.attrs.update({
             'class': 'form-control mb-2',
-            'placeholder': 'Придумайте пароль'
+            'placeholder': 'Придумайте пароль',
         })
         self.fields['password2'].widget.attrs.update({
             'class': 'form-control',
-            'placeholder': 'Повторите пароль'
+            'placeholder': 'Повторите пароль',
         })
+
+    # Расширяем логику валидации поля email
+    def clean_email(self):
+        email = self.cleaned_data.get('email')
+        if User.objects.filter(email=email).exists():
+            raise forms.ValidationError("Пользователь с таким email уже существует.")
+        return email
     
-    def save(self, commit=True):
-        user = super().save(commit=False)
-        user.email = self.cleaned_data["email"]
-        if commit:
-            user.save()
-        return user
