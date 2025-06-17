@@ -64,8 +64,8 @@
                         {% endif %}
                         <h5 class="card-title{% if not master.is_active %} text-muted{% endif %}">{{ master.first_name }} {{ master.last_name }}</h5>
                         <p class="card-text{% if not master.is_active %} text-muted{% endif %}">Опыт работы: {{ master.experience }} лет</p>
-                        <a href="{% url 'master_detail' master_id=master.id %}" class="btn {% if master.is_active %}btn-outline-dark{% else %}btn-outline-secondary{% endif %} mt-2">
-                            <i class="bi bi-info-circle me-1"></i> Подробнее
+                        <a href="{% url 'master_detail' pk=master.id %}" class="btn {% if master.is_active %}btn-outline-dark{% else %}btn-outline-secondary{% endif %} mt-2">
+                            Подробнее
                         </a>
                     </div>
                 </div>

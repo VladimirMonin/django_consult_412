@@ -61,6 +61,7 @@ INSTALLED_APPS = [
     "django_extensions",
     "debug_toolbar",
     "core",
+    "users", # Добавили наше новое приложение
 ]
 
 MIDDLEWARE = [
@@ -190,7 +191,9 @@ MEDIA_ROOT = BASE_DIR / "media"
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 # Настройка маршрут для авторизации
-LOGIN_URL = "/admin/"
+LOGIN_URL = 'users:login'  # Имя маршрута для страницы входа
+LOGIN_REDIRECT_URL = 'landing'  # Куда перенаправлять после успешного входа (если не указано в LoginView)
+LOGOUT_REDIRECT_URL = 'landing' # Куда перенаправлять после выхода (используется LogoutView, если next_page не задан)
 
 # Настройка для отладки в локальной сети
 INTERNAL_IPS = [
@@ -220,3 +223,5 @@ MISTRAL_MODERATIONS_GRADES = {
 
 TELEGRAM_BOT_API_KEY = os.getenv("TELEGRAM_BOT_API_KEY")
 TELEGRAM_USER_ID = os.getenv("TELEGRAM_USER_ID")
+
+AUTH_USER_MODEL = 'users.User'
