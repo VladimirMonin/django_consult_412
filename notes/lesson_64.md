@@ -51,3 +51,75 @@
         return email
     
 Теперь пользователь не сможет при регистрации указать email, который уже есть в базе данных
+
+
+## Собственная модель пользователя
+
+### Спасти базу!
+
+Перед этими действиями желательно сделать бекап важных данных в базе. Например мастеров, услуги, связки... В общем все что есть в приложении `core`
+Есть 2 способа. Dump через Django или экспорт через SqliteStudio. На лекции мы сделали второй вариант.
+
+Данные потом залили через редактор.
+
+### Собственная модель пользователя
+
+У нас уже есть приложение для пользователей `users`
+
+В моделях этого приложения мы можем создать свою модель пользователя
+
+Мы должны наследоваться от AbstractUser (Почему? Что это даст?)
+
+```python
+from django.contrib.auth.models import AbstractUser
+from django.db import models
+
+class User(AbstractUser):
+    # Убираем требование first_name и last_name, если они не обязательны
+    first_name = None
+    last_name = None
+
+    email = models.EmailField(unique=True) # Делаем email уникальным и обязательным для логина
+    
+    avatar = models.ImageField(
+        upload_to='users/avatars/', 
+        null=True, 
+        blank=True, 
+        verbose_name='Аватар'
+    )
+    birth_date = models.DateField(
+        null=True, 
+        blank=True, 
+        verbose_name='Дата рождения'
+    )
+    telegram_id = models.CharField(
+        max_length=100, 
+        blank=True, 
+        null=True, 
+        verbose_name='Telegram ID'
+    )
+    github_id = models.CharField(
+        max_length=100, 
+        blank=True, 
+        null=True, 
+        verbose_name='GitHub ID'
+    )
+
+    # Указываем, что для логина будет использоваться поле email
+    USERNAME_FIELD = 'email'
+    REQUIRED_FIELDS = ['username'] # username все еще нужен для AbstractUser, но можно сделать его не основным
+
+    def __str__(self):
+        return self.email # Или self.username, если предпочитаете
+
+    class Meta:
+        verbose_name = 'Пользователь'
+        verbose_name_plural = 'Пользователи'
+```
+
+После этого нам надо указать модель пользователя в settings.py`AUTH_USER_MODEL = 'users.User'`
+
+После чего нам нужно создать миграции
+`poetry run python manage.py makemigrations`
+`poetry run python manage.py migrate`
+
