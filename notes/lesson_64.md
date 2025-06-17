@@ -123,3 +123,130 @@ class User(AbstractUser):
 `poetry run python manage.py makemigrations`
 `poetry run python manage.py migrate`
 
+### Описание модели
+
+- поискать в документации про `AbstractUser`, first_name = None, USERNAME_FIELD, REQUIRED_FIELDS
+
+## Что мы можем делать с пользователем в шаблонах?
+
+###  Как попадает в шаблоны
+
+Источник: Автоматически добавляется контекстным процессором django.contrib.auth.context_processors.auth
+Место настройки: barbershop/settings.py → TEMPLATES.OPTIONS.context_processors (строка 89)
+Особенности:
+Процессор работает для всех шаблонов проекта
+Добавляет объект user даже для неаутентифицированных пользователей (тогда user.is_authenticated = False)
+Для кастомной модели гарантируется правильный тип объекта (благодаря AUTH_USER_MODEL)
+
+
+### Доступные опции и методы 
+
+
+Базовые свойства (из AbstractUser):
+
+username - имя пользователя (в вашем случае может быть пустым)
+email - электронная почта (основной идентификатор)
+is_authenticated - флаг аутентификации (True/False)
+is_active - активен ли аккаунт
+is_staff - доступ к админке
+is_superuser - статус суперпользователя
+date_joined - дата регистрации
+last_login - последний вход
+Кастомные поля (из вашей модели):
+
+avatar - изображение аватара
+birth_date - дата рождения
+telegram_id - ID в Telegram
+github_id - ID в GitHub
+Методы:
+
+get_username() - возвращает значение USERNAME_FIELD (email)
+get_full_name() - не работает (т.к. first_name/last_name=None)
+get_short_name() - не работает
+has_perm(perm) - проверка прав
+has_module_perms(app_label) - проверка прав доступа к приложению
+
+
+### Как Джанго проверяет пользователя?
+
+Пользователь запросил детальное описание процесса аутентификации и работу user.is_authenticated. Проанализируем механизм:
+
+База данных:
+
+Данные пользователя: users_user (таблица для кастомной модели users.User)
+Сессии: django_session (хранит данные сессий)
+Процесс проверки аутентификации:
+
+При входе создается сессия и cookie sessionid
+При каждом запросе middleware аутентификации проверяет сессию
+is_authenticated - это свойство, а не метод (не требует вызова)
+Детальный пошаговый процесс:
+
+Браузер отправляет запрос с cookie sessionid
+Django извлекает ключ сессии из cookie
+Ищет запись в django_session по session_key
+Десериализует данные сессии
+Извлекает user_id из данных сессии
+Ищет пользователя в users_user по user_id
+Создает объект User и присваивает его request.user
+В шаблоне user.is_authenticated проверяет:
+Существует ли объект пользователя
+Не является ли он анонимным пользователем
+Активна ли учетная запись (is_active=True)
+Mermaid-диаграмма:
+
+```mermaid
+sequenceDiagram
+    participant Browser
+    participant Middleware
+    participant SessionDB
+    participant UserDB
+    participant Template
+    
+    Browser->>Middleware: Запрос с sessionid cookie
+    Middleware->>SessionDB: SELECT session_data WHERE session_key=?
+    SessionDB-->>Middleware: Данные сессии (сериализованные)
+    Middleware->>Middleware: Десериализация данных
+    Middleware->>UserDB: SELECT * FROM users_user WHERE id=?
+    UserDB-->>Middleware: Объект пользователя
+    Middleware->>Template: Передает request.user
+    Template->>Template: Проверка user.is_authenticated
+    alt Аутентифицирован
+        Template->>Template: Отображает контент для вошедших
+    else Не аутентифицирован
+        Template->>Template: Отображает гостевой контент
+    end
+    Template-->>Browser: Сформированный HTML
+```
+
+Ключевые моменты:
+Сессии: Хранятся в django_session (поля: session_key, session_data, expire_date)
+Пользователи: Хранятся в users_user (кастомная таблица)
+Безопасность:
+Куки sessionid httpOnly
+Данные сессии шифруются
+По умолчанию срок действия сессии - 2 недели
+Проверка в коде Django:
+# django/contrib/auth/base_user.py
+class AbstractBaseUser:
+    @property
+    def is_authenticated(self):
+        return True  # Всегда True для реальных пользователей
+
+# Для анонимных пользователей
+class AnonymousUser:
+    @property
+    def is_authenticated(self):
+        return False  # Всегда False
+
+## Система шаблонов
+
+### Базовый шаблон личного кабинета
+
+### Меню инклюд кабинета 
+
+### Шаблон детальной информации и редактирования профиля
+
+## Вьюшки
+
+-СДЕЛАТЬ ЗАГОЛОВКИ 3 УРОВНЯ С КАЖДОЙ ВЬЮШКОЙ ЛИЧНОГО КАБИНЕТА С ОПИСАНИЯМИ!!!!
