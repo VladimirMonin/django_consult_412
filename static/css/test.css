@@ -100,3 +100,66 @@ main {
   margin-right: 0.5rem;
   color: #ffd700;
 }
+
+/*--- LK Buttons & Alerts overrides ---*/
+.btn-primary {
+    background-color: #000 !important;
+    border-color: #000 !important;
+    color: #fff !important;
+}
+
+.btn-primary:hover,
+.btn-primary:focus {
+    background-color: #333 !important;
+    border-color: #333 !important;
+}
+
+.btn-outline-primary {
+    color: #000 !important;
+    border-color: #000 !important;
+}
+
+.btn-outline-primary:hover,
+.btn-outline-primary:focus {
+    background-color: #000 !important;
+    color: #fff !important;
+    border-color: #000 !important;
+}
+
+.alert-warning {
+    background-color: #ffc107 !important;
+    border-color: #ffc107 !important;
+    color: #000 !important;
+}
+
+.badge-warning {
+    background-color: #ffc107 !important;
+    color: #000 !important;
+}
+
+.text-warning {
+    color: #ffc107 !important;
+}
+
+/*--- Account menu ---*/
+.account-link {
+    display: block;
+    padding: 0.5rem 1rem;
+    border-radius: 0.25rem;
+    transition: all 0.3s ease;
+    margin-bottom: 0.25rem;
+    text-decoration: none;
+    color: #fff;
+    background-color: #212529;
+}
+
+.account-link:hover {
+    background-color: #333;
+    color: #fff;
+}
+
+.account-link.active {
+    background-color: #ffc107 !important;
+    color: #000 !important;
+    font-weight: 600;
+}
