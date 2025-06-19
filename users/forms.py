@@ -1,6 +1,6 @@
 """Формы для работы с пользователями: аутентификация, регистрация, профиль."""
 from django import forms
-from django.contrib.auth.forms import AuthenticationForm, UserCreationForm, PasswordChangeForm
+from django.contrib.auth.forms import AuthenticationForm, UserCreationForm, PasswordChangeForm, PasswordResetForm
 from django.contrib.auth import get_user_model
 
 User = get_user_model()
@@ -103,3 +103,14 @@ class UserPasswordChangeForm(PasswordChangeForm):
             if self.fields.get(field_name):
                 # Сбрасываем подсказки (help_text)
                 self.fields[field_name].help_text = ''
+
+class CustomPasswordResetForm(PasswordResetForm):
+    """Кастомная форма для сброса пароля."""
+    def __init__(self, *args, **kwargs):
+        """Инициализация формы сброса пароля: настройка полей."""
+        super().__init__(*args, **kwargs)
+        # Кастомизация поля email
+        self.fields['email'].widget.attrs.update({
+            'class': 'form-control mb-2',
+            'placeholder': 'Email'
+        })
