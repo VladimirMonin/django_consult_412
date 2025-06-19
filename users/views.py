@@ -26,7 +26,7 @@ class CustomPasswordResetView(PasswordResetView):
 
 class CustomPasswordResetDoneView(PasswordResetDoneView):
     """Кастомная реализация подтверждения сброса пароля."""
-    template_name = 'users/password_reset_confirm.html'
+    template_name = 'users/password_reset_done.html'
 
 
 class UserRegisterView(CreateView):
