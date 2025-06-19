@@ -12,7 +12,7 @@ from django.shortcuts import redirect, render, get_object_or_404
 from .models import User
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import update_session_auth_hash
-from .forms import UserPasswordChangeForm
+from .forms import UserPasswordChangeForm, CustomSetPasswordForm
 # Импорт служебных вью для сброса и восстановления пароля
 from django.contrib.auth.views import PasswordResetView, PasswordResetConfirmView, PasswordResetDoneView, PasswordResetCompleteView, PasswordChangeView
 
@@ -27,6 +27,16 @@ class CustomPasswordResetView(PasswordResetView):
 class CustomPasswordResetDoneView(PasswordResetDoneView):
     """Кастомная реализация подтверждения сброса пароля."""
     template_name = 'users/password_reset_done.html'
+
+class CustomPasswordResetConfirmView(PasswordResetConfirmView):
+    """Кастомная реализация подтверждения сброса пароля."""
+    template_name = 'users/password_reset_confirm.html'
+    form_class = CustomSetPasswordForm
+    success_url = reverse_lazy('users:password_reset_complete')
+
+class CustomPasswordResetCompleteView(PasswordResetCompleteView):
+    """Кастомная реализация страницы успешного сброса пароля."""
+    template_name = 'users/password_reset_complete.html'
 
 
 class UserRegisterView(CreateView):
