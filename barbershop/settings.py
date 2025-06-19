@@ -61,7 +61,7 @@ INSTALLED_APPS = [
     "django_extensions",
     "debug_toolbar",
     "core",
-    "users.apps.UsersConfig", # Добавили наше новое приложение
+    "users.apps.UsersConfig",  # Добавили наше новое приложение
 ]
 
 MIDDLEWARE = [
@@ -191,9 +191,11 @@ MEDIA_ROOT = BASE_DIR / "media"
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 # Настройка маршрут для авторизации
-LOGIN_URL = 'users:login'  # Имя маршрута для страницы входа
-LOGIN_REDIRECT_URL = 'landing'  # Куда перенаправлять после успешного входа (если не указано в LoginView)
-LOGOUT_REDIRECT_URL = 'landing' # Куда перенаправлять после выхода (используется LogoutView, если next_page не задан)
+LOGIN_URL = "users:login"  # Имя маршрута для страницы входа
+LOGIN_REDIRECT_URL = (
+    "landing"  # Куда перенаправлять после успешного входа (если не указано в LoginView)
+)
+LOGOUT_REDIRECT_URL = "landing"  # Куда перенаправлять после выхода (используется LogoutView, если next_page не задан)
 
 # Настройка для отладки в локальной сети
 INTERNAL_IPS = [
@@ -220,9 +222,24 @@ MISTRAL_MODERATIONS_GRADES = {
     "pii": 0.1,  # личная информация
 }
 
-AUTH_USER_MODEL = 'users.User'
+AUTH_USER_MODEL = "users.User"
 
 TELEGRAM_BOT_API_KEY = os.getenv("TELEGRAM_BOT_API_KEY")
 TELEGRAM_USER_ID = os.getenv("TELEGRAM_USER_ID")
 
-AUTH_USER_MODEL = 'users.User'
+AUTH_USER_MODEL = "users.User"
+
+# Тесирование и отправка сообщений в терминал
+# EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
+
+
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+
+EMAIL_HOST = 'smtp.yandex.ru'
+EMAIL_PORT = 465
+EMAIL_HOST_USER = 'vladimir.monin2016@yandex.ru'
+EMAIL_HOST_PASSWORD = os.getenv('EMAIL_HOST_PASSWORD')
+EMAIL_USE_SSL = True
+DEFAULT_FROM_EMAIL = 'vladimir.monin2016@yandex.ru'
+SERVER_EMAIL = 'vladimir.monin2016@yandex.ru'
+EMAIL_ADMIN = 'vladimir.monin2016@yandex.ru'
