@@ -227,3 +227,24 @@ lesson_66:
 - Выполнены модели Post, Category, Tag, Comment
 - Добавлены в проект markdown и unidecode
 - Реализована Слагификация кириллицы в моделях: Category, Tag, Post
+
+
+## Подключение новых моделей в админку
+```python
+from django.contrib import admin
+from .models import Category, Tag, Post, Comment
+
+admin.site.register(Category)
+admin.site.register(Tag)
+admin.site.register(Post)
+admin.site.register(Comment)
+```
+
+### Правки в модель
+
+Добавили описание постов, чтобы выводить это в карточки постов в списковом отображении
+
+```python
+md_description = models.TextField(verbose_name="Описание", null=True)
+html_description = models.TextField(verbose_name="Описание (HTML)", blank=True, null=True)
+```
