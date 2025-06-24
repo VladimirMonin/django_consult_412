@@ -60,6 +60,8 @@ class Post(models.Model):
     """Модель поста."""
 
     title = models.CharField(max_length=200, verbose_name="Заголовок")
+    md_description = models.TextField(verbose_name="Описание", null=True)
+    html_description = models.TextField(verbose_name="Описание (HTML)", blank=True, null=True)
     slug = models.SlugField(unique=True, verbose_name="Слаг", blank=True)
     cover = models.ImageField(
         upload_to="posts/", verbose_name="Обложка", blank=True, null=True
@@ -99,6 +101,7 @@ class Post(models.Model):
             ascii_title = unidecode(self.title)  # Транслитерация
             self.slug = slugify(ascii_title)  # Генерация slug
             self.html_content = markdown(self.md_content)
+            self.html_description = markdown(self.md_description)
 
         super().save(*args, **kwargs)
 
