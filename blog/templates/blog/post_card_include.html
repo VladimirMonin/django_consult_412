@@ -1,0 +1,26 @@
+<div class="card mb-4">
+  {% if post.cover %}
+    <img src="{{ post.cover.url }}" class="card-img-top" alt="{{ post.title }}" style="height: 200px; object-fit: cover;">
+  {% endif %}
+  
+  <div class="card-body">
+    <h5 class="card-title">{{ post.title }}</h5>
+    <div class="card-text">{{ post.html_description|safe }}</div>
+  </div>
+  
+  <div class="card-footer bg-white border-0 d-flex justify-content-between">
+    <div>
+      <span class="me-3" title="Лайки">
+        <i class="bi bi-heart text-danger"></i> {{ post.likes.count }}
+      </span>
+      <span title="Комментарии">
+        <i class="bi bi-chat text-primary"></i> {{ post.comments.count }}
+      </span>
+    </div>
+    
+    <div>
+      <i class="bi bi-calendar"></i> 
+      <small class="text-muted">{{ post.created_at|date:"d.m.Y" }}</small>
+    </div>
+  </div>
+</div>

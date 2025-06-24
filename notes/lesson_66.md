@@ -248,3 +248,81 @@ admin.site.register(Comment)
 md_description = models.TextField(verbose_name="Описание", null=True)
 html_description = models.TextField(verbose_name="Описание (HTML)", blank=True, null=True)
 ```
+
+## Создание шаблонов для отображения постов
+
+- Списковое отображение постов
+
+`.blog/templates/blog/posts_list.html`
+
+```html
+{% extends "base.html" %}
+{% block content %}
+<div class="container">
+    <div class="row">
+        <h1>Блог барбершопа "Арбуз"</h1>
+    </div>
+    <div class="row">
+        <div class="col-12">
+        {% for post in posts %}
+            {% include "./post_card_include.html" %}
+        {% endfor %}
+        </div>
+    </div>
+</div>
+{% endblock %}
+```
+
+- Карточка поста
+
+`./blog/templates/blog/post_card_include.html`
+
+```html
+<div class="card mb-4">
+  {% if post.cover %}
+    <img src="{{ post.cover.url }}" class="card-img-top" alt="{{ post.title }}" style="height: 200px; object-fit: cover;">
+  {% endif %}
+  
+  <div class="card-body">
+    <h5 class="card-title">{{ post.title }}</h5>
+    <div class="card-text">{{ post.html_description|safe }}</div>
+  </div>
+  
+  <div class="card-footer bg-white border-0 d-flex justify-content-between">
+    <div>
+      <span class="me-3" title="Лайки">
+        <i class="bi bi-heart text-danger"></i> {{ post.likes.count }}
+      </span>
+      <span title="Комментарии">
+        <i class="bi bi-chat text-primary"></i> {{ post.comments.count }}
+      </span>
+    </div>
+    
+    <div>
+      <i class="bi bi-calendar"></i> 
+      <small class="text-muted">{{ post.created_at|date:"d.m.Y" }}</small>
+    </div>
+  </div>
+</div>
+```
+
+### Создание маршрута
+
+```python
+path("", include("blog.urls")),
+```
+
+### Создание представления
+
+```python
+from .models import Post, Comment, Category, Tag
+from django.views.generic import ListView, DetailView
+
+
+class PostsListView(ListView):
+    model = Post
+    template_name = 'blog/posts_list.html'
+    context_object_name = 'posts'
+```
+
+На следующем занятии мы поговорим про пагинацию

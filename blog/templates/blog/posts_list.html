@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container">
+    <div class="row">
+        <h1>Блог барбершопа "Арбуз"</h1>
+    </div>
+    <div class="row">
+        <div class="col-12">
+        {% for post in posts %}
+            {% include "./post_card_include.html" %}
+        {% endfor %}
+        </div>
+    </div>
+</div>
+{% endblock %}
