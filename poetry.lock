@@ -639,7 +639,19 @@ files = [
     {file = "tzdata-2025.1.tar.gz", hash = "sha256:24894909e88cdb28bd1636c6887801df64cb485bd593f2fd83ef29075a81d694"},
 ]
 
+[[package]]
+name = "unidecode"
+version = "1.4.0"
+description = "ASCII transliterations of Unicode text"
+optional = false
+python-versions = ">=3.7"
+groups = ["main"]
+files = [
+    {file = "Unidecode-1.4.0-py3-none-any.whl", hash = "sha256:c3c7606c27503ad8d501270406e345ddb480a7b5f38827eafe4fa82a137f0021"},
+    {file = "Unidecode-1.4.0.tar.gz", hash = "sha256:ce35985008338b676573023acc382d62c264f307c8f7963733405add37ea2b23"},
+]
+
 [metadata]
 lock-version = "2.1"
 python-versions = "^3.13.2"
-content-hash = "d0becca15ea84978c81c5f938edcc62e83cadabbaf6e33b9be377f6497c788cb"
+content-hash = "d7074dfb4360400ab370398ee78ced48c9d6931fcc92b99a119872f7559984fc"
