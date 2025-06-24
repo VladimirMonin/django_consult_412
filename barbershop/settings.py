@@ -62,6 +62,7 @@ INSTALLED_APPS = [
     "debug_toolbar",
     "core",
     "users.apps.UsersConfig",  # Добавили наше новое приложение
+    "blog"
 ]
 
 MIDDLEWARE = [
