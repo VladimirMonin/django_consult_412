@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+{% load cache %}
 {% block content %}
 <div class="container">
     <div class="row">
@@ -7,7 +8,9 @@
     <div class="row">
         <div class="col-12">
         {% for post in posts %}
-            {% include "./post_card_include.html" %}
+            {% cache 20 post.id %}
+                {% include "./post_card_include.html" %}
+            {% endcache %}
         {% endfor %}
         </div>
     </div>
