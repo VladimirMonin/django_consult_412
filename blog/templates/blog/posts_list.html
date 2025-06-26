@@ -11,5 +11,10 @@
         {% endfor %}
         </div>
     </div>
+    {% if page_obj.has_other_pages %}
+        {% for page in page_obj.paginator.page_range %}
+            <a href="?page={{ page }}">{{ page }}</a>
+        {% endfor %}
+    {% endif %}
 </div>
 {% endblock %}
