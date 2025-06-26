@@ -55,6 +55,8 @@ def blog_list(request):
 - `page_obj.end_index` — индекс последнего элемента на странице.
 - `page_obj.has_other_pages` — есть ли другие страницы.
 
+### Простой пример шаблона пагинации
+
 Простой пример цикла шаблонизатора для отрисовки кнопок пагинации
 по маршруту `/blog/`
 Проверяем что страниц больше 1 страницы, и если это так, сделать максимально простой цикл.
@@ -66,3 +68,29 @@ def blog_list(request):
         {% endfor %}
 {% endif %}
 ```
+
+### Чуть более сложный пример шаблона пагинации
+```html
+{% if page_obj.has_other_pages %}
+    <div class="paginator">
+    <nav>
+        <ul class="pagination pagination-lg justify-content-center">
+        {% for page in page_obj.paginator.page_range %}
+            {% comment %} Проверяем является ли страница текущей {% endcomment %}
+            {% if page == page_obj.number %}
+            <li class="page-item active" aria-current="page">
+                <span class="page-link">{{ page }}</span>
+            </li>
+            {% else %}
+            <li class="page-item">
+                <a class="page-link" href="?page={{ page }}">{{ page }}</a>
+            </li>
+            {% endif %}
+        {% endfor %}
+        </ul>
+    </nav>
+    </div>
+    {% endif %}
+```
+
+###

@@ -103,63 +103,93 @@ main {
 
 /*--- LK Buttons & Alerts overrides ---*/
 .btn-primary {
-    background-color: #000 !important;
-    border-color: #000 !important;
-    color: #fff !important;
+  background-color: #000 !important;
+  border-color: #000 !important;
+  color: #fff !important;
 }
 
 .btn-primary:hover,
 .btn-primary:focus {
-    background-color: #333 !important;
-    border-color: #333 !important;
+  background-color: #333 !important;
+  border-color: #333 !important;
 }
 
 .btn-outline-primary {
-    color: #000 !important;
-    border-color: #000 !important;
+  color: #000 !important;
+  border-color: #000 !important;
 }
 
 .btn-outline-primary:hover,
 .btn-outline-primary:focus {
-    background-color: #000 !important;
-    color: #fff !important;
-    border-color: #000 !important;
+  background-color: #000 !important;
+  color: #fff !important;
+  border-color: #000 !important;
 }
 
 .alert-warning {
-    background-color: #ffc107 !important;
-    border-color: #ffc107 !important;
-    color: #000 !important;
+  background-color: #ffc107 !important;
+  border-color: #ffc107 !important;
+  color: #000 !important;
 }
 
 .badge-warning {
-    background-color: #ffc107 !important;
-    color: #000 !important;
+  background-color: #ffc107 !important;
+  color: #000 !important;
 }
 
 .text-warning {
-    color: #ffc107 !important;
+  color: #ffc107 !important;
 }
 
 /*--- Account menu ---*/
 .account-link {
-    display: block;
-    padding: 0.5rem 1rem;
-    border-radius: 0.25rem;
-    transition: all 0.3s ease;
-    margin-bottom: 0.25rem;
-    text-decoration: none;
-    color: #fff;
-    background-color: #212529;
+  display: block;
+  padding: 0.5rem 1rem;
+  border-radius: 0.25rem;
+  transition: all 0.3s ease;
+  margin-bottom: 0.25rem;
+  text-decoration: none;
+  color: #fff;
+  background-color: #212529;
 }
 
 .account-link:hover {
-    background-color: #333;
-    color: #fff;
+  background-color: #333;
+  color: #fff;
 }
 
 .account-link.active {
-    background-color: #ffc107 !important;
-    color: #000 !important;
-    font-weight: 600;
+  background-color: #ffc107 !important;
+  color: #000 !important;
+  font-weight: 600;
+}
+
+/* Стили для пагинатора */
+/* Переопределяем цвета Bootstrap-пагинации под тёмный футер */
+.pagination .page-link {
+  color: #000 !important;             /* неактивная страница: тёмный текст */
+}
+
+.pagination .page-link:hover,
+.pagination .page-link:focus {
+  color: #000 !important;             /* оставляем тёмным и при ховере */
+}
+
+.page-item.active .page-link {
+  background-color: #000 !important;  /* активная страница: тёмная заливка */
+  border-color: #000 !important;
+  color: #fff !important;             /* контрастный белый текст */
+}
+
+.page-item.active .page-link:hover,
+.page-item.active .page-link:focus {
+  background-color: #000 !important;
+  border-color: #000 !important;
+  color: #fff !important;
+}
+
+/* если хотите оставить тёмную обводку */
+.pagination .page-link:focus {
+  outline: none !important;
+  box-shadow: 0 0 0 0.25rem rgba(0,0,0,0.4) !important; /* чёрная полупрозрачная обводка */
 }
