@@ -163,6 +163,7 @@ class OrdersListView(StaffRequiredMixin, ListView):
     model = Order
     template_name = "core/orders_list.html"
     context_object_name = "orders"
+    paginate_by = 1
 
     def get_queryset(self):
         """
