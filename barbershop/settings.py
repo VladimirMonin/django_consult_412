@@ -23,9 +23,7 @@ DEBUG = True
 
 # Добавляем разрешенные хосты для нашего домена и IP
 ALLOWED_HOSTS = [
-    "vladimirmonin-django-consult-412-1cdd.twc1.net",  # Основной домен
-    "www.vladimirmonin-django-consult-412-1cdd.twc1.net",  # С www
-    "37.220.80.53",  # Публичный IP
+    "92.255.76.225",  # Публичный IP
     "localhost",  # Для локальной разработки
     "127.0.0.1",  # Для локальной разработки
     "0.0.0.0",
@@ -38,13 +36,12 @@ ALLOWED_HOSTS = [
 # Настройки безопасности для продакшена
 # Настройки CSRF для разрешения запросов с нашего домена
 CSRF_TRUSTED_ORIGINS = [
-    "https://vladimirmonin-django-consult-412-1cdd.twc1.net",
-    "http://vladimirmonin-django-consult-412-1cdd.twc1.net",
-    "https://www.vladimirmonin-django-consult-412-1cdd.twc1.net",
-    "http://www.vladimirmonin-django-consult-412-1cdd.twc1.net",
-    "https://exception-blog.ru",
+    "http://localhost",
+    "http://127.0.0.1",
+    "http://92.255.76.225",
+    "https://92.255.76.225",
     "http://exception-blog.ru",
-    "https://www.exception-blog.ru",
+    "https://exception-blog.ru",
 ]
 
 
@@ -62,7 +59,7 @@ INSTALLED_APPS = [
     "debug_toolbar",
     "core",
     "users.apps.UsersConfig",  # Добавили наше новое приложение
-    "blog"
+    "blog",
 ]
 
 MIDDLEWARE = [
@@ -234,13 +231,13 @@ AUTH_USER_MODEL = "users.User"
 # EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
 
 
-EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
 
-EMAIL_HOST = 'smtp.yandex.ru'
+EMAIL_HOST = "smtp.yandex.ru"
 EMAIL_PORT = 465
-EMAIL_HOST_USER = 'vladimir.monin2016@yandex.ru'
-EMAIL_HOST_PASSWORD = os.getenv('EMAIL_HOST_PASSWORD')
+EMAIL_HOST_USER = "vladimir.monin2016@yandex.ru"
+EMAIL_HOST_PASSWORD = os.getenv("EMAIL_HOST_PASSWORD")
 EMAIL_USE_SSL = True
-DEFAULT_FROM_EMAIL = 'vladimir.monin2016@yandex.ru'
-SERVER_EMAIL = 'vladimir.monin2016@yandex.ru'
-EMAIL_ADMIN = 'vladimir.monin2016@yandex.ru'
+DEFAULT_FROM_EMAIL = "vladimir.monin2016@yandex.ru"
+SERVER_EMAIL = "vladimir.monin2016@yandex.ru"
+EMAIL_ADMIN = "vladimir.monin2016@yandex.ru"
