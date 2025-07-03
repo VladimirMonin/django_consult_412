@@ -34,7 +34,7 @@ jobs:
             echo "${{ secrets.PASSWORD }}" | sudo -S systemctl stop django_consult
             
             # Обновляем код из репозитория (с sudo и передачей пароля)
-            echo "${{ secrets.PASSWORD }}" | sudo -S git pull
+            echo "${{ secrets.PASSWORD }}" | git pull
             
             # Если у вас PIP
             # Активируем виртуальное окружение
@@ -47,7 +47,7 @@ jobs:
             poetry install --no-root 
             
             # Создаем файл .env из секрета где записано все его содержимое
-            echo "SECRET_KEY=${{ secrets.ENV_FILE }}" > .env
+            echo "${{ secrets.ENV_FILE }}" > .env
 
             # Перезапускаем systemd сервис (с sudo и передачей пароля)
             echo "${{ secrets.PASSWORD }}" | sudo -S systemctl start django_consult
