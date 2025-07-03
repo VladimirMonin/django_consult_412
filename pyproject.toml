@@ -17,7 +17,8 @@ dependencies = [
     "django-debug-toolbar (>=5.1.0,<6.0.0)",
     "python-telegram-bot (>=22.1,<23.0)",
     "django-jazzmin (>=3.0.1,<4.0.0)",
-    "unidecode (>=1.4.0,<2.0.0)"
+    "unidecode (>=1.4.0,<2.0.0)",
+    "gunicorn (>=23.0.0,<24.0.0)"
 ]
 
 
