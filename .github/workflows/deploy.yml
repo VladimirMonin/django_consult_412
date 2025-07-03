@@ -31,7 +31,7 @@ jobs:
             cd /home/v/django_consult_412
 
             # Останавливаем службу приложения  (с sudo и передачей пароля)
-            echo "${{ secrets.PASSWORD }}" | sudo -S systemctl stop django_consult
+            echo "${{ secrets.PASSWORD }}" | sudo -S systemctl stop gunicorn_django_consult
             
             # Обновляем код из репозитория (с sudo и передачей пароля)
             echo "${{ secrets.PASSWORD }}" | git pull
@@ -50,4 +50,4 @@ jobs:
             echo "${{ secrets.ENV_FILE }}" > .env
 
             # Перезапускаем systemd сервис (с sudo и передачей пароля)
-            echo "${{ secrets.PASSWORD }}" | sudo -S systemctl start django_consult
+            echo "${{ secrets.PASSWORD }}" | sudo -S systemctl start gunicorn_django_consult
