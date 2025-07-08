@@ -45,6 +45,9 @@ jobs:
 
             # Если у вас Poetry (Можно определить путь до poetry which poetry)
             /home/v/.local/bin/poetry install --no-root 
+
+            # Миграции
+            /home/v/.local/bin/poetry run python manage.py migrate
             
             # Создаем файл .env из секрета где записано все его содержимое
             echo "${{ secrets.ENV_FILE }}" > .env
