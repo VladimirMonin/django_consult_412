@@ -12,6 +12,12 @@ class PostSitemap(Sitemap):
     def lastmod(self, obj):
         return obj.updated_at
 
+    def location(self, obj):
+        # Вручную строим URL, чтобы не зависеть от get_absolute_url
+        # Это может быть не идеально, если структура URL изменится,
+        # но это решает проблему 500 без добавления нового кода.
+        return f'/blog/{obj.slug}/'
+
 class StaticViewSitemap(Sitemap):
     priority = 0.5
     changefreq = "monthly"
