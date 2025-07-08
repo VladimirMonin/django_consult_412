@@ -4,6 +4,13 @@ from django.urls import path, include # Добавили include
 from core.views import LandingPageView
 from django.conf import settings
 from django.conf.urls.static import static
+from django.contrib.sitemaps.views import sitemap
+from core.sitemaps import PostSitemap, StaticViewSitemap
+
+sitemaps = {
+    'posts': PostSitemap,
+    'static': StaticViewSitemap,
+}
 
 urlpatterns = [
     path("admin/", admin.site.urls),
@@ -12,6 +19,7 @@ urlpatterns = [
     path("barbershop/", include("core.urls")),
     path("users/", include("users.urls")), # Подключили URL-ы приложения users
     path("blog/", include("blog.urls")), # Подключили URL-ы приложения blog
+    path('sitemap.xml', sitemap, {'sitemaps': sitemaps}, name='django.contrib.sitemaps.views.sitemap'),
 ]
 
 if settings.DEBUG:

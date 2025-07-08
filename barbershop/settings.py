@@ -54,6 +54,8 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+    "django.contrib.sites",  # Добавили для sitemap
+    "django.contrib.sitemaps",  # Добавили для sitemap
     "django_extensions",
     "debug_toolbar",
     "core",
@@ -243,3 +245,6 @@ EMAIL_USE_SSL = True
 DEFAULT_FROM_EMAIL = "vladimir.monin2016@yandex.ru"
 SERVER_EMAIL = "vladimir.monin2016@yandex.ru"
 EMAIL_ADMIN = "vladimir.monin2016@yandex.ru"
+
+# ID сайта для sitemap
+SITE_ID = 1
