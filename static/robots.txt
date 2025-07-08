@@ -11,4 +11,4 @@ Disallow: /media/
 Disallow: /static/
 
 # Указываем путь к карте сайта (мы создадим ее позже, но указать уже можно)
-Sitemap: https://ваш-домен.ru/sitemap.xml
+Sitemap: https://exception-blog.ru/sitemap.xml
